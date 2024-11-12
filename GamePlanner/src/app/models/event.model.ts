@@ -1,4 +1,8 @@
+import { GameModel } from "./game.model";
+import { gameSessionModel } from "./gameSession.model";
+
 export interface EventModel{
+    eventId: number
     name: string,
     description: string,
     eventDate: Date,
@@ -9,5 +13,8 @@ export interface EventModel{
     isDeleted: boolean,
     recurrenceId: number,
     gameId: number, 
-    adminId: number
+    adminId: number,
+    game?: GameModel,
+    gameSessions?: Array<gameSessionModel>
 }
+

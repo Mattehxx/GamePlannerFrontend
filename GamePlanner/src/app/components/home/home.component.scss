@@ -40,6 +40,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    text-align: center;
 
     h1 {
         font-size: 7vh;
@@ -80,7 +81,7 @@
     -webkit-text-fill-color: transparent;
     text-fill-color: transparent;
     text-shadow: 0 0 2px rgba(145, 71, 255, 0.3);
-    animation: gradient 3s ease infinite;
+    animation: gradient 1.5s ease infinite;
     background-size: 200% auto;
 }
 
@@ -123,7 +124,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 4vh;
+    gap: 4vw;
 }
 
 .icon-container{
@@ -143,10 +144,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 30vh;
+    width: max-content;
     height: 30vh;
     margin: 2vh;
-    padding: 2vh;
+ //   padding: 2vh;
     transition: transform 0.3s ease;
     text-align: center;
     cursor: pointer;
@@ -170,6 +171,7 @@
         font-size: 1.8vh;
         color: #666;
         line-height: 1.5;
+        width: 25vh;
     }
 }
 
@@ -185,28 +187,43 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction:  column;
-    padding: 5vh;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
 }
 
 .events-title{
     color: var(--color1);
     font-size: 5vh;
-    margin-bottom: 2vh;
+    margin-bottom: 5vh;
     font-weight: 700;
+    margin: 0;
+    margin-left: 2vh;
 }
 
-.event-list{
+.event-list {
     display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 4vh;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    width: 100%;
+    padding: 2vh;
+    -ms-overflow-style: none;  /* Hide scrollbar IE and Edge */
+    scrollbar-width: none;  /* Hide scrollbar Firefox */
+    touch-action: pan-x; // Enable horizontal touch scrolling
+    -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+    
+    /* Hide scrollbar Chrome, Safari, Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
-.event-card{
+.event-card {
+    width: 40vh; // Add min-width to prevent shrinking
+    flex: 0 0 auto; // Prevent cards from growing/shrinking
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: 30vh;
     box-shadow: 0 0 2vh #0000004d;
     overflow: hidden;
     border-radius: 2vh;
@@ -218,5 +235,126 @@
 
 .event-image img{
     width: 100%;
-    height: 20vh;
+    height: 25vh;
+}
+
+.event-details{
+    padding: 2vh;
+    padding-bottom: 10vh;
+}
+
+.event-title{
+    font-size: 2.5vh;
+    font-weight: 700;
+    color: var(--color1);
+}
+
+.event-game{
+    font-size: 1.7vh;
+    margin-bottom: 2vh;
+    color: var(--light-gray2);
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    color: black;
+    font-size: 2vh;
+    gap: 1vh;
+}
+
+.info div i {
+    color: var(--light-gray2);
+    width: 2vh;
+    display: flex;
+    justify-content: center;
+}
+
+.event-date, .event-duration{
+    display: flex;
+    gap: 1vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.info div{
+    width: max-content;
+}
+
+.events-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5vh;
+}
+
+.navigation-arrows {
+    display: flex;
+    gap: 2vh;
+    margin-right: 2vh;
+}
+
+.nav-arrow {
+
+    border: none;
+    background: transparent;
+    color: black;
+    font-size: 5vh;
+    cursor: pointer;
+    display: flex
+;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    i {
+        font-size: 3vh;
+    }
+}
+
+.event-list {
+    scroll-behavior: smooth;
+}
+
+@media (max-width: 750px){
+    .info-container{
+        flex-direction: column;
+    }
+
+    .group-container{
+        flex-direction: column;
+    }
+
+    .info-group{
+        width: 100%;
+    }
+
+    .event-header{
+        justify-content: center;
+    }
+
+    .evens-title{
+        margin: 0;
+    }
+
+    .text-content p{
+        width: 90%;
+    }
+
+    .landing-content{
+        height: max-content;
+        padding-bottom: 2vh;
+    }
+
+    .navigation-arrows {
+        display: none;
+    }
+    
 }

@@ -27,15 +27,30 @@
         </div>
     </div>
     <div class="events-container">
-        <div class="events-title">Upcoming Events</div>
-        <div class="event-list">
+        <div class="events-header">
+            <div class="events-title">Upcoming Events</div>
+            <div class="navigation-arrows">
+                <button class="nav-arrow" (click)="scrollLeft()">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="nav-arrow" (click)="scrollRight()">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>        
+        <div class="event-list"  #eventList (touchstart)="handleTouchStart($event)"
+        (touchend)="handleTouchEnd($event)">
             <div class="event-card" *ngFor="let event of arrayEvent">
                 <div class="event-image">
                     <img [src]="event.imgUrl" alt="event image">
                 </div>
                 <div class="event-details">
                     <div class="event-title">{{event.name}}</div>
-                    <div class="event-date">{{event.eventDate}}</div>
+                    <div class="event-game">Dungeons And Dragons</div>
+                    <div class="info">
+                        <div class="event-date"><i class="fa-regular fa-clock"></i>  {{event.eventDate | date:'EEE, MMM d, y - HH:mm'}}</div>
+                        <div class="event-duration"><i class="fa-solid fa-hourglass-end"></i>  {{event.duration | duration}}</div>
+                    </div>
                 </div>
             </div>
         </div>
