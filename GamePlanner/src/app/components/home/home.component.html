@@ -51,6 +51,10 @@
                         <div class="event-date"><i class="fa-regular fa-clock"></i>  {{event.eventDate | date:'EEE, MMM d, y - HH:mm'}}</div>
                         <div class="event-duration"><i class="fa-solid fa-hourglass-end"></i>  {{event.duration | duration}}</div>
                     </div>
+                    <div class="display-admin">
+                        <img src="assets/images/pfp.jpg">
+                         <span *ngIf="event.gameSessions">{{event.gameSessions![0].master?.name}}</span> 
+                    </div>
                 </div>
             </div>
         </div>

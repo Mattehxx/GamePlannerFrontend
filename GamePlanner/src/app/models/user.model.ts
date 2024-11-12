@@ -1,5 +1,3 @@
-import { Knowledge } from "./knowledge.model";
-
 export interface User {
     userId: string;
     name: string;
@@ -9,7 +7,6 @@ export interface User {
     birthDate: Date;
     imgUrl?: string;
     canBeMaster: boolean;
-    knowledgeId: number;
-    knowledge?: Knowledge;
+    level: number;
 
 }

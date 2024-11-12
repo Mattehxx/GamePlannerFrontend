@@ -1,12 +1,10 @@
 .home-container {
     width: 100%;
-    // height: 100vh;
-    // max-height: 100vh;
 }
 
 .landing-content {
     width: 100%;
-    height: 60vh;
+    height: 80vh;
     display: flex;
     align-items: center;
     background-image: url('/assets/images/wallpaper1.jpg');
@@ -227,6 +225,14 @@
     box-shadow: 0 0 2vh #0000004d;
     overflow: hidden;
     border-radius: 2vh;
+
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 3vh #0000004d;
+    }
 }
 
 .event-image{
@@ -240,7 +246,6 @@
 
 .event-details{
     padding: 2vh;
-    padding-bottom: 10vh;
 }
 
 .event-title{
@@ -323,6 +328,25 @@
     scroll-behavior: smooth;
 }
 
+.display-admin{
+    margin-top: 5vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.display-admin img{
+    width: 5vh;
+    border-radius: 50%;
+}
+
+.display-admin span{
+    margin-left: 1vh;
+    font-size: 2vh;
+    color: var(--color1);
+    font-weight: 700;
+}
+
 @media (max-width: 750px){
     .info-container{
         flex-direction: column;
@@ -336,7 +360,7 @@
         width: 100%;
     }
 
-    .event-header{
+    .events-header{
         justify-content: center;
     }
 
@@ -348,13 +372,10 @@
         width: 90%;
     }
 
-    .landing-content{
-        height: max-content;
-        padding-bottom: 2vh;
-    }
-
     .navigation-arrows {
         display: none;
     }
+
+
     
 }
