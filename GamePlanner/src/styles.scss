@@ -1,3 +1,27 @@
+body {
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background: var(--gray-background);
+}
+
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    box-sizing: inherit;
+
+}
+
 :root{
     --purple: #9147FF;
-}
+    --light-gray: #ccc;
+    --light-gray2: #8e8e8e;
+    --background-page:radial-gradient(66.5% 221.21% at 136.03% -61.44%, rgb(243 0 239 / 50%) 0%, rgb(231 58 232 / 0%) 92.09%), radial-gradient(93.54% 126.91% at 29.15% -56.29%, rgb(167 29 248 / 80%) 0%, rgba(58, 232, 189, 0) 92.09%), radial-gradient(86.19% 101.84% at -17.13% -24.8%, #7950e5 0%, rgb(74 52 132 / 0%) 92.09%), rgb(155 9 241 / 80%);
+    --dark-purple:#7923fa;
+    --background-auth: linear-gradient(146deg, #c2a1f3 -19%, #7923fad6 30%);
+    --color1:#151515;
+}   

@@ -1,1 +1,43 @@
-home
+<div class="home-container">
+    <div class="landing-content">
+        <div class="text-content">
+            <h1>Where <span class="custom-text">Fantasy</span> becomes reality</h1>
+            <p>Unleash your creativity and dive into worlds where anything is possible.</p>
+            <button class="cta-button">Get Started</button>
+        </div>
+    </div>
+    <div class="info-container">
+        <div class="info-title">Why Choose Game Planner?</div>
+        <div class="group-container">
+            <div class="info-group">
+                <span class="icon-container"><i class="fa-solid fa-users"></i></span>
+                <div class="group-title">Community</div>
+                <div class="group-subtitle">Join a community of enthusiastic players and make new friends</div>
+            </div>
+            <div class="info-group">
+                <span class="icon-container"> <i class="fa-solid fa-calendar"></i></span>
+                <div class="group-title">Regular Events</div>
+                <div class="group-subtitle">Participate in weekly and monthly events for all experience levels</div>
+            </div>
+            <div class="info-group">
+                <span class="icon-container"><i class="fa-solid fa-location-dot"></i></span>
+                <div class="group-title">Unique Locations</div>
+                <div class="group-subtitle">Play in exciting venues that enhance the gaming experience</div>
+            </div>
+        </div>
+    </div>
+    <div class="events-container">
+        <div class="events-title">Upcoming Events</div>
+        <div class="event-list">
+            <div class="event-card" *ngFor="let event of arrayEvent">
+                <div class="event-image">
+                    <img [src]="event.imgUrl" alt="event image">
+                </div>
+                <div class="event-details">
+                    <div class="event-title">{{event.name}}</div>
+                    <div class="event-date">{{event.eventDate}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

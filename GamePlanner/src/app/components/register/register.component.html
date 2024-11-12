@@ -1,1 +1,99 @@
-<p>register works!</p>
+<div class="login-container">
+    <div class="login-box">
+        <div class="top">
+            <div class="back-home" (click)="this.router.navigate(['/home'])">
+                <i class="fa-solid fa-arrow-left"></i>
+            </div>
+            <div class="logo" (click)="this.router.navigate(['/home'])">
+                <i class="fa-solid fa-dice-d20"></i>
+                <h1>Game Planner</h1>
+            </div>
+        </div>
+        <div class="login-content">
+            <h2 class="title">Sign Up</h2>
+            <div class="subtitle">Sign Up, Please enter Your Details</div>
+            <!-- register.component.html -->
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <div class="input-group double">
+                    <input type="text" formControlName="name" placeholder="Name" required 
+                        [class.input-error]="registerForm.get('name')?.invalid && (registerForm.get('name')?.touched || registerForm.get('name')?.dirty)">
+                    <input type="text" formControlName="surname" placeholder="Surname" required 
+                        [class.input-error]="registerForm.get('surname')?.invalid && (registerForm.get('surname')?.touched || registerForm.get('surname')?.dirty)">
+                </div>
+                <!-- <div *ngIf="registerForm.get('name')?.invalid && (registerForm.get('name')?.touched || registerForm.get('name')?.dirty)"
+                    class="display-errors">
+                    <small class="error" *ngIf="registerForm.get('name')?.errors?.['required']">Name is required</small>
+                    <small class="error" *ngIf="registerForm.get('name')?.errors?.['minlength']">Name must be at least 2
+                        characters</small>
+                </div> -->
+
+                <!-- <div *ngIf="registerForm.get('surname')?.invalid && (registerForm.get('surname')?.touched || registerForm.get('surname')?.dirty)"
+                    class="display-errors">
+                    <small class="error" *ngIf="registerForm.get('surname')?.errors?.['required']">Surname is
+                        required</small>
+                    <small class="error" *ngIf="registerForm.get('surname')?.errors?.['minlength']">Surname must be at
+                        least 2 characters</small>
+                </div> -->
+
+                <div class="input-group">
+                    <input type="email" formControlName="email" placeholder="Email" required 
+                        [class.input-error]="registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty)">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty)"
+                    class="display-errors">
+                    <small class="error" *ngIf="registerForm.get('email')?.errors?.['required']">Email is
+                        required</small>
+                    <small class="error" *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email
+                        format</small>
+                </div>
+
+                <div class="input-group">
+                    <input type="tel" formControlName="phone" placeholder="Phone" required 
+                        [class.input-error]="registerForm.get('phone')?.invalid && (registerForm.get('phone')?.touched || registerForm.get('phone')?.dirty)">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <div *ngIf="registerForm.get('phone')?.invalid && (registerForm.get('phone')?.touched || registerForm.get('phone')?.dirty)"
+                    class="display-errors">
+                    <small class="error" *ngIf="registerForm.get('phone')?.errors?.['required']">Phone is
+                        required</small>
+                    <small class="error" *ngIf="registerForm.get('phone')?.errors?.['pattern']">Phone must be 10
+                        digits</small>
+                </div>
+
+                <div class="input-group">
+                    <input type="date" formControlName="birthDate" placeholder="Birth Date" required 
+                        [class.input-error]="registerForm.get('birthDate')?.invalid && (registerForm.get('birthDate')?.touched || registerForm.get('birthDate')?.dirty)">
+                </div>
+                <div *ngIf="registerForm.get('birthDate')?.invalid && (registerForm.get('birthDate')?.touched || registerForm.get('birthDate')?.dirty)"
+                    class="display-errors">
+                    <small class="error" *ngIf="registerForm.get('birthDate')?.errors?.['required']">Birth date is
+                        required</small>
+                </div>
+
+                <div class="input-group">
+                    <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Password" required 
+                        [class.input-error]="registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)">
+                    <i class="fa-solid" [class.fa-eye]="hidePassword" [class.fa-eye-slash]="!hidePassword" (click)="togglePasswordVisibility()" style="cursor: pointer;"></i>
+                </div>
+
+                <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)"
+                    class="display-errors">
+                    <small class="error" *ngIf="registerForm.get('password')?.errors?.['required']">Password is
+                        required</small>
+                </div>
+
+                <button type="submit" class="login-button" (click)="onSubmit()">Sign Up</button>
+            </form>
+            <div class="divider">
+            </div>
+
+            <p class="register-link">
+                Arleady have an account? <a href="/login">Login </a>
+            </p>
+        </div>
+    </div>
+    <div class="right-img">
+        <img src="/assets/images/logo.png">
+    </div>
+</div>

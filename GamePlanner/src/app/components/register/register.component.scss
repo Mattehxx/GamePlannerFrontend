@@ -1,0 +1,342 @@
+
+.login-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 100vh;
+    box-sizing: border-box;
+   // background: var(--background-page);
+  }
+  
+  .login-box {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background-size: cover;
+    background: white;
+    padding: 4vh;
+   // padding-top: 9vh;
+    padding-bottom: 9vh;
+    width: 50%;
+    height: 100vh;
+    box-shadow: 0 1vh 2vh rgb(0 0 0 / 37%);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .login-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .right-img{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100vh;
+    background: radial-gradient(66.5% 221.21% at 136.03% -61.44%, rgb(58 163 232 / 50%) 0%, rgba(58, 232, 189, 0) 92.09%), radial-gradient(93.54% 126.91% at 29.15% -56.29%, rgb(81 58 232 / 80%) 0%, rgba(58, 232, 189, 0) 92.09%), radial-gradient(86.19% 101.84% at -17.13% -24.8%, #7950e5 0%, rgba(121, 80, 229, 0) 92.09%), #9147ff5e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .right-img img{
+    width: 45vh;
+  }
+
+  .back-home{
+    position: absolute;
+    top: 1vh;
+    left: 0;
+    color: rgb(107, 107, 107);
+    font-size: 2.5vh;
+    padding: 4vh;
+    cursor: pointer;
+  }
+
+  .back-home:hover{
+    color: black;
+  }
+  
+  .logo {
+    position: absolute;
+    top: 1vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2vh;
+    margin-top: 5vh;
+    color: black;
+    cursor: pointer;
+  }
+
+  .logo i{
+    margin-right: 2vh;
+    color: var(--purple);
+  }
+  
+  .logo img {
+    width: 6vh;
+    height: 6vh;
+    margin-right: 1vh;
+  }
+  
+  .logo h1 {
+    font-size: 3vh;
+    color: var(--purple);
+    margin: 0;
+  }
+  
+  .title {
+    font-size: 4vh;
+    text-align: center;
+    color: black;
+    margin-bottom: -1.5vh;
+    font-family: system-ui;
+  }
+
+  .subtitle{
+    font-size: 2vh;
+    color: var(--light-gray2);
+    margin-top: 3vh;
+    margin-bottom: 5vh;
+    text-align: center;
+  }
+  
+  .input-group {
+    margin-bottom: 2vh;
+    position: relative;
+    width: 100%;
+  }
+
+  .input-group i{
+    position: absolute;
+    font-size: 2vh;
+    top: 50%;
+    right: 2.5vh;
+    transform: translate(50%, -50%);
+    color: var(--light-gray2);
+  }
+
+  form{
+    width: 65%;
+    min-width: 150px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 1.5vh;
+    border: 1px solid var( --light-gray);
+    border-radius: 1vh;
+    font-size: 2vh;
+    box-sizing: border-box;
+    background: white;
+    color: black;
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 1.5vh;
+    border: none;
+    border-radius: 1vh;
+    background-color: var(--purple);
+    color: white;
+    font-size: 2vh;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 3vh;
+  }
+  
+  .login-button:hover {
+    background-color: var(--dark-purple);
+  }
+
+  
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: black;
+    margin: 2vh 0;
+    font-size: 1.8vh;
+    width: 45%;
+    height: 0.5px;
+    background: rgba(204, 204, 204, 0.4117647059);
+    margin-bottom: 0;
+  }
+  
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var (--light-gray);
+  }
+  
+  .divider span {
+    padding: 0 1vh;
+  }
+  
+  .google-signin-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /* padding: 1.5vh; */
+    /* border: 1px solid var(--border-color); */
+    border-radius: 1vh;
+   // background-color: white;
+    color: var(--text-secondary);
+    font-size: 2vh;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .google-signin-button img {
+    width: 2.5vh;
+    height: 2.5vh;
+    margin-right: 1vh;
+  }
+  
+  .register-link {
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 1.8vh;
+    color: var(--light-gray2);
+  }
+  
+  .register-link a {
+    color: var(--purple);
+    text-decoration: none;
+  }
+  
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+
+  .display-errors{
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+  }
+  
+  small{
+    color: red;
+    margin-top: -1vh;
+    margin-bottom: 1vh;
+  }
+
+  .input-error{
+    border: 2px solid red;
+  }
+
+  .top{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .double{
+    display: flex;
+    gap: 1vh;
+  }
+
+  @media (max-width: 750px){
+    .right-img img{
+        width: 30vh;
+    }
+
+    .subtitle{
+        font-size: 1.7vh;
+    }
+
+    .right-img{
+        display: none;
+    }
+
+    .login-box{
+        width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) { //480px
+    .right-img{
+        display: none;
+    }
+
+    .login-box {
+        width: 100vw;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 0;
+        background:var(--background-auth);
+    }
+
+    .login-content{
+        width: 100vw;
+        height: 80vh;
+        border-radius: 3vh 3vh 0 0;
+        background: white;
+        justify-content: flex-start;
+        box-shadow: 0 1vh 2vh rgb(0 0 0);
+    }
+
+    .logo{
+        margin-top: 4vh;
+    }
+
+    .logo h1{
+        color: white;
+    }
+
+    .logo i{
+        color: white;
+    }
+
+    .back-home{
+        color: white;
+    }
+
+    .register-link{
+        font-size: 2vh;
+    }
+
+    .title{
+        font-size: 4vh;
+        margin-top: 2vh;
+    }
+
+    .subtitle{
+        font-size: 1.5vh;
+    }
+
+    input{
+        padding: 1.5vh;
+    }
+
+    form{
+        width: 65%;
+    }
+
+    .login-button{
+        padding: 2.5vh;
+    }
+
+    .divider{
+        width: 60%;
+        height: 1px;
+        margin-top: 4vh;
+    }
+
+    .register-link{
+        margin-top: 4vh;
+    }
+}
