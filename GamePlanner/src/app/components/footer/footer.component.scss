@@ -1,0 +1,65 @@
+// #app-root {
+//     position: relative;
+//     min-height: 100vh; // assicurati che riempia l'intero schermo
+//     display: flex;
+//     flex-direction: column;
+//   }
+.container{
+    display: flex;
+    flex-direction: column;
+    display: flex;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    align-items: center;
+    background: #191C1F;
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    gap: 1vh;
+    padding: 1rem;
+    justify-content: space-around;
+}
+.footer-container{
+    display: flex;
+    gap: 5vh;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.social-link{
+    display: flex;
+    gap: 5vh;
+    flex-direction: row;
+    align-items: center;
+}
+
+.about-us-names{
+    display: flex;
+    flex-direction: column;
+    width: 46%;
+    color: white;
+    font-size: 1.3vh;
+    gap: 1vh;
+    align-items: center;
+}
+.about-us{
+    color: white;
+    font-weight: 600; 
+    font-size: 2vh; 
+    font-weight: 400;
+}
+
+.names{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1vh;
+}
+.rights{
+    display: flex;
+    font-size: 2vh;
+}
+.divisor{
+    width: 78%;
+}

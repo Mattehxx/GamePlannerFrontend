@@ -1,0 +1,41 @@
+.header-container {
+    display: flex;
+    
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    /* Trasparenza */
+   
+    /* Sfocatura */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Ombra leggera */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Bordo semi-trasparente */
+    color: black;
+    /* Colore del testo */
+    padding: 1rem;
+}
+
+.login-registration-cont {
+    display: flex;
+    gap: 1vh;
+}
+
+.login-registration {
+    background: var(--purple);
+    /* Sfondo semi-trasparente */
+    backdrop-filter: blur(100px);
+    /* Sfocatura */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+// .login-registration:active {
+//     background-color: var(--lightpPurple);
+//     color: purple;
+//     border: solid 0.01rem purple;
+//     border-radius: 0.2rem;
+// }
