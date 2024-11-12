@@ -1,12 +1,43 @@
 <div class="header-container">
-    <div class="icon-container">
-        <i class="fa-brands fa-fantasy-flight-games"></i>
+    <div class="right-img">
+        <img src="/assets/images/logo.png">
     </div>
-    <div class="login-registration-cont">
+    <div class="login-registration-cont" *ngIf="!isLogged">
         <div class="login-registration">Sign In</div>
         <div class="login-registration">Sign Up</div>
     </div>
-    <div class="login-registration-cont">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <button class="user-icon" *ngIf="isLogged" (click)="toggleModal()">
+        <i class="fa-regular fa-user"></i>
+    </button>
+
+    <div *ngIf="isModalOpen" class="overlay" (click)="closeModal()"></div>
+
+    <div class="menu-container" *ngIf="isModalOpen" (click)="$event.stopPropagation()">
+        <div class="img-name">
+            @if(user.ImgUrl=== undefined){
+            <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
+            }
+            <div>{{user.ImgUrl}}</div>
+            <div class="username-email">
+                <div class="username">{{user.Name}} {{user.Surname}}</div>
+                <div class="email">{{user.Email}}</div>
+            </div>
+        </div>
+        <div class="divisor"></div>
+
+        <div class="options-container">
+
+            <div class="settings-cont">
+
+                <div><i class="fa-solid fa-gear"></i></div>
+                <div class="settings">Account Settings</div>
+            </div>
+            <div class="settings-cont">
+                <div><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                <div>logout</div>
+            </div>
+        </div>
+
+
     </div>
 </div>
