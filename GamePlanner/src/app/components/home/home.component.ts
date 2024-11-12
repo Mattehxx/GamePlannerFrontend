@@ -25,7 +25,7 @@ export class HomeComponent {
     birthDate: new Date('1995-01-01'),
     imgUrl: '',
     canBeMaster: true,
-    knowledgeId: 1
+    level: 1
   }
 
   gameSession: gameSessionModel = {

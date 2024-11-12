@@ -29,8 +29,7 @@ export class HeaderComponent implements OnInit {
     birthDate: new Date("1990-05-15"),
     imgUrl: undefined, // Puoi sostituirlo con un'immagine fittizia
     canBeMaster: true,
-    knowledgeId: 1,
-    knowledge: { knowledgeId: 1, name: "D&D" }
+    level: 1
   }
 
   isLogged : boolean = false;
