@@ -1,40 +1,50 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { User } from '../../models/user.model';
+import { HeaderService } from '../../services/header.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements AfterViewInit {
+export class HeaderComponent implements OnInit {
   
+  constructor(private headerService: HeaderService){}
   
   @ViewChild('modal') modalElement!: ElementRef;
   @ViewChild('overlay') overlayElement!: ElementRef;
   
-  isLogged: boolean = true;
   isModalOpen: boolean = false;
   user : User = 
   {
-    UserId: "1",
-    Name: "Alice",
-    Surname: "Smith",
-    Email: "alice.smith@example.com",
-    Phone: "123-456-7890",
-    BirthDate: new Date("1990-05-15"),
-    ImgUrl: undefined, // Puoi sostituirlo con un'immagine fittizia
-    CanBeMaster: true,
-    KnowledgeId: 1,
-    Knowledge: { KnowledgeId: 1, Name: "D&D" }
+    userId: "1",
+    name: "Alice",
+    surname: "Smith",
+    email: "alice.smith@example.com",
+    phone: "123-456-7890",
+    birthDate: new Date("1990-05-15"),
+    imgUrl: undefined, // Puoi sostituirlo con un'immagine fittizia
+    canBeMaster: true,
+    knowledgeId: 1,
+    knowledge: { knowledgeId: 1, name: "D&D" }
   }
-  
-  ngAfterViewInit(): void {
-    
+
+  isLogged : boolean = false;
+
+
+  ngOnInit() {
+    this.headerService.headerVisibility$.subscribe(isVisible => {
+      const header = document.querySelector('.header-container') as HTMLElement;
+      if (header) {
+        header.style.transform = isVisible ? 'translate(-50%, 0)' : 'translate(-50%, -100%)';
+      }
+    });
+
   }
-  
   
   toggleModal() {
     this.isModalOpen = !this.isModalOpen

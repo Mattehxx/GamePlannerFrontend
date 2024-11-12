@@ -1,26 +1,34 @@
 <div class="header-container">
     <div class="right-img">
         <img src="/assets/images/logo.png">
+        <div class="logo-title">
+            Game Planner
+        </div>
     </div>
-    <div class="login-registration-cont" *ngIf="!isLogged">
-        <div class="login-registration">Sign In</div>
-        <div class="login-registration">Sign Up</div>
-    </div>
-    <button class="user-icon" *ngIf="isLogged" (click)="toggleModal()">
-        <i class="fa-regular fa-user"></i>
-    </button>
+    @if (!isLogged) {
+        <div class="login-registration-cont">
+            <div class="login-registration login">Log In</div>
+            <div class="login-registration">Sign Up</div>
+        </div>
+    }
+    @else {
+        <button class="user-icon" (click)="toggleModal()">
+            <i class="fa-regular fa-user"></i>
+        </button>
+    }
+    
 
     <div *ngIf="isModalOpen" class="overlay" (click)="closeModal()"></div>
 
     <div class="menu-container" *ngIf="isModalOpen" (click)="$event.stopPropagation()">
         <div class="img-name">
-            @if(user.ImgUrl=== undefined){
+            @if(user.imgUrl=== undefined){
             <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
             }
-            <div>{{user.ImgUrl}}</div>
+            <div>{{user.imgUrl}}</div>
             <div class="username-email">
-                <div class="username">{{user.Name}} {{user.Surname}}</div>
-                <div class="email">{{user.Email}}</div>
+                <div class="username">{{user.name}} {{user.surname}}</div>
+                <div class="email">{{user.email}}</div>
             </div>
         </div>
         <div class="divisor"></div>

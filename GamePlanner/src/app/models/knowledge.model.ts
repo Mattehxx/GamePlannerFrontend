@@ -1,4 +1,4 @@
 export interface Knowledge{
-    KnowledgeId : number;
-    Name: string;
+    knowledgeId : number;
+    name: string;
 }

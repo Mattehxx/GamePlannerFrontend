@@ -1,5 +1,6 @@
 import { GameModel } from "./game.model";
 import { gameSessionModel } from "./gameSession.model";
+import { User } from "./user.model";
 
 export interface EventModel{
     eventId: number
@@ -13,8 +14,9 @@ export interface EventModel{
     isDeleted: boolean,
     recurrenceId: number,
     gameId: number, 
-    adminId: number,
     game?: GameModel,
-    gameSessions?: Array<gameSessionModel>
+    gameSessions?: Array<gameSessionModel>,
+    adminId: number,
+    admin?: User,
 }
 

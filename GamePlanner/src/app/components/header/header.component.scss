@@ -3,26 +3,42 @@
     display: flex;
     position: fixed;
     z-index: 1000;
-    width: 100%;
+    width: 50%;
     top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
     align-items: center;
     justify-content: space-between;
     background: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: black;
-    padding: 1rem 0 1rem 0;
+    padding: 1vh 4vh;
+    border-bottom: solid 0.5px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.7294117647);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin: 0 auto;
+    border-radius: 0 0 4vh 4vh;
+    transition: transform 0.3s ease-in-out;
 }
 
 .right-img{
-   
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 2vh;
 }
 
 img{
-   width: 10vh;
+   width: 7vh;
+}
+
+.logo-title{
+    margin-left: 1vh;
+    font-size: 3vh;
+    color: var(--color1);
+    font-weight: 700;
 }
 
 .login-registration-cont {
@@ -36,15 +52,15 @@ img{
     position: relative;
     background: white;
     margin-right: 3vh;
-    border: 1px solid #8080802e;
-    border-radius: 4vh;
+    border: 1px solid rgb(0 0 0 / 44%);
+    border-radius: 50%;
     width: 4vh;
     height: 5vh;
     font-size: 2vh;
-    gap: 1vh;
+    /* gap: 1vh; */
     align-items: center;
     justify-content: center;
-    align-content: center;
+
 }
 
 .fa-regular.fa-user{
@@ -63,6 +79,21 @@ img{
     padding: 1vh 2vh;
     cursor: pointer;
 }
+
+.login{
+    background: white;
+    border: 1px solid #3d0099;
+    color: #3d0099;
+}
+
+.login-registration:hover {
+    background: #7923fa;
+}
+
+.login:hover {
+    background: rgb(226, 226, 226);
+}
+
 
 .overlay {
     position: fixed;
@@ -129,4 +160,27 @@ img{
 .settings-cont{
     gap: 4.1vh;
     display: flex;
+}
+
+
+@media (max-width: 750px) {
+
+    .logo-title{
+        font-size: 2.5vh;
+    }
+
+    .header-container{
+        width: 100%;
+        padding: initial;
+        padding-top: 1vh;
+        padding-bottom: 1vh;
+        border-radius: 0;
+    }
+
+    .login-registration-cont{
+        margin-right: 2vh;
+    }
+
+    
+    
 }

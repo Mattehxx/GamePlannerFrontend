@@ -67,10 +67,11 @@
 
 .divisor{
     width: 75%;
-    background-color: rgb(255 255 255 / 20%);
+    background-color: rgba(255, 255, 255, 0.2);
     height: 0.5px;
-    margin-top: 1vh;
-    margin-bottom: 1vh;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+    max-width: 500px;
 }
 
 .name-container{

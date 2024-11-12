@@ -3,6 +3,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EventModel } from '../../models/event.model';
 import { DurationPipe } from '../../pipes/duration.pipe';
+import { User } from '../../models/user.model';
+import { gameSessionModel } from '../../models/gameSession.model';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +14,37 @@ import { DurationPipe } from '../../pipes/duration.pipe';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+
+
+  admin: User = {
+    userId: 'sfasf',
+    name: 'Yassine',
+    surname: 'admin',
+    email: '',
+    phone: '',
+    birthDate: new Date('1995-01-01'),
+    imgUrl: '',
+    canBeMaster: true,
+    knowledgeId: 1
+  }
+
+  gameSession: gameSessionModel = {
+    gameSessionId: 1,
+    gameSessionDate: new Date('2023-11-01'),
+    gameSessionEndDate: new Date('2023-11-02'),
+    isDeleted: false,
+    masterId: 301,
+    eventId: 1,
+    tableId: 401,
+    master: this.admin,
+    table: {
+      tableId: 401,
+      name: 'Table 1',
+      seats: 4,
+      isDeleted: false
+    }
+  }
+
 
   arrayEvent: EventModel[] = [
     {
@@ -26,7 +59,9 @@ export class HomeComponent {
       isDeleted: false,
       recurrenceId: 1,
       gameId: 101,
-      adminId: 201
+      adminId: 201,
+      admin: this.admin,
+      gameSessions: [this.gameSession]
     },
     {
       eventId: 2,
@@ -40,7 +75,9 @@ export class HomeComponent {
       isDeleted: false,
       recurrenceId: 2,
       gameId: 102,
-      adminId: 202
+      adminId: 202,
+      admin: this.admin,
+      gameSessions: [this.gameSession]
     },
     {
       eventId: 3,
@@ -54,7 +91,8 @@ export class HomeComponent {
       isDeleted: false,
       recurrenceId: 3,
       gameId: 103,
-      adminId: 203
+      adminId: 203,
+      gameSessions: [this.gameSession]
     },
     {
       eventId: 4,
@@ -68,7 +106,8 @@ export class HomeComponent {
       isDeleted: false,
       recurrenceId: 4,
       gameId: 104,
-      adminId: 204
+      adminId: 204,
+      gameSessions: [this.gameSession]
     },
     {
       eventId: 4,
@@ -82,7 +121,8 @@ export class HomeComponent {
       isDeleted: false,
       recurrenceId: 4,
       gameId: 104,
-      adminId: 204
+      adminId: 204,
+      gameSessions: [this.gameSession]
     },
     {
       eventId: 4,
