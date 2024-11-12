@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { User } from '../../models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -19,17 +20,21 @@ export class HeaderComponent implements AfterViewInit {
   isModalOpen: boolean = false;
   user : User = 
   {
-    UserId: "1",
-    Name: "Alice",
-    Surname: "Smith",
-    Email: "alice.smith@example.com",
-    Phone: "123-456-7890",
-    BirthDate: new Date("1990-05-15"),
-    ImgUrl: undefined, // Puoi sostituirlo con un'immagine fittizia
-    CanBeMaster: true,
-    KnowledgeId: 1,
-    Knowledge: { KnowledgeId: 1, Name: "D&D" }
+    userId: "1",
+    name: "Alice",
+    surname: "Smith",
+    email: "alice.smith@example.com",
+    phone: "123-456-7890",
+    birthDate: new Date("1990-05-15"),
+    imgUrl: undefined, // Puoi sostituirlo con un'immagine fittizia
+    canBeMaster: true,
+    knowledgeId: 1,
+    knowledge: { KnowledgeId: 1, Name: "D&D" }
   }
+
+
+  constructor(public router : Router){}
+  
   
   ngAfterViewInit(): void {
     

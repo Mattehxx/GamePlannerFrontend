@@ -14,20 +14,20 @@
 
     <div class="menu-container" *ngIf="isModalOpen" (click)="$event.stopPropagation()">
         <div class="img-name">
-            @if(user.ImgUrl=== undefined){
+            @if(user.imgUrl=== undefined){
             <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
             }
-            <div>{{user.ImgUrl}}</div>
+            <div>{{user.imgUrl}}</div>
             <div class="username-email">
-                <div class="username">{{user.Name}} {{user.Surname}}</div>
-                <div class="email">{{user.Email}}</div>
+                <div class="username">{{user.name}} {{user.surname}}</div>
+                <div class="email">{{user.email}}</div>
             </div>
         </div>
         <div class="divisor"></div>
 
         <div class="options-container">
 
-            <div class="settings-cont">
+            <div class="settings-cont" (click)="this.router.navigate(['userSettings'])">
 
                 <div><i class="fa-solid fa-gear"></i></div>
                 <div class="settings">Account Settings</div>

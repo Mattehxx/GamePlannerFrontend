@@ -1,0 +1,96 @@
+<div class="container">
+    <div class="title-page">Account Settings</div>
+    <div class="player-profile-cont">
+        <div class="subtitle">Player Profile</div>
+        <div class="img-btns">
+            <div class="img">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <div class="btn-upload">Upload new image</div>
+            <div class="btn-remove">Remove image</div>
+        </div>
+    </div>
+
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form-container">
+
+        <div class="wrapper">
+            <label for="email">Name</label>
+            <div class="input-group">
+                <input type="text" formControlName="name" placeholder="Name" required
+                    [class.input-error]="userForm.get('name')?.invalid && (userForm.get('name')?.touched || userForm.get('name')?.dirty)">
+
+            </div>
+            <div *ngIf="userForm.get('name')?.invalid && (userForm.get('name')?.touched || userForm.get('name')?.dirty)"
+                class="display-errors">
+                <small class="error" *ngIf="userForm.get('name')?.errors?.['required']">Name is required</small>
+            </div>
+        </div>
+        <div class="wrapper">
+            <label for="email">Surname</label>
+            <div class="input-group">
+                <input type="text" formControlName="surname" placeholder="Surname" required
+                    [class.input-error]="userForm.get('surname')?.invalid && (userForm.get('surname')?.touched || userForm.get('surname')?.dirty)">
+
+            </div>
+            <div *ngIf="userForm.get('surname')?.invalid && (userForm.get('surname')?.touched || userForm.get('surname')?.dirty)"
+                class="display-errors">
+                <small class="error" *ngIf="userForm.get('surname')?.errors?.['required']">Surname is required</small>
+            </div>
+        </div>
+
+
+        <div class="wrapper">
+            <label for="email">Email</label>
+            <div class="input-group">
+                <input type="email" formControlName="email" placeholder="Email" required
+                    [class.input-error]="userForm.get('email')?.invalid && (userForm.get('email')?.touched || userForm.get('email')?.dirty)">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div *ngIf="userForm.get('email')?.invalid && (userForm.get('email')?.touched || userForm.get('email')?.dirty)"
+                class="display-errors">
+                <small class="error" *ngIf="userForm.get('email')?.errors?.['required']">Email is required</small>
+                <small class="error" *ngIf="userForm.get('email')?.errors?.['email']">The email format is
+                    incorrect.</small>
+            </div>
+        </div>
+        <div class="wrapper">
+            <label for="phone">Phone</label>
+            <div class="input-group">
+                <input type="text" formControlName="phone" placeholder="Phone" required
+                    [class.input-error]="userForm.get('phone')?.invalid && (userForm.get('phone')?.touched || userForm.get('phone')?.dirty)">
+               
+            </div>
+            <div *ngIf="userForm.get('phone')?.invalid && (userForm.get('phone')?.touched || userForm.get('phone')?.dirty)"
+                class="display-errors">
+                <small class="error" *ngIf="userForm.get('phone')?.errors?.['required']">Phone is required</small>
+                <small class="error" *ngIf="userForm.get('phone')?.errors?.['phone']">The Phone format is
+                    incorrect.</small>
+            </div>
+        </div>
+        <div class="wrapper">
+            <label for="birthdate">Birthdate</label>
+            <div class="input-group">
+                <input type="date" formControlName="birthdate" placeholder="birthdate" >
+             
+            </div>
+          
+        </div>
+        <div class="wrapper-radio">
+            <label for="canBeMaster">Available as Game Master</label>
+            <div class="radio-input-group">
+                <div class="radio-input-label">
+                    <label for="masterYes" class="radio-label">Yes</label>
+                    <input type="radio" id="masterYes" formControlName="canBeMaster" name="canBeMaster" [value]="true">
+                  </div>
+                  <div class="radio-input-label">
+                      <label for="masterNo" class="radio-label">No</label>
+                    <input type="radio" id="masterNo" formControlName="canBeMaster"  name="canBeMaster"  [value]="false">
+                  </div>
+            </div>
+          
+        </div>
+
+    </form>
+
+</div>
