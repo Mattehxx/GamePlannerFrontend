@@ -5,6 +5,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { MainLayoutComponent } from './components/layout/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './components/layout/auth-layout/auth-layout.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { EventsComponent } from './components/events/events.component';
 
 export const routes: Routes = [
     {
@@ -14,7 +15,7 @@ export const routes: Routes = [
           { path: '', redirectTo: 'home', pathMatch: 'full' },
           { path: 'home', component: HomeComponent },
           { path: 'userSettings', component: UserProfileComponent },
-          
+          { path: 'events',component: EventsComponent}
         ]
       },
       {

@@ -5,6 +5,8 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class HeaderService {
+  filtersVisible : boolean = false;
+
   private headerVisibilitySubject = new BehaviorSubject<boolean>(true);
   headerVisibility$ = this.headerVisibilitySubject.asObservable();
 

@@ -70,10 +70,7 @@
 }
 
 .custom-text {
-    background: linear-gradient(90deg, 
-        #9147ff,  /* Twitch purple */
-        #ff71ce   /* Bright pink */
-    );
+    background: linear-gradient(90deg, #9147ff, #ff71ce  );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

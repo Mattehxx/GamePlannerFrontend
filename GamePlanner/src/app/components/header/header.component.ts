@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   
-  constructor(private headerService: HeaderService){}
+  constructor(private headerService: HeaderService,public router: Router){}
   
   @ViewChild('modal') modalElement!: ElementRef;
   @ViewChild('overlay') overlayElement!: ElementRef;

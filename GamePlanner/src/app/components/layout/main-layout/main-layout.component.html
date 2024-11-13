@@ -1,7 +1,8 @@
 <div class="display">
     <app-header></app-header>
-    <div class="main-content">
-        <router-outlet></router-outlet>
+    <div class="main-content" >
+        <router-outlet (activate)="onActivate($event)"></router-outlet>
         <app-footer></app-footer>
     </div>
+    <div class="dark-overlay" *ngIf="headerService.filtersVisible"></div>
 </div>
