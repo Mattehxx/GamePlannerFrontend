@@ -1,12 +1,13 @@
 export interface User {
-    userId: string;
+    userId?: string;
     name: string;
     surname: string;
-    email: string;
-    phone: string;
-    birthDate: Date;
+    email?: string;
+    phone?: string;
+    birthDate?: Date;
     imgUrl?: string;
-    canBeMaster: boolean;
-    level: number;
+    canBeMaster?: boolean;
+    level?: number;
+    isDeleted:string;
 
 }

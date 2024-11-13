@@ -1,3 +1,58 @@
 <div class="container" [class.dashboarsIsOpen]="this.ds.isOpen">
-    <div class="title">Users administration</div>
+    <div class="page-container">
+        <!-- Barra del titolo e della ricerca -->
+        <div class="header-bar">
+            <h1 class="page-title">User Management</h1>
+            <mat-form-field class="search-bar" appearance="outline">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Search users" />
+            </mat-form-field>
+        </div>
+
+        <!-- Tabella degli utenti -->
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 user-table">
+            <!-- Colonna Immagine -->
+            <ng-container matColumnDef="profilePicture">
+                <mat-header-cell *matHeaderCellDef> Profile </mat-header-cell>
+                <mat-cell *matCellDef="let user">
+                    <img alt="Profile" class="profile-image">{{user.imgUrl}}    
+                </mat-cell>
+            </ng-container>
+
+            <!-- Colonna Nome -->
+            <ng-container matColumnDef="firstName">
+                <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
+                <mat-cell *matCellDef="let user"> {{user.name}} </mat-cell>
+            </ng-container>
+
+            <!-- Colonna Cognome -->
+            <ng-container matColumnDef="lastName">
+                <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+                <mat-cell *matCellDef="let user"> {{user.surname}} </mat-cell>
+            </ng-container>
+
+            <!-- Colonna Stato -->
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let user">
+                    <span
+                        [ngClass]="{'status-chip': true, 'status-enabled': user.status === 'Enabled', 'status-disabled': user.status === 'Disabled'}">
+                        {{user.isDeleted}}
+                    </span>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Righe della tabella -->
+            
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <div class="body">
+                 <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></mat-row>
+             </div>
+        </table>
+
+      
+
+
+    </div>
 </div>

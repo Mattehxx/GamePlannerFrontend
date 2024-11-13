@@ -1,20 +1,129 @@
-.container{
+.container {
     height: 100vh;
-    padding-left: 12vh;
+    padding: 5vh;
+    padding-left: 20vh;
     transition: 0.3s ease;
     padding-top: 3vh;
 }
 
-.container.dashboarsIsOpen{
+.container.dashboarsIsOpen {
     padding-left: 36vh;
 }
 
 @media (max-width:480px) {
-    .container{
+    .container {
         padding-left: 8vh;
     }
-    
-    .container.dashboarsIsOpen{
+
+    .container.dashboarsIsOpen {
         padding-left: 24vh;
     }
+}
+
+
+/* Barra del titolo e della ricerca */
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+.search-bar {
+    width: 300px;
+}
+
+/* Stile della tabella */
+.user-table {
+    width: 100%;
+    border-radius: 3vh;
+    box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
+    ;
+}
+
+:ng-deep .mat-table {
+    border-radius: 8px; /* Imposta il border-radius della tabella */
+    overflow: hidden; /* Nasconde gli angoli tagliati */
+  }
+
+::ng-deep tbody {
+
+
+    height: 75vh;
+    /* Imposta l'altezza desiderata */
+    overflow-y: auto;
+    display: block;
+}
+
+
+/* Intestazioni della tabella */
+mat-header-row {
+    background-color: white;
+    color: black;
+}
+
+mat-header-cell {
+    padding: 16px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Righe dei dati */
+mat-row {
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+    /* Effetto transizione per l'hover */
+}
+
+mat-row:nth-child(even) {
+    background-color: #f9f9f9;
+    /* Colore alternato per righe pari */
+}
+
+mat-row:hover {
+    background-color: #e0e0e0;
+    /* Colore di sfondo durante hover */
+}
+
+/* Celle dei dati */
+mat-cell {
+    padding: 16px;
+    font-size: 13px;
+}
+
+
+
+/* Stile per le immagini di profilo */
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Stile per i badge di stato */
+.status-chip {
+    padding: 4px 8px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.status-enabled {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-disabled {
+    background-color: #dc3545;
+    color: white;
 }
