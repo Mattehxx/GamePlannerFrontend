@@ -344,6 +344,37 @@
     font-weight: 700;
 }
 
+.logo-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin-top: 10vh; 
+    margin-bottom: 20vh;
+}
+
+.logo-slider {
+    display: flex;
+    width: calc(200%); 
+    animation: scroll 30s linear infinite;
+    gap: 10vh;
+}
+
+.logo-slider img {
+    width: 20vh; 
+    height: auto;
+    margin-right: 2vh;
+    filter: grayscale(100%);
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
 @media (max-width: 750px){
     .info-container{
         flex-direction: column;

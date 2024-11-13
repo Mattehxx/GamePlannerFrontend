@@ -56,7 +56,7 @@
 
     </div>
 
-    <div class="active-filters">
+    <div class="active-filters" *ngIf="this.activeFilters.length!==0">
         <div class="filter-box" *ngFor="let filter of activeFilters">
             <span>{{filter}}</span>
             <i class="fa-solid fa-x" (click)="removeFilter(filter)"></i>

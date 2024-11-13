@@ -167,6 +167,8 @@
 .event-list {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    align-items: center;
     gap: 4vh;
     width: 95%;
     margin: 0 auto;
@@ -175,7 +177,7 @@
 }
 
 .event-card {
-    width: 100%;
+    width: 45vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -185,6 +187,7 @@
     cursor: pointer;
     transition: transform 0.3s ease;
     background: #F9F9FA;
+    margin: 0 auto;
 
     &:hover {
         transform: translateY(-5px);
@@ -209,8 +212,12 @@
 
 .event-game {
     font-size: 1.7vh;
-    // margin-bottom: 2vh;
-    color: var(--light-gray2);
+    background: #ff0000;
+    color: white;
+    padding: 0.5vh;
+    border-radius: 1vh;
+    padding-inline: 1.5vh;
+    margin-top: 1vh;
 }
 
 .info {
@@ -300,10 +307,6 @@
         color: white;
     }
 
-    .event-game {
-        font-size: 1.7vh;
-        color: var(--light-gray2);
-    }
 }
 
 .info div {
@@ -452,7 +455,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    font-size: 1vh;
+    font-size: 1.5vh;
     color: #666;
     margin-top: 1vh;
 }
@@ -551,7 +554,7 @@
     padding: 1.5vh;
     border-radius: 1vh;
     font-weight: bold;
-    font-size: 1.5vh;
+    font-size: 2vh;
     cursor: pointer;
 }
 
@@ -642,16 +645,11 @@
     }
   
 
-@media (max-width: 1440px) {
-    .event-list {
-        grid-template-columns: repeat(3, 1fr);
-    }
 
-}
 
 @media (max-width: 1200px) {
     .event-list {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 
 }
@@ -662,6 +660,10 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    .event-list {
+        grid-template-columns: repeat(2, 1fr);
     }
 
 }
