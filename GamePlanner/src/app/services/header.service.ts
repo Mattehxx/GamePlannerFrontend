@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class HeaderService {
   private headerVisibilitySubject = new BehaviorSubject<boolean>(true);
+  isModalOpen: boolean = false;
   headerVisibility$ = this.headerVisibilitySubject.asObservable();
 
   updateHeaderVisibility(isVisible: boolean) {

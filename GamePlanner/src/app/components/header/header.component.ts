@@ -4,6 +4,7 @@ import { User } from '../../models/user.model';
 import { HeaderService } from '../../services/header.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -13,27 +14,27 @@ import { Router } from '@angular/router';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
-  
-  constructor(private headerService: HeaderService){}
-  
-  @ViewChild('modal') modalElement!: ElementRef;
-  @ViewChild('overlay') overlayElement!: ElementRef;
-  
-  isModalOpen: boolean = false;
-  user : User = 
-  {
-    userId: "1",
-    name: "Alice",
-    surname: "Smith",
-    email: "alice.smith@example.com",
-    phone: "123-456-7890",
-    birthDate: new Date("1990-05-15"),
-    imgUrl: undefined, // Puoi sostituirlo con un'immagine fittizia
-    canBeMaster: true,
-    level: 1
-  }
 
-  isLogged : boolean = false;
+  constructor(public headerService: HeaderService, public router: Router, private elementRef: ElementRef, public as:AuthService) { }
+
+  @ViewChild('modalElement') modalElement!: ElementRef;
+  @ViewChild('overlayElement') overlayElement!: ElementRef;
+
+
+  user: User =
+    {
+      userId: "1",
+      name: "Alice",
+      surname: "Smith",
+      email: "alice.smith@example.com",
+      phone: "123-456-7890",
+      birthDate: new Date("1990-05-15"),
+      imgUrl: undefined, // Puoi sostituirlo con un'immagine fittizia
+      canBeMaster: true,
+      level: 1
+    }
+
+  isLogged: boolean = false;
 
 
   ngOnInit() {
@@ -45,20 +46,41 @@ export class HeaderComponent implements OnInit {
     });
 
   }
-  
+
   toggleModal() {
-    this.isModalOpen = !this.isModalOpen
+    this.headerService.isModalOpen = !this.headerService.isModalOpen
   }
-  
+
   closeModal() {
-    this.isModalOpen = false;
+    this.headerService.isModalOpen = false;
   }
+
+  navigateAndClose(){
+    this.router.navigate(['userSettings']);
+    this.headerService.isModalOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+
+  handleClickOutside(event: MouseEvent) {
+
+    if(this.headerService.isModalOpen){
+
+      setTimeout(() => {
+        const clickedInsideHeader = this.elementRef.nativeElement.contains(event.target);
   
-    @HostListener('document:click', ['$event'])
-    handleClickOutside(event: MouseEvent) {
-      // Verifica se il clic è fuori dalla modale o dall'overlay
-      if (this.isModalOpen && !this.modalElement.nativeElement.contains(event.target) && !this.overlayElement.nativeElement.contains(event.target)) {
-        this.closeModal();
-      }
+        const clickedInsideModal = this.modalElement.nativeElement.contains(event.target);
+    
+        const clickedInsideOverlay = this.overlayElement.nativeElement.contains(event.target);
+    
+        if (this.headerService.isModalOpen && !clickedInsideHeader && !clickedInsideModal && !clickedInsideOverlay) {
+    
+          this.closeModal();
+    
+        }
+      }, 100);
     }
+
+  }
+
 }

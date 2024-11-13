@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { DashboardService } from '../../../services/dashboard.service';
 
 @Component({
   selector: 'app-auth-layout',
@@ -10,4 +11,7 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AuthLayoutComponent {
 
+  
+
+ 
 }
