@@ -9,6 +9,7 @@ import { DashboardAdminComponent } from './components/admin/dashboard-admin/dash
 import { UsersAdminComponent } from './components/admin/users-admin/users-admin.component';
 import { EventsAdminComponent } from './components/admin/events-admin/events-admin.component';
 import { GamesAdminComponent } from './components/admin/games-admin/games-admin.component';
+import { EventsComponent } from './components/events/events.component';
 
 export const routes: Routes = [
     {
@@ -18,8 +19,7 @@ export const routes: Routes = [
           { path: '', redirectTo: 'home', pathMatch: 'full' },
           { path: 'home', component: HomeComponent },
           { path: 'userSettings', component: UserProfileComponent},
-          
-          
+          { path: 'events',component: EventsComponent}
         ]
       },
       {

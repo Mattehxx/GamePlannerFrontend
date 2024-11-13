@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
@@ -34,22 +34,16 @@ $GamePlanner-theme: mat.define-theme((
 
 // Comment out the line below if you want to use the deprecated `color` inputs.
 // @include mat.color-variants-backwards-compatibility($GamePlanner-theme);
-body {
+body{
     overflow: hidden;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Lato", sans-serif;
     margin: 0;
-    background: var(--gray-background);
 }
+
 
 * {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
     box-sizing: inherit;
-
 }
 
 :root{

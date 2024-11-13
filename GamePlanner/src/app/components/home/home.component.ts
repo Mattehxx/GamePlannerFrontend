@@ -5,11 +5,12 @@ import { EventModel } from '../../models/event.model';
 import { DurationPipe } from '../../pipes/duration.pipe';
 import { User } from '../../models/user.model';
 import { gameSessionModel } from '../../models/gameSession.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule,FormsModule,DurationPipe],
+  imports: [CommonModule,FormsModule,DurationPipe,RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -175,14 +176,11 @@ export class HomeComponent {
     const swipeDistance = this.touchEndX - this.touchStartX;
     const container = this.eventList.nativeElement;
     const scrollAmount = container.offsetWidth * 0.8;
-
-
-    
   }
 
   scrollLeft() {
     const container = this.eventList.nativeElement;
-    const scrollAmount = container.offsetWidth * 0.2; // Scroll 80% of container width
+    const scrollAmount = container.offsetWidth * 0.2;
     container.scrollBy({
       left: -scrollAmount,
       behavior: 'smooth'

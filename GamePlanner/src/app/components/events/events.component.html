@@ -1,0 +1,123 @@
+<div class="events-container">
+    <div class="above-image" [class.scrolled]="isScrolled">
+        <div class="title">Choose Your Next <span class="custom-text">Adventure</span></div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search events..." (input)="filterEvents()" [(ngModel)]="userInput">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <div class="filters" (click)="toggleFilters()"><i class="fa-solid fa-filter"></i> Filters <span
+                    class="numbers-filters" *ngIf="this.activeFilters.length!==0">({{this.activeFilters.length}})</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="filters-page" [class.visible]="headerService.filtersVisible">
+        <span class="close" (click)="toggleFilters()"> <i class="fa-solid fa-x"></i></span>
+        <div class="filter-title">Filter Events</div>
+        <div class="filter-subtitle">Customize your event search</div>
+        <div class="filters-list">
+            <div class="filter-group">
+                <select id="frequency" [(ngModel)]="selectedFrequency">
+                    <option value="" hidden>Frequency</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <select id="game" [(ngModel)]="selectedGame">
+                    <option value="" hidden>Game</option>
+                    <option value="Dungeons & Dragons">Dungeons & Dragons</option>
+                    <option value="Game 2">Game 2</option>
+                    <option value="Game 3">Game 3</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-slider">
+                    <label class="text-sm font-medium">Max Duration (hours)</label>
+                    <div class="slider-container">
+                        <div class="slider">
+                            <input type="range" min="1" max="8" step="1" [(ngModel)]="duration"
+                                (input)="updateSliderValue($event)" />
+                        </div>
+                        <div class="slider-values">
+                            <span>{{ duration }}h</span>
+                            <span>8h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-buttons">
+                <div (click)="clearFilter()" class="clear">Clear All</div>
+                <div (click)="applyFilter()" class="apply">Apply Filters</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="active-filters" *ngIf="this.activeFilters.length!==0">
+        <div class="filter-box" *ngFor="let filter of activeFilters">
+            <span>{{filter}}</span>
+            <i class="fa-solid fa-x" (click)="removeFilter(filter)"></i>
+        </div>
+    </div>
+
+    <!-- <div class="events-title">Events</div> -->
+    <div class="event-list" [class.nogrid]="this.isEmpty">
+        <div class="event-card" *ngFor="let event of paginatedEvents">
+            <div class="event-image">
+                <img [src]="event.imgUrl" alt="event image">
+                <div class="event-overlay">
+                    <div class="event-title">{{event.name}}</div>
+                    <div class="event-game">Dungeons And Dragons</div>
+                </div>
+            </div>
+            <div class="event-details">
+                <div class="info">
+                    <div class="event-date"><i class="fa-regular fa-clock"></i> {{event.eventDate | date:'EEE, MMM d -
+                        HH:mm'}}</div>
+                    <div class="spots">4 spots left</div>
+                </div>
+            </div>
+        </div>
+        <div class="noresults" *ngIf="this.isEmpty">
+            <img src="/assets/images/no-results.png">
+        </div>
+    </div>
+
+    <div class="paginator">
+        <button class="nav-button" (click)="prevPage()" [disabled]="currentPage === 1">
+            <span class="arrow">&#10094;</span>
+        </button>
+
+        <button *ngIf="currentPage > 2" class="page-button" (click)="goToPage(1)">
+            1
+        </button>
+
+        <span *ngIf="currentPage > 3" class="ellipsis">...</span>
+
+        <button *ngIf="currentPage > 1" class="page-button" (click)="goToPage(currentPage - 1)">
+            {{ currentPage - 1 }}
+        </button>
+
+        <button class="page-button active">
+            {{ currentPage }}
+        </button>
+
+        <button *ngIf="currentPage < totalPages" class="page-button" (click)="goToPage(currentPage + 1)">
+            {{ currentPage + 1 }}
+        </button>
+
+        <span *ngIf="currentPage < totalPages - 2" class="ellipsis">...</span>
+
+        <button *ngIf="currentPage < totalPages - 1" class="page-button" (click)="goToPage(totalPages)">
+            {{ totalPages }}
+        </button>
+
+        <button class="nav-button" (click)="nextPage()" [disabled]="currentPage === totalPages">
+            <span class="arrow">&#10095;</span>
+        </button>
+    </div>
+
+</div>

@@ -20,7 +20,6 @@ export class HeaderComponent implements OnInit {
   @ViewChild('modalElement') modalElement!: ElementRef;
   @ViewChild('overlayElement') overlayElement!: ElementRef;
 
-
   user: User =
     {
       userId: "1",
