@@ -7,18 +7,14 @@
 .container{
     display: flex;
     flex-direction: column;
-    display: flex;
-    // position: absolute;
     width: 100%;
-    // bottom: 0;
     align-items: center;
     background: #191C1F;
-    -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
     gap: 1vh;
-    padding: 1rem;
+    padding: 2vh 0;
     justify-content: space-around;
 }
 

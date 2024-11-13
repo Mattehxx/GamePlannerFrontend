@@ -1,0 +1,44 @@
+<div class="dashboard-cont">
+   
+    <div class="sidenav" [class.open]="this.ds.isOpen" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+        
+        <div class="title">
+            <div class="right-img" (click)="this.router.navigate(['home'])">
+                <img src="/assets/images/logo.png">
+                <div class="logo-title" *ngIf="this.ds.isOpen">
+                    Game Planner
+                </div>
+            </div>
+        </div>
+        <nav>
+            <div [routerLink]="['users']">
+                <i class="fa-solid fa-user"></i>
+                <span *ngIf="this.ds.isOpen">Users</span>
+            </div>
+            <div [routerLink]="['events']">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span *ngIf="this.ds.isOpen">Events</span>
+            </div>
+            <div [routerLink]="['games']">
+                <i class="fa-solid fa-dice-d20"></i>
+                <span *ngIf="this.ds.isOpen">Games</span>
+            </div>
+        </nav>
+
+        <div class="logout-profile-cont">
+            <div class="logout">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span *ngIf="this.ds.isOpen">Log Out</span>
+            </div>
+            <div class="profile">
+                <div class="img-or-logo">
+                    <div class="img">
+                        <i class="fa-regular fa-user"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

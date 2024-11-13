@@ -1,0 +1,20 @@
+.container{
+    height: 100vh;
+    padding-left: 12vh;
+    transition: 0.3s ease;
+    padding-top: 3vh;
+}
+
+.container.dashboarsIsOpen{
+    padding-left: 36vh;
+}
+
+@media (max-width:480px) {
+    .container{
+        padding-left: 8vh;
+    }
+    
+    .container.dashboarsIsOpen{
+        padding-left: 24vh;
+    }
+}

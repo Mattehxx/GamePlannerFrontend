@@ -1,4 +1,3 @@
-
 .header-container {
     display: flex;
     position: fixed;
@@ -23,18 +22,23 @@
     transition: transform 0.3s ease-in-out;
 }
 
-.right-img{
+.right-img {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-left: 2vh;
 }
 
-img{
-   width: 7vh;
+img {
+    width: 7vh;
+    cursor: pointer;
 }
 
-.logo-title{
+img:hover {
+    opacity: 70%;
+}
+
+.logo-title {
     margin-left: 1vh;
     font-size: 3vh;
     color: var(--color1);
@@ -52,18 +56,17 @@ img{
     position: relative;
     background: white;
     margin-right: 3vh;
-    border: 1px solid rgb(0 0 0 / 44%);
+    border: 0.2vh solid rgba(0, 0, 0, 0.44);
     border-radius: 50%;
-    width: 4vh;
+    width: 5vh;
     height: 5vh;
     font-size: 2vh;
-    /* gap: 1vh; */
     align-items: center;
     justify-content: center;
 
 }
 
-.fa-regular.fa-user{
+.fa-regular.fa-user {
     color: var(--purple);
     font-size: 2.5vh;
     font-weight: 800;
@@ -80,9 +83,9 @@ img{
     cursor: pointer;
 }
 
-.login{
+.login {
     background: white;
-    border: 1px solid #3d0099;
+    border: 0.3vh solid #3d0099;
     color: #3d0099;
 }
 
@@ -103,10 +106,10 @@ img{
     height: 100%;
     background: rgb(0 0 0 / 24%);
     z-index: 999;
-  }
+}
 
-.menu-container{
-      padding: 3vh;
+.menu-container {
+    padding: 3vh;
     position: absolute;
     display: flex;
     right: 3vh;
@@ -121,13 +124,13 @@ img{
     height: auto;
 }
 
-.img-name{
+.img-name {
     display: flex;
     gap: 2vh;
     align-items: center;
 }
 
-.img-name-border{
+.img-name-border {
     display: flex;
     border: 1px solid rgba(128, 128, 128, 0.1803921569);
     border-radius: 4vh;
@@ -137,20 +140,21 @@ img{
     align-items: center;
 }
 
-.username-email{
+.username-email {
     display: flex;
+    font-size: 2.2vh;
     flex-direction: column;
 }
 
-.divisor{
+.divisor {
     width: 100%;
-    background-color: rgb(0 0 0 / 11%);
-    height: 0.8px;
+    background-color: rgba(0, 0, 0, 0.11);
+    height: 0.15vh;
     margin-top: 1vh;
     margin-bottom: 1vh;
 }
 
-.options-container{
+.options-container {
     display: flex;
     flex-direction: column;
     padding-top: 2vh;
@@ -158,19 +162,25 @@ img{
     padding-left: 1vh;
 }
 
-.settings-cont{
+.settings-cont {
     gap: 4.1vh;
     display: flex;
+    font-size: 2.2vh;
+    cursor: pointer;
 }
 
 
+.red {
+    color: red;
+}
+
 @media (max-width: 750px) {
 
-    .logo-title{
+    .logo-title {
         font-size: 2.5vh;
     }
 
-    .header-container{
+    .header-container {
         width: 100%;
         padding: initial;
         padding-top: 1vh;
@@ -178,10 +188,10 @@ img{
         border-radius: 0;
     }
 
-    .login-registration-cont{
+    .login-registration-cont {
         margin-right: 2vh;
     }
 
-    
-    
+
+
 }

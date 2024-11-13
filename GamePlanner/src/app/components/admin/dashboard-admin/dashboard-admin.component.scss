@@ -1,0 +1,153 @@
+.sidenav {
+    display: flex;
+    gap: 13vh;
+    position: fixed;
+    top: 0;
+    width: 10.3vh;
+    height: 100%;
+    background: #212121;
+    color: white;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 20px;
+    z-index: 1000;
+    flex-direction: column;
+}
+
+.open {
+    width: 35vh;
+    z-index: 1000;
+    border-top-right-radius: 1.8vh;
+}
+
+.title {
+    display: flex;
+    gap: 4vh;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.right-img {
+    display: flex;
+    margin-left: 0.7vh;
+    gap: 2vh;
+    width: 100%;
+    align-items: center;
+}
+
+img {
+    width: 9vh;
+    cursor: pointer;
+}
+
+img:hover {
+    opacity: 70%;
+}
+
+.logo-title {
+    text-wrap: nowrap;
+    margin-left: 1vh;
+    font-size: 3vh;
+    color: rgb(255, 255, 255);
+    font-weight: 700;
+}
+
+
+nav {
+    display: flex;
+    margin-left: 0.5vh;
+    gap: 4vh;
+    align-content: center;
+    flex-direction: column;
+}
+
+.sidenav nav div,
+.logout,
+.profile {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 0.4fr 1fr;
+    text-wrap: nowrap;
+    padding: 2vh 0 2vh 2vh;
+    margin-inline: 1vh;
+    gap: 2vh;
+    text-decoration: none;
+    font-size: 2vh;
+    color: rgb(220, 220, 220);
+    font-family: system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        "Open Sans",
+        "Helvetica Neue",
+        sans-serif;
+
+    &:hover {
+        color: var(--purple);
+        font-size: 2vh;
+        padding-block: 2vh;
+        border-radius: 1vh;
+        background: rgba(163, 163, 163, 0.275);
+        ;
+    }
+}
+
+
+i {
+    font-size: 3vh;
+}
+
+.logout-profile-cont {
+    display: flex;
+    margin-left: 0.5vh;
+    flex-direction: column;
+    gap: 4vh;
+    padding-top: 10vh;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+
+.img-or-logo {
+    display: flex;
+    width: 4vh;
+    border: 2px solid;
+    margin-left: -0.8vh;
+    border-radius: 4vh;
+    width: 4vh;
+    height: 4vh;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width:480px) {
+    .sidenav {
+        width: 6.3vh;
+    }
+
+    .open {
+        width: 22vh;
+    }
+
+    img {
+        width: 5vh;
+    }
+
+    nav,
+    .logout-profile-cont {
+        margin-left: -1.3vh;
+    }
+
+    .title{
+        height: 9vh;
+    }
+
+    .logo-title{
+        text-wrap: wrap;
+    }
+
+    }

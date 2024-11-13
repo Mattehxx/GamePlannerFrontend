@@ -1,26 +1,26 @@
 <div class="header-container">
-    <div class="right-img">
+    <div class="right-img" (click)="this.router.navigate(['home'])">
         <img src="/assets/images/logo.png">
         <div class="logo-title">
             Game Planner
         </div>
     </div>
-    @if (!isLogged) {
+    <!-- @if (!isLogged) {
         <div class="login-registration-cont">
             <div class="login-registration login">Log In</div>
             <div class="login-registration">Sign Up</div>
         </div>
     }
-    @else {
-        <button class="user-icon" (click)="toggleModal()">
+    @else { -->
+        <div class="user-icon" (click)="toggleModal()">
             <i class="fa-regular fa-user"></i>
-        </button>
-    }
+        </div>
+    <!-- } -->
     
 
-    <div *ngIf="isModalOpen" class="overlay" (click)="closeModal()"></div>
+    <div *ngIf="this.headerService.isModalOpen" #overlayElement class="overlay" (click)="closeModal()"></div>
 
-    <div class="menu-container" *ngIf="isModalOpen" (click)="$event.stopPropagation()">
+    <div class="menu-container" *ngIf="this.headerService.isModalOpen" (click)="$event.stopPropagation()">
         <div class="img-name">
             @if(user.imgUrl=== undefined){
             <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
@@ -33,14 +33,19 @@
         </div>
         <div class="divisor"></div>
 
-        <div class="options-container">
+        <div class="options-container" #modalElement>
 
-            <div class="settings-cont" (click)="this.router.navigate(['userSettings'])">
+            <div class="settings-cont" *ngIf="this.as.isAdmin" (click)="this.router.navigate(['dashboard-admin'])">
+
+                <div><i class="fa-solid fa-user-tie" ></i></div>
+                <div class="settings">Dashboard Admin</div>
+            </div>
+            <div class="settings-cont" (click)="navigateAndClose()">
 
                 <div><i class="fa-solid fa-gear"></i></div>
                 <div class="settings">Account Settings</div>
             </div>
-            <div class="settings-cont">
+            <div class="settings-cont red" >
                 <div><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                 <div>logout</div>
             </div>

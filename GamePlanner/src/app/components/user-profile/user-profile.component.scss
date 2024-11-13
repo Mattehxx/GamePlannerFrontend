@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 4vh;
     padding-inline: 2vh;
-    padding-top: 9rem;
+    padding-top: 12vh;
 }
 
 .title-page {
@@ -54,6 +54,7 @@
     display: flex;
     padding: 1vh;
     align-items: center;
+    cursor: pointer;
 }
 
 .btn-remove {
@@ -67,6 +68,15 @@
     display: flex;
     padding: 1vh;
     align-items: center;
+    cursor: pointer;
+}
+
+.btn-upload:hover{
+    background: #7923fa;
+}
+
+.btn-remove:hover{
+    background: rgb(226, 226, 226);
 }
 
 
