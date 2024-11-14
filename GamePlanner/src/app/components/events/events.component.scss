@@ -151,7 +151,7 @@
     margin-right: 4vh;
 }
 
-.numbers-filters{
+.numbers-filters {
     font-weight: 600;
     margin-left: 1vh;
 }
@@ -187,11 +187,17 @@
     cursor: pointer;
     transition: transform 0.3s ease;
     background: #F9F9FA;
-    margin: 0 auto;
+    transition: transform 0.3s ease, border 0.3s ease;
 
     &:hover {
         transform: translateY(-5px);
         border: 1px solid rgba(0, 0, 0, 0.50);
+
+        .arrow {
+            transform: translateX(5px);
+            transition: transform 0.3s ease;
+            color: black;
+        }
     }
 }
 
@@ -613,41 +619,55 @@
     padding: 0.5vh;
     // box-shadow: 0 0 2vh rgba(0, 0, 0, 0.3);
     margin-top: 10vh;
-    }
-    
-    .nav-button, .page-button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin: 0 1vh;
-      padding: 1vh 1.5vh;
-      border-radius: 1vh;
-      font-size: 2vh;
-      background: white;
-      border: 1px solid rgba(0, 0, 0, 0.179);
-    }
-    
-    .page-button.active {
-      background-color: var(--dark-purple);
-      color: #fff;
-    }
-    
-    .nav-button {
-      font-weight: bold;
-    }
-    
-    .arrow {
-      font-size: 2vh;
-      color: rgba(169, 169, 169, 0.9);;
-    }
-    
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  
+}
 
+.nav-button,
+.page-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0 1vh;
+    padding: 1vh 1.5vh;
+    border-radius: 1vh;
+    font-size: 2vh;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.179);
+}
 
+.page-button.active {
+    background-color: var(--dark-purple);
+    color: #fff;
+}
+
+.nav-button {
+    font-weight: bold;
+}
+
+.arrow {
+    font-size: 2vh;
+    margin-right: 1vh;
+    color: rgba(169, 169, 169, 0.9);
+    transition: transform 0.3s ease;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.bottom-card{
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 2.5vh;
+    padding-block: 1vh;
+    padding-bottom: 2vh;
+    font-size: 2vh;
+}
+
+.bottom-card .arrow{
+    font-size: 2.5vh;
+    color: var(--light-gray2);
+}
 
 @media (max-width: 1200px) {
     .event-list {
@@ -673,9 +693,11 @@
 @media (max-width: 576px) {
     .event-list {
         grid-template-columns: repeat(1, 1fr);
+        display: flex;
+        flex-direction: column;
     }
-    
-    .title{
+
+    .title {
         font-size: 5vh;
     }
 }

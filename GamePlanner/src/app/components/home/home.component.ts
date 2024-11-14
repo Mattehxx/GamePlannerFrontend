@@ -6,6 +6,7 @@ import { DurationPipe } from '../../pipes/duration.pipe';
 import { User } from '../../models/user.model';
 import { gameSessionModel } from '../../models/gameSession.model';
 import { RouterLink } from '@angular/router';
+import { reservationModel } from '../../models/reservation.model';
 
 @Component({
   selector: 'app-home',
@@ -27,24 +28,30 @@ export class HomeComponent {
     imgUrl: '',
     canBeMaster: true,
     level: 1,
-    isDeleted: 'Enabled'
+    isDeleted: false,
+    role: 'User'
+  }
+
+  reservation: reservationModel = {
+    reservationId: 1,
+    token: '',
+    isConfirmed: false,
+    isDeleted: false,
+    sessionId: 1,
+    userId: 1,
   }
 
   gameSession: gameSessionModel = {
-    gameSessionId: 1,
-    gameSessionDate: new Date('2023-11-01'),
-    gameSessionEndDate: new Date('2023-11-02'),
+    sessionId: 1,
+    startDate: new Date('2023-11-01'),
+    endDate: new Date('2023-11-02'),
     isDeleted: false,
     masterId: 301,
     eventId: 1,
-    tableId: 401,
     master: this.admin,
-    table: {
-      tableId: 401,
-      name: 'Table 1',
-      seats: 4,
-      isDeleted: false
-    }
+    seats: 4,
+    gameId: 101,
+    reservations: [this.reservation]
   }
 
 

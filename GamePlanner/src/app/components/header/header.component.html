@@ -5,17 +5,17 @@
             Game Planner
         </div>
     </div>
-    <!-- @if (!isLogged) {
+    @if (!this.as.isLogged) {
         <div class="login-registration-cont">
             <div class="login-registration login">Log In</div>
             <div class="login-registration">Sign Up</div>
         </div>
     }
-    @else { -->
+    @else {
         <div class="user-icon" (click)="toggleModal()">
             <i class="fa-regular fa-user"></i>
         </div>
-    <!-- } -->
+    }
     
 
     <div *ngIf="this.headerService.isModalOpen" #overlayElement class="overlay" (click)="closeModal()"></div>

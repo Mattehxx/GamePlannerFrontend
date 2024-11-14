@@ -6,6 +6,9 @@ import { gameSessionModel } from '../../models/gameSession.model';
 import { User } from '../../models/user.model';
 import { DurationPipe } from "../../pipes/duration.pipe";
 import { HeaderService } from '../../services/header.service';
+import { Router } from '@angular/router';
+import { GeneralService } from '../../services/general.service';
+import { reservationModel } from '../../models/reservation.model';
 
 @Component({
   selector: 'app-events',
@@ -16,7 +19,7 @@ import { HeaderService } from '../../services/header.service';
 })
 export class EventsComponent implements OnInit {
 
-  constructor(public headerService: HeaderService){}
+  constructor(public headerService: HeaderService,private router: Router,private gn: GeneralService){}
 
   isEmpty: boolean = false;
   @Input() isScrolled = false;
@@ -39,24 +42,57 @@ export class EventsComponent implements OnInit {
     imgUrl: '',
     canBeMaster: true,
     level: 1,
-    isDeleted: 'Enabled'
+    isDeleted: false,
+    role: 'User'
+  }
+
+  reservation: reservationModel = {
+    reservationId: 1,
+    token: '',
+    isConfirmed: false,
+    isDeleted: false,
+    sessionId: 1,
+    userId: 1,
   }
 
   gameSession: gameSessionModel = {
-    gameSessionId: 1,
-    gameSessionDate: new Date('2023-11-01'),
-    gameSessionEndDate: new Date('2023-11-02'),
+    sessionId: 1,
+    startDate: new Date('2023-11-01'),
+    endDate: new Date('2023-11-02'),
     isDeleted: false,
     masterId: 301,
     eventId: 1,
-    tableId: 401,
     master: this.admin,
-    table: {
-      tableId: 401,
-      name: 'Table 1',
-      seats: 4,
-      isDeleted: false
-    }
+    seats: 4,
+    gameId: 101,
+    reservations: [this.reservation]
+  }
+
+  
+  gameSession2: gameSessionModel = {
+    sessionId: 1,
+    startDate: new Date('2023-11-01'),
+    endDate: new Date('2023-11-02'),
+    isDeleted: false,
+    masterId: 301,
+    eventId: 1,
+    master: this.admin,
+    seats: 4,
+    gameId: 101,
+    reservations: [this.reservation]
+  }
+
+  gameSession3: gameSessionModel = {
+    sessionId: 1,
+    startDate: new Date('2023-11-01'),
+    endDate: new Date('2023-11-02'),
+    isDeleted: false,
+    masterId: 301,
+    eventId: 1,
+    master: this.admin,
+    seats: 4,
+    gameId: 101,
+    reservations: [this.reservation]
   }
 
   arrayEvent: EventModel[] = [
@@ -74,7 +110,7 @@ export class EventsComponent implements OnInit {
       gameId: 101,
       adminId: 201,
       admin: this.admin,
-      gameSessions: [this.gameSession]
+      gameSessions: [this.gameSession,this.gameSession2,this.gameSession3]
     },
     {
       eventId: 2,
@@ -90,7 +126,7 @@ export class EventsComponent implements OnInit {
       gameId: 102,
       adminId: 202,
       admin: this.admin,
-      gameSessions: [this.gameSession]
+      gameSessions: [this.gameSession,this.gameSession2,this.gameSession3]
     },
     {
       eventId: 3,
@@ -105,7 +141,7 @@ export class EventsComponent implements OnInit {
       recurrenceId: 3,
       gameId: 103,
       adminId: 203,
-      gameSessions: [this.gameSession]
+      gameSessions: [this.gameSession,this.gameSession2,this.gameSession3]
     },
     {
       eventId: 4,
@@ -120,7 +156,7 @@ export class EventsComponent implements OnInit {
       recurrenceId: 4,
       gameId: 104,
       adminId: 204,
-      gameSessions: [this.gameSession]
+      gameSessions: [this.gameSession,this.gameSession2,this.gameSession3]
     },
     {
       eventId: 4,
@@ -135,7 +171,7 @@ export class EventsComponent implements OnInit {
       recurrenceId: 4,
       gameId: 104,
       adminId: 204,
-      gameSessions: [this.gameSession]
+      gameSessions: [this.gameSession,this.gameSession2,this.gameSession3]
     },
     {
       eventId: 4,
@@ -252,6 +288,11 @@ export class EventsComponent implements OnInit {
       this.currentPage++;
       this.updatePaginatedEvents();
     }
+  }
+
+  navigateToEvent(eventId: number,event: EventModel) {
+    this.gn.eventDetail=event;
+    this.router.navigate(['/events/', eventId]);
   }
 
 }

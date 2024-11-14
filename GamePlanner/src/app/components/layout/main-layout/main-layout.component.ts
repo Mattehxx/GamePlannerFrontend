@@ -7,6 +7,7 @@ import { DashboardService } from '../../../services/dashboard.service';
 import { EventsComponent } from '../../events/events.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -21,7 +22,7 @@ export class MainLayoutComponent implements OnInit{
   @Output() scrollEvent = new EventEmitter<boolean>();
 
 
-  constructor(public headerService: HeaderService, private ds: DashboardService) {}
+  constructor(public headerService: HeaderService, private ds: DashboardService,public gn: GeneralService) {}
 
   ngOnInit() {
     const content = document.querySelector('.main-content') as HTMLElement;

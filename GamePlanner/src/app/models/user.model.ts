@@ -8,6 +8,7 @@ export interface User {
     imgUrl?: string;
     canBeMaster?: boolean;
     level?: number;
-    isDeleted:string;
-
+    isDeleted?:boolean;
+    role:string;
 }
+ 

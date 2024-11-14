@@ -64,8 +64,8 @@
     </div>
 
     <!-- <div class="events-title">Events</div> -->
-    <div class="event-list" [class.nogrid]="this.isEmpty">
-        <div class="event-card" *ngFor="let event of paginatedEvents">
+    <div class="event-list" [class.nogrid]="this.isEmpty" >
+        <div class="event-card" *ngFor="let event of paginatedEvents"  (click)="navigateToEvent(event.eventId,event)">
             <div class="event-image">
                 <img [src]="event.imgUrl" alt="event image">
                 <div class="event-overlay">
@@ -78,6 +78,10 @@
                     <div class="event-date"><i class="fa-regular fa-clock"></i> {{event.eventDate | date:'EEE, MMM d - HH:mm'}}</div>
                     <div class="spots">4 spots left</div>
                 </div>
+            </div>
+            <div class="bottom-card">
+                <div class="view-details">View Details</div>
+                <div class="arrow"><i class="fa-solid fa-arrow-right"></i></div>
             </div>
         </div>
         <div class="noresults" *ngIf="this.isEmpty">

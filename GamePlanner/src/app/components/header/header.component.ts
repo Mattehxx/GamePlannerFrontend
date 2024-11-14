@@ -31,11 +31,9 @@ export class HeaderComponent implements OnInit {
       imgUrl: undefined, // Puoi sostituirlo con un'immagine fittizia
       canBeMaster: true,
       level: 1,
-      isDeleted: "Enabled"
+      isDeleted: false,
+      role: 'User'
     }
-
-  isLogged: boolean = false;
-
 
   ngOnInit() {
     this.headerService.headerVisibility$.subscribe(isVisible => {
