@@ -10,13 +10,18 @@
     width: 100%;
     align-items: center;
     // background: #191C1F;
-    background: var(--background-footer);
+ //   background: var(--background-footer);
     box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
     gap: 1vh;
     padding: 2vh 0;
     justify-content: space-around;
+    background: url('/assets/images/footer-background.png') no-repeat center center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: black;
 }
 
 .footer-container{

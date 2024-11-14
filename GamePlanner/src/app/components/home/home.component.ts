@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EventModel } from '../../models/event.model';
 import { DurationPipe } from '../../pipes/duration.pipe';
@@ -15,8 +15,7 @@ import { reservationModel } from '../../models/reservation.model';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
-
+export class HomeComponent{
 
   admin: User = {
     userId: 'sfasf',

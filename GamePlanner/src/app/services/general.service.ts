@@ -12,5 +12,9 @@ export class GeneralService {
 
   isConfirmModal : boolean = false; 
   isLoading: boolean = false;
+  isQueueModal: boolean = false;
+  isSignModal: boolean = false;
+
+  eventRoute: string = '';
 
 }

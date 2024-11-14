@@ -23,6 +23,7 @@
     transition: height 0.5s ease;
     box-shadow: 0 0 2vh #0000004d;
     margin-bottom: 5vh;
+    animation: zoomBackground 10s infinite alternate;
 
     &::before {
         content: '';
@@ -60,6 +61,15 @@
     &.scrolled {
         height: 55vh;
         /* Altezza ridotta quando si scorre */
+    }
+}
+
+@keyframes zoomBackground {
+    0% {
+        background-size: 100%;
+    }
+    100% {
+        background-size: 110%;
     }
 }
 
@@ -218,11 +228,11 @@
 
 .event-game {
     font-size: 1.7vh;
-    background: #ff0000;
-    color: white;
-    padding: 0.5vh;
+    /* background: #ff0000; */
+    color: #d0d0d0;
+    /* padding: 0.5vh; */
     border-radius: 1vh;
-    padding-inline: 1.5vh;
+    /* padding-inline: 1.5vh; */
     margin-top: 1vh;
 }
 

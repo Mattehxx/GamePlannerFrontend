@@ -7,6 +7,7 @@ import { gameSessionModel } from '../../models/gameSession.model';
 import { User } from '../../models/user.model';
 import { reservationModel } from '../../models/reservation.model';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-event-detail',
@@ -17,7 +18,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class EventDetailComponent implements OnInit{
 
-  constructor(public gn: GeneralService,public auth: AuthService) { }
+  constructor(public gn: GeneralService,public auth: AuthService,private router: Router) { }
 
   event : EventModel | undefined;
 
@@ -81,7 +82,7 @@ export class EventDetailComponent implements OnInit{
   }
 
   register() {
-    if (this.auth.isLogged) {
+    if (!this.auth.isLogged) {
       // Mostra la modale di caricamento
       this.gn.isLoading = true;
 
@@ -99,5 +100,24 @@ export class EventDetailComponent implements OnInit{
         }, 3000);
       }, 2000);
     }
+    else{
+      this.gn.isSignModal = true;
+    }
   }
+
+  joinQueue() {
+
+  }
+
+  redirect(login: boolean) {
+    this.gn.isSignModal = false;
+    this.gn.eventRoute = this.router.url;
+    if(login){
+      this.router.navigate(['login']);
+    }
+    else{
+      this.router.navigate(['register']);
+    }
+  }
+
 }
