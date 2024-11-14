@@ -2,8 +2,13 @@
     display: flex;
     flex-direction: column;
     gap: 4vh;
+    margin: 0 auto;
     padding-inline: 2vh;
-    padding-top: 12vh;
+    padding-top: 15vh;
+    padding-bottom: 15vh;
+    width: max-content;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .title-page {
@@ -43,6 +48,13 @@
     color: var(--purple);
 }
 
+.buttons{
+    display: flex;
+    gap: 2vh;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 .btn-upload {
     font-size: 2vh;
     height: 4vh;
@@ -55,6 +67,10 @@
     padding: 1vh;
     align-items: center;
     cursor: pointer;
+}
+
+.btn-upload i, .btn-remove i{
+    margin-right: 2vh;
 }
 
 .btn-remove {
@@ -79,34 +95,12 @@
     background: rgb(226, 226, 226);
 }
 
-
-@media (max-width: 480px) {
-    .img {
-
-        width: 14vh;
-        height: 12vh;
-    }
-
-    .fa-regular.fa-user {
-        font-size: 4vh;
-    }
-
-    .btn-upload,
-    .btn-remove {
-        font-size: 1.5vh;
-        height: 2vh;
-        padding: 1vh;
-        border-radius: 1vh;
-
-    }
-
-}
-
-
 .form-container {
     grid-template-columns: 2fr 2fr;
     display: grid;
     gap: 2vh;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 label{
@@ -122,7 +116,9 @@ label{
 .input-group {
     margin-bottom: 2vh;
     position: relative;
-    width: 100%;
+    width: 30vw;
+    max-width: 300px;
+    min-width: 125px;
 }
 
 .input-group i {
@@ -185,3 +181,68 @@ input {
     padding-bottom: 0;
   }
   
+  .bottom-buttons{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    gap: 4vh;
+    margin-top: 2vh;
+  }
+
+  .btn-cancel,.btn-save{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5vh;
+    border-radius: 1vh;
+    cursor: pointer;
+  }
+
+  .btn-cancel{
+    background-color: white;
+    border: 1px solid var(--light-gray2);
+
+    &:hover{
+        background-color: rgb(230, 230, 230);
+    }
+  }
+
+  .btn-save{
+    background-color: black;
+    color: white;
+
+    &:hover{
+        background-color: rgb(46, 46, 46);
+    }
+  }
+
+  @media (max-width: 480px) {
+
+    .buttons{
+        flex-direction: column;
+    }
+
+    .bottom-buttons{
+        justify-content: center;
+      }
+
+    .img {
+
+        width: 14vh;
+        height: 12vh;
+    }
+
+    .fa-regular.fa-user {
+        font-size: 4vh;
+    }
+
+    .btn-upload,
+    .btn-remove {
+        font-size: 1.5vh;
+        height: 2vh;
+        padding: 1vh;
+        border-radius: 1vh;
+    }
+
+}

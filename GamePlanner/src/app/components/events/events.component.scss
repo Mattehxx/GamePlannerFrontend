@@ -364,7 +364,7 @@
     height: 100vh;
     background: white;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
-    transition: right 0.5s ease;
+    transition: right 0.25s ease;
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -588,14 +588,14 @@
 
 .filter-box {
     width: max-content;
-    padding: 1vh;
+    padding: 2vh;
     display: flex;
     justify-content: center;
     align-items: center;
     color: var(--color1);
     background: #d1d1d1;
-    border-radius: 2vh;
-    font-size: 1.7vh;
+    border-radius: 3vh;
+    font-size: 2vh;
 }
 
 .filter-box i {
@@ -608,10 +608,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #F7F9FF;
-    border-radius: 2vh;
+    // background-color: #F7F9FF;
+    // border-radius: 2vh;
     padding: 0.5vh;
-    box-shadow: 0 0 2vh rgba(0, 0, 0, 0.3);
+    // box-shadow: 0 0 2vh rgba(0, 0, 0, 0.3);
     margin-top: 10vh;
     }
     
@@ -619,14 +619,16 @@
       background: none;
       border: none;
       cursor: pointer;
-      margin: 0 0.5vh;
-      padding: 0.5vh 1vh;
-      border-radius: 50%;
-      font-size: 1.6vh;
+      margin: 0 1vh;
+      padding: 1vh 1.5vh;
+      border-radius: 1vh;
+      font-size: 2vh;
+      background: white;
+      border: 1px solid rgba(0, 0, 0, 0.179);
     }
     
     .page-button.active {
-      background-color: #000;
+      background-color: var(--dark-purple);
       color: #fff;
     }
     

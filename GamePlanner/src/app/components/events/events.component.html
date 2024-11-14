@@ -75,8 +75,7 @@
             </div>
             <div class="event-details">
                 <div class="info">
-                    <div class="event-date"><i class="fa-regular fa-clock"></i> {{event.eventDate | date:'EEE, MMM d -
-                        HH:mm'}}</div>
+                    <div class="event-date"><i class="fa-regular fa-clock"></i> {{event.eventDate | date:'EEE, MMM d - HH:mm'}}</div>
                     <div class="spots">4 spots left</div>
                 </div>
             </div>
@@ -88,7 +87,7 @@
 
     <div class="paginator">
         <button class="nav-button" (click)="prevPage()" [disabled]="currentPage === 1">
-            <span class="arrow">&#10094;</span>
+            <span class="arrow">&#10094; <span style="margin-left: 1vh; color: black;">Previous</span></span>
         </button>
 
         <button *ngIf="currentPage > 2" class="page-button" (click)="goToPage(1)">
@@ -116,7 +115,7 @@
         </button>
 
         <button class="nav-button" (click)="nextPage()" [disabled]="currentPage === totalPages">
-            <span class="arrow">&#10095;</span>
+            <span class="arrow"> <span style="margin-right: 1vh; color: black;">Next</span>&#10095;</span>
         </button>
     </div>
 

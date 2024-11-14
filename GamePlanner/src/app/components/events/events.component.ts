@@ -38,7 +38,8 @@ export class EventsComponent implements OnInit {
     birthDate: new Date('1995-01-01'),
     imgUrl: '',
     canBeMaster: true,
-    level: 1
+    level: 1,
+    isDeleted: 'Enabled'
   }
 
   gameSession: gameSessionModel = {

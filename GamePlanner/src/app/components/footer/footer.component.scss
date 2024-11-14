@@ -9,7 +9,8 @@
     flex-direction: column;
     width: 100%;
     align-items: center;
-    background: #191C1F;
+    // background: #191C1F;
+    background: var(--background-footer);
     box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;

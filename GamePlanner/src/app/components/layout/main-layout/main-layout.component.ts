@@ -29,6 +29,9 @@ export class MainLayoutComponent implements OnInit{
       content.addEventListener('scroll', () => {
         const currentScroll = content.scrollTop;
 
+        if(this.headerService.isModalOpen){
+          this.headerService.isModalOpen = false;
+        }
 
         if (currentScroll > this.lastScrollPosition) {
           this.headerService.updateHeaderVisibility(false);
