@@ -10,6 +10,7 @@ import { UsersAdminComponent } from './components/admin/users-admin/users-admin.
 import { EventsAdminComponent } from './components/admin/events-admin/events-admin.component';
 import { GamesAdminComponent } from './components/admin/games-admin/games-admin.component';
 import { EventsComponent } from './components/events/events.component';
+import { EventDetailComponent } from './components/event-detail/event-detail.component';
 
 export const routes: Routes = [
     {
@@ -19,7 +20,8 @@ export const routes: Routes = [
           { path: '', redirectTo: 'home', pathMatch: 'full' },
           { path: 'home', component: HomeComponent },
           { path: 'userSettings', component: UserProfileComponent},
-          { path: 'events',component: EventsComponent}
+          { path: 'events',component: EventsComponent},
+          { path: 'events/:id', component: EventDetailComponent }
         ]
       },
       {

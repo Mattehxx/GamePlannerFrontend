@@ -1,1 +1,137 @@
-<p>event-detail works!</p>
+<div class="container" *ngIf="this.event"
+    [ngStyle]="{'background': 'url(' + this.event.imgUrl + ') no-repeat center center'}">
+    <div class="main-event" *ngIf="this.event">
+        <div class="event-image">
+            <img [src]="this.event!.imgUrl" alt="event image">
+            <div class="event-overlay">
+                <div class="event-title">{{this.event!.name}}</div>
+                <div class="event-game">Dungeons And Dragons</div>
+            </div>
+        </div>
+        <div class="details">
+            <div class="info">
+                <!-- <div class="event-date"><i class="fa-regular fa-clock"></i> {{this.event!.eventDate | date:'EEE, MMM d - HH:mm'}}</div>
+                <div class="spots">4 spots left</div> -->
+                <div class="description">
+                    <div class="description-title">Event Description</div>
+                    <div class="event-description">{{event.description}}</div>
+                </div>
+            </div>
+            <div class="divisor"></div>
+            <div class="display-admin">
+                <img src="assets/images/pfp.jpg">
+                <!-- <span *ngIf="event.gameSessions">{{event.gameSessions![0].master?.name}}</span>  -->
+                <span>Yassine</span>
+            </div>
+
+           
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="event-details" *ngIf="this.event">
+            <div class="event-display">
+                <div class="initial">Event Details</div>
+                <div class="detail-info">
+                    <div class="detail"><i class="fa-solid fa-users"></i>  3 / 8 </div>
+                    <div class="detail"><i class="fa-regular fa-clock"></i> {{event.eventDate | date:'EEE, MMM d - HH:mm'}}
+                    </div>
+                </div>
+                <div class="buttons">
+                    <div class="btn-register" (click)="register()">Register for Event</div>
+                    <!-- <div class="btn-queue" (click)="joinQueue()">Join Queue</div> -->
+                </div>
+            </div>
+        </div>
+    
+        <div class="event-details" *ngIf="this.event"> 
+            <div class="event-display">
+                <div class="initial lowbottom">Other sessions</div>
+                <div class="session" *ngFor="let session of event.gameSessions | slice:0:3">
+                    <div class="session-info">
+                        <div class="session-date">
+                            <div class="date">{{ session.startDate | date:'EEE, MMM d' }}</div>
+                            <div class="time">{{ session.startDate | date:'HH:mm' }}</div>
+                        </div>
+                        <div class="session-seats">{{session.seats - session.reservations.length}} seats left
+                            <div class="btn-view">Details</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons lowtop">
+                    <div class="btn-register" (click)="this.gn.isSessionModal=true">View all Sessions</div>
+                </div>
+            </div>
+            </div>
+    </div>
+
+    <div class="modal-sessions" *ngIf="this.gn.isSessionModal">
+        <div class="modal-content">
+            <div class="modal-title">All Sessions</div>
+            <span class="close" (click)="this.gn.isSessionModal=false"> <i class="fa-solid fa-x"></i></span>
+            <div class="modal-session-container">
+                <div class="modal-session" *ngFor="let session of event.gameSessions">
+                    <div class="date-container">
+                        <i class="fa-solid fa-calendar" style="color: var(--purple);"></i>
+                        <div class="session-date">
+                            <div class="date">{{ session.startDate | date:'EEE, MMM d' }}</div>
+                            <div class="time">{{ session.startDate | date:'HH:mm' }}</div>
+                        </div>
+                    </div>
+
+                    <div class="session-seats"><i class="fa-solid fa-users"></i> {{session.reservations.length}} / {{session.seats}}
+                    </div>
+                    <div class="btn-view">Details</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-loading" *ngIf="this.gn.isLoading">
+        <!-- <div class="spinner"></div> -->
+        <img src="/assets/images/dice-animation.gif">
+    </div>
+    
+    <div class="modal-confirm" *ngIf="this.gn.isConfirmModal">
+        <div class="loading-bar"></div>
+        <span class="close" (click)="this.gn.isConfirmModal=false"> <i class="fa-solid fa-x"></i></span>
+        <div class="circle">
+            <div class="checkmark"></div>
+        </div>
+        <div class="message">
+            <h2>Registration Confirmed!</h2>
+            <p>We've sent a confirmation link to your email. </p>
+            <div class="email-container">
+                <div class="email-icon">
+                    <i class="fa-regular fa-envelope"></i>
+                    <span>Check Your Email</span>
+                </div>
+                <div class="email-info">
+                    <span>A confirmation link has been sent to your email. </span>
+                    <span>Please check your inbox to complete the registration.</span>
+                </div>
+            </div>
+            <div class="btn-email" (click)="this.gn.isConfirmModal=false">Close</div>
+        </div>
+    </div>
+
+    <div class="modal-confirm" *ngIf="this.gn.isQueueModal">
+        <div class="circle">
+            <div class="checkmark"></div>
+        </div>
+        <div class="message">You have been added to the queue!</div>
+    </div>
+    <div class="modal-sign" *ngIf="this.gn.isSignModal">
+        <div class="modal-content">
+            <div class="modal-sign-title">Sign in to register</div>
+            <div class="modal-subtitle">You need to be signed in to register for this event</div>
+            <span class="close" (click)="this.gn.isSignModal=false"> <i class="fa-solid fa-x"></i></span>
+            <div class="buttons sign">
+                <div class="btn-log" (click)="redirect(true)">Log In</div>
+                <div class="btn-sign" (click)="redirect(false)">Sign Up</div>
+            </div>
+        </div>
+    </div>
+
+</div>

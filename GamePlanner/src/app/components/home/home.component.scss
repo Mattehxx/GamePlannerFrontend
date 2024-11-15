@@ -13,6 +13,7 @@
     background-repeat: no-repeat;
     position: relative;
     box-shadow: 0 1cap 3vh rgb(0 0 0 / 13%);
+    animation: moveBackground 20s infinite alternate;
 
     &::before {
         content: '';
@@ -28,6 +29,15 @@
     .text-content {
         position: relative;
         z-index: 2;
+    }
+}
+
+@keyframes moveBackground {
+    0% {
+        background-position: center;
+    }
+    100% {
+        background-position: center 10%;
     }
 }
 
@@ -96,6 +106,7 @@
     align-items: center;
     background: #fff;
 }
+
 
 .info-title {
     font-size: 5vh;
@@ -355,8 +366,13 @@
 .logo-slider {
     display: flex;
     width: calc(200%); 
+    transition: animation-duration 0.5s ease;
     animation: scroll 30s linear infinite;
     gap: 10vh;
+
+    &:hover {
+        animation-play-state: paused;
+    }
 }
 
 .logo-slider img {
@@ -372,6 +388,29 @@
     }
     100% {
         transform: translateX(-50%);
+    }
+}
+
+.btn-all{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5vh;
+    padding-inline: 4vh;
+    font-size: 2vh;
+    background: #7a2bff;
+    color: white;
+    border-radius: 1vh;
+    margin-left: 2vh;
+    margin-top: 1vh;
+    cursor: pointer;
+
+    & i{
+        margin-left: 1vh;
+    }
+
+    &:hover{
+        background: #6e1afd; ;
     }
 }
 

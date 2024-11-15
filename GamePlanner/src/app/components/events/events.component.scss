@@ -10,7 +10,7 @@
 
 .above-image {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,6 +23,7 @@
     transition: height 0.5s ease;
     box-shadow: 0 0 2vh #0000004d;
     margin-bottom: 5vh;
+    animation: moveBackground 15s infinite alternate;
 
     &::before {
         content: '';
@@ -60,6 +61,15 @@
     &.scrolled {
         height: 55vh;
         /* Altezza ridotta quando si scorre */
+    }
+}
+
+@keyframes moveBackground {
+    0% {
+        background-position: center;
+    }
+    100% {
+        background-position: center 90%;
     }
 }
 
@@ -151,7 +161,7 @@
     margin-right: 4vh;
 }
 
-.numbers-filters{
+.numbers-filters {
     font-weight: 600;
     margin-left: 1vh;
 }
@@ -187,11 +197,17 @@
     cursor: pointer;
     transition: transform 0.3s ease;
     background: #F9F9FA;
-    margin: 0 auto;
+    transition: transform 0.3s ease, border 0.3s ease;
 
     &:hover {
         transform: translateY(-5px);
         border: 1px solid rgba(0, 0, 0, 0.50);
+
+        .arrow {
+            transform: translateX(5px);
+            transition: transform 0.3s ease;
+            color: black;
+        }
     }
 }
 
@@ -212,11 +228,11 @@
 
 .event-game {
     font-size: 1.7vh;
-    background: #ff0000;
-    color: white;
-    padding: 0.5vh;
+    /* background: #ff0000; */
+    color: #d0d0d0;
+    /* padding: 0.5vh; */
     border-radius: 1vh;
-    padding-inline: 1.5vh;
+    /* padding-inline: 1.5vh; */
     margin-top: 1vh;
 }
 
@@ -248,10 +264,21 @@
     width: max-content;
     padding: 1vh;
     border-radius: 4vh;
-    background: #9147ff;
     color: white;
 }
 
+.spots-low{
+    background: #00d9ff;
+}
+
+.spots-medium{
+    background: #9147ff;
+}
+
+.spots-high{
+    background: #5047ff;
+
+}
 
 .event-image {
     width: 100%;
@@ -364,7 +391,7 @@
     height: 100vh;
     background: white;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
-    transition: right 0.5s ease;
+    transition: right 0.25s ease;
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -588,14 +615,14 @@
 
 .filter-box {
     width: max-content;
-    padding: 1vh;
+    padding: 2vh;
     display: flex;
     justify-content: center;
     align-items: center;
     color: var(--color1);
     background: #d1d1d1;
-    border-radius: 2vh;
-    font-size: 1.7vh;
+    border-radius: 3vh;
+    font-size: 2vh;
 }
 
 .filter-box i {
@@ -608,44 +635,61 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #F7F9FF;
-    border-radius: 2vh;
+    // background-color: #F7F9FF;
+    // border-radius: 2vh;
     padding: 0.5vh;
-    box-shadow: 0 0 2vh rgba(0, 0, 0, 0.3);
+    // box-shadow: 0 0 2vh rgba(0, 0, 0, 0.3);
     margin-top: 10vh;
-    }
-    
-    .nav-button, .page-button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin: 0 0.5vh;
-      padding: 0.5vh 1vh;
-      border-radius: 50%;
-      font-size: 1.6vh;
-    }
-    
-    .page-button.active {
-      background-color: #000;
-      color: #fff;
-    }
-    
-    .nav-button {
-      font-weight: bold;
-    }
-    
-    .arrow {
-      font-size: 2vh;
-      color: rgba(169, 169, 169, 0.9);;
-    }
-    
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  
+}
 
+.nav-button,
+.page-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0 1vh;
+    padding: 1vh 1.5vh;
+    border-radius: 1vh;
+    font-size: 2vh;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.179);
+}
 
+.page-button.active {
+    background-color: var(--dark-purple);
+    color: #fff;
+}
+
+.nav-button {
+    font-weight: bold;
+}
+
+.arrow {
+    font-size: 2vh;
+    margin-right: 1vh;
+    color: rgba(169, 169, 169, 0.9);
+    transition: transform 0.3s ease;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.bottom-card{
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 2.5vh;
+    padding-block: 1vh;
+    padding-bottom: 2vh;
+    font-size: 2vh;
+    border-top: 1px solid #0000000a;
+}
+
+.bottom-card .arrow{
+    font-size: 2.5vh;
+    color: var(--light-gray2);
+}
 
 @media (max-width: 1200px) {
     .event-list {
@@ -671,9 +715,11 @@
 @media (max-width: 576px) {
     .event-list {
         grid-template-columns: repeat(1, 1fr);
+        display: flex;
+        flex-direction: column;
     }
-    
-    .title{
+
+    .title {
         font-size: 5vh;
     }
 }

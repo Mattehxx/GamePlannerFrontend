@@ -1,12 +1,14 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { HeaderComponent } from "../../header/header.component";
 import { FooterComponent } from "../../footer/footer.component";
-import { RouterOutlet } from '@angular/router';
+import { Event as RouterEvent, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 import { HeaderService } from '../../../services/header.service';
 import { DashboardService } from '../../../services/dashboard.service';
 import { EventsComponent } from '../../events/events.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -20,15 +22,36 @@ export class MainLayoutComponent implements OnInit{
   private lastScrollPosition = 0;
   @Output() scrollEvent = new EventEmitter<boolean>();
 
-
-  constructor(public headerService: HeaderService, private ds: DashboardService) {}
+  get isOverlayVisible(): boolean {
+    return this.headerService.filtersVisible || this.gn.isSessionModal || this.gn.isConfirmModal || this.gn.isSignModal || this.gn.isLoading;
+  }
+  constructor(
+    public headerService: HeaderService, 
+    private ds: DashboardService,
+    public gn: GeneralService,
+    private router: Router,
+    private viewportScroller: ViewportScroller
+  ) {}
 
   ngOnInit() {
+
+    this.router.events.subscribe((event: RouterEvent) => {
+      if (event instanceof NavigationEnd) {
+        setTimeout(() => {
+          document.getElementsByClassName('main-content')[0].scrollTo(0, 0);
+          this.headerService.updateHeaderVisibility(true);
+        }, 0);
+      }
+    });
+    
     const content = document.querySelector('.main-content') as HTMLElement;
     if (content) {
       content.addEventListener('scroll', () => {
         const currentScroll = content.scrollTop;
 
+        if(this.headerService.isModalOpen){
+          this.headerService.isModalOpen = false;
+        }
 
         if (currentScroll > this.lastScrollPosition) {
           this.headerService.updateHeaderVisibility(false);
@@ -40,10 +63,7 @@ export class MainLayoutComponent implements OnInit{
 
         this.lastScrollPosition = currentScroll;
       });
-    }
-  
-  
-    
+    }    
    
   }
 

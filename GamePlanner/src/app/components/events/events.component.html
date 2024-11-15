@@ -64,8 +64,8 @@
     </div>
 
     <!-- <div class="events-title">Events</div> -->
-    <div class="event-list" [class.nogrid]="this.isEmpty">
-        <div class="event-card" *ngFor="let event of paginatedEvents">
+    <div class="event-list" [class.nogrid]="this.isEmpty" >
+        <div class="event-card" *ngFor="let event of paginatedEvents"  (click)="navigateToEvent(event.eventId,event)">
             <div class="event-image">
                 <img [src]="event.imgUrl" alt="event image">
                 <div class="event-overlay">
@@ -75,10 +75,18 @@
             </div>
             <div class="event-details">
                 <div class="info">
-                    <div class="event-date"><i class="fa-regular fa-clock"></i> {{event.eventDate | date:'EEE, MMM d -
-                        HH:mm'}}</div>
-                    <div class="spots">4 spots left</div>
+                    <div class="event-date" *ngIf="event && event.gameSessions && event.gameSessions.length > 0"><i class="fa-regular fa-clock"></i> {{event.gameSessions[0].startDate| date:'MMM d'}} - {{ event.gameSessions[event.gameSessions.length - 1].endDate| date:'MMM d' }} </div>
+                    <div class="event-date" *ngIf="event && event.gameSessions && event.gameSessions.length == 0"><i class="fa-regular fa-clock"></i> {{event.gameSessions[0].startDate| date:'EEE, MMM d - HH:mm'}}  </div>
+                    <div class="spots" *ngIf="event && event.gameSessions" [ngClass]="{
+                        'spots-low': event.gameSessions!.length == 1,
+                        'spots-medium': event.gameSessions!.length > 1 && event.gameSessions!.length <= 3,
+                        'spots-high': event.gameSessions!.length >= 4
+                    }">{{event.gameSessions!.length}} sessions </div>  <!-- sennò lo metto arancione con scritta Join Queue -->
                 </div>
+            </div>
+            <div class="bottom-card">
+                <div class="view-details">View Details</div>
+                <div class="arrow"><i class="fa-solid fa-arrow-right"></i></div>
             </div>
         </div>
         <div class="noresults" *ngIf="this.isEmpty">
@@ -88,7 +96,7 @@
 
     <div class="paginator">
         <button class="nav-button" (click)="prevPage()" [disabled]="currentPage === 1">
-            <span class="arrow">&#10094;</span>
+            <span class="arrow">&#10094; <span style="margin-left: 1vh; color: black;">Previous</span></span>
         </button>
 
         <button *ngIf="currentPage > 2" class="page-button" (click)="goToPage(1)">
@@ -116,7 +124,7 @@
         </button>
 
         <button class="nav-button" (click)="nextPage()" [disabled]="currentPage === totalPages">
-            <span class="arrow">&#10095;</span>
+            <span class="arrow"> <span style="margin-right: 1vh; color: black;">Next</span>&#10095;</span>
         </button>
     </div>
 

@@ -1,7 +1,8 @@
 @use '@angular/material' as mat;
+
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
+
+
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -56,6 +57,9 @@ body{
     --color1:#151515;
     --lightPurple: #d7c1f9d0;
     --light-black:#363C3F;
+    --light-black2:#4D5765;
+    --background-footer:#0E0D14;
+    --lightPurple2: #a66bfe;
 }   
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
