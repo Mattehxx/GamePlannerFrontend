@@ -28,4 +28,3 @@ steps:
     tags: |
       latest
     containerRegistry: 'DockerRegistryConnection'
-
