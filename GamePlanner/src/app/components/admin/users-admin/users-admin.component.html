@@ -1,58 +1,160 @@
-<div class="container" [class.dashboarsIsOpen]="this.ds.isOpen">
-    <div class="page-container">
+<div class="container" [class.dashboarsIsOpen]="this.ds.isOpen"
+    [class.userDetailPanelVisible]="this.ds.userDetailPanel">
+    <div class="table-container">
         <!-- Barra del titolo e della ricerca -->
         <div class="header-bar">
             <h1 class="page-title">User Management</h1>
-            <mat-form-field class="search-bar" appearance="outline">
-                <mat-label>Search</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="Search users" />
-            </mat-form-field>
+            <div class="search-bar-cont" >
+
+                <mat-form-field class="search-bar" appearance="outline" [class.searchBarUserDetailOpen]="this.ds.userDetailPanel">
+                    <mat-label>Search</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Search users" />
+                </mat-form-field>
+            </div>
         </div>
 
         <!-- Tabella degli utenti -->
 
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 user-table">
+        <table mat-table [dataSource]="dataSource" [class.userDetailOpen]="this.ds.userDetailPanel"
+            class="mat-elevation-z8 user-table">
             <!-- Colonna Immagine -->
-            <ng-container matColumnDef="profilePicture">
-                <mat-header-cell *matHeaderCellDef> Profile </mat-header-cell>
+            <ng-container matColumnDef="user">
+                <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
                 <mat-cell *matCellDef="let user">
-                    <img alt="Profile" class="profile-image">{{user.imgUrl}}    
+
+                    <div class="cont-user-cell">
+
+                        @if(user.imgUrl=== null){
+                        <img alt="Profile" class="profile-image">{{user.imgUrl}}
+                        }
+
+                        <div class="profile-image"> <i class="fa-regular fa-user"></i></div>
+                        <div>{{user.name}}</div>
+                        <div>{{user.surname}}</div>
+                        @if(user.isDeleted){
+                        <div class="status-disabled"> <span>INACT </span></div>
+                        }
+                        @else {
+                        <div class="status-enabled"> <span>ACT </span> </div>
+                        }
+                    </div>
                 </mat-cell>
             </ng-container>
 
-            <!-- Colonna Nome -->
-            <ng-container matColumnDef="firstName">
-                <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
-                <mat-cell *matCellDef="let user"> {{user.name}} </mat-cell>
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                <mat-cell *matCellDef="let user"> {{user.email}} </mat-cell>
             </ng-container>
 
-            <!-- Colonna Cognome -->
-            <ng-container matColumnDef="lastName">
-                <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
-                <mat-cell *matCellDef="let user"> {{user.surname}} </mat-cell>
+            <ng-container matColumnDef="phone">
+                <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
+                <mat-cell *matCellDef="let user"> {{user.phone}} </mat-cell>
             </ng-container>
 
-            <!-- Colonna Stato -->
-            <ng-container matColumnDef="status">
-                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+            <ng-container matColumnDef="role">
+                <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
                 <mat-cell *matCellDef="let user">
-                    <span
-                        [ngClass]="{'status-chip': true, 'status-enabled': user.status === 'Enabled', 'status-disabled': user.status === 'Disabled'}">
-                        {{user.isDeleted}}
-                    </span>
+                    <div class="user-icon-admin" *ngIf="user.role === 'Admin'">
+                        <div class="role">
+                            <div><i *ngIf="user.role === 'Admin'" class="fa-solid fa-crown"></i></div>
+                            {{ user.role }}
+                        </div>
+                    </div>
+                    <div class="user-icon-role" *ngIf="user.role === 'User'">
+                        <div class="role">
+                            <div><i *ngIf="user.role === 'User'" class="fa-solid fa-shield-halved"></i></div>
+                            {{user.role}}
+                        </div>
+                    </div>
+
                 </mat-cell>
             </ng-container>
 
             <!-- Righe della tabella -->
-            
+
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <div class="body">
-                 <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></mat-row>
-             </div>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"
+                (click)="$event.stopPropagation(); toggleFilters(row)">
+
+            </mat-row>
+
         </table>
 
-      
+        <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
+
+        <div class="details-page" [class.visible]="this.ds.userDetailPanel">
+            <div class="close-section" (click)="toggleFilters(undefined)">
+                <span class="close"><i class="fa-solid fa-arrow-left"></i></span>
+                <div>Close</div>
+            </div>
+            <div class="details-container">
+                <div class="details-image">
+                    @if(selectedUser?.imgUrl === undefined){
+                    <i class="fa-regular fa-user"></i>
+                    }
+                    <img alt="Profile" class="profile-image-details" [src]="selectedUser?.imgUrl">
+                </div>
+                <div class="details-name">
+                    <div class="details-name">{{selectedUser?.name}} {{selectedUser?.surname}}</div>
+                </div>
+                <div class="role-status">
+                    <div class="details-role-admin" *ngIf="selectedUser?.role === 'Admin'">{{selectedUser?.role}}</div>
+                    <div class="details-role-user" *ngIf="selectedUser?.role === 'User'">{{selectedUser?.role}}</div>
+                    @if(selectedUser?.isDeleted){
+                    <div class="status-disabled details"> <span>INACT </span></div>
+                    }
+                    @else {
+                    <div class="status-enabled details"> <span>ACT </span> </div>
+                    }
+
+                </div>
+
+                <div class="divisor"></div>
+
+                <div class="user-info-cont">
+                    <div class="user-info-title">User Info</div>
+
+                    <div class="user-details">
+                        <div class="email-cont">
+                            <div><i class="fa-solid fa-envelope"></i></div>
+                            <div class="email">{{selectedUser?.email}}</div>
+                        </div>
+                        <div class="phone-cont">
+                            <div><i class="fa-solid fa-phone"></i></div>
+                            <div>{{selectedUser?.phone}}</div>
+                        </div>
+
+                        <div class="canBeMaster-cont">
+                            <i class="fa-solid fa-hat-wizard"  [class.available]="selectedUser?.canBeMaster" [class.unavailable]="!selectedUser?.canBeMaster "></i>
+                            <span>{{ selectedUser?.canBeMaster ? 'Available as master' : 'Not available as master' }}</span>
+                          </div>
+
+                    </div>
+
+                </div>
+
+                <div class="divisor"></div>
+
+                <div class="btns-cont">
+                    @if(this.selectedUser?.isDeleted){
+                    <div class="disable" (click)="ableOrDisableUser()">Restore User</div>
+                    }
+                    @else {
+                        <div class="disable" (click)="ableOrDisableUser()">Disable User</div>
+                    }
+                    <div class="delete" (click)="openDeleteModal()">Delete User</div>
+                </div>
+
+
+
+            </div>
+
+        </div>
 
 
     </div>
+
+
+
 </div>

@@ -7,6 +7,6 @@ import { BehaviorSubject } from 'rxjs';
 export class DashboardService {
 
   isOpen: boolean = false;
-
+  userDetailPanel : boolean = false;
   
 }

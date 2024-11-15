@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
       imgUrl: undefined, // Puoi sostituirlo con un'immagine fittizia
       canBeMaster: true,
       level: 1,
-      isDeleted: "Enabled"
+      role: "Admin",
     }
 
   isLogged: boolean = false;

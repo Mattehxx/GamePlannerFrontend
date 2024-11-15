@@ -27,7 +27,8 @@ export class HomeComponent {
     imgUrl: '',
     canBeMaster: true,
     level: 1,
-    isDeleted: 'Enabled'
+    isDeleted: false,
+    role: 'Admin'
   }
 
   gameSession: gameSessionModel = {
