@@ -23,7 +23,7 @@ steps:
   displayName: 'Build Docker Image'
   inputs:
     command: 'buildAndPush'
-    repository: '$(ACR_NAME).azurecr.io/$(IMAGE_NAME)'
+    repository: '$(IMAGE_NAME)'
     Dockerfile: '**/Dockerfile'
     tags: |
       latest
