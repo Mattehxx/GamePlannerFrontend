@@ -15,10 +15,10 @@ steps:
   displayName: 'Use Node.js 18.x'
 
 - script: |
+    npm init
     npm install
     npm run build --production
   displayName: 'Build Angular App'
-  workingDirectory: '$(System.DefaultWorkingDirectory)/app'
 
 - task: Docker@2
   displayName: 'Build Docker Image'
