@@ -24,7 +24,7 @@ steps:
   inputs:
     command: 'buildAndPush'
     repository: '$(ACR_NAME).azurecr.io/$(IMAGE_NAME)'
-    Dockerfile: '**/Dockerfile'
+    Dockerfile: '$(System.DefaultWorkingDirectory)/Dockerfile'
     tags: |
       latest
     containerRegistry: 'DockerRegistryConnection'
