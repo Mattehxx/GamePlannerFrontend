@@ -1,0 +1,31 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  ACR_NAME: 'GamePlannerContainerRegistry' # Nome del tuo Azure Container Registry
+  IMAGE_NAME: 'GamePlannerFrontend'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Use Node.js 18.x'
+
+- script: |
+    npm install
+    npm run build --production
+  displayName: 'Build Angular App'
+
+- task: Docker@2
+  displayName: 'Build Docker Image'
+  inputs:
+    command: 'buildAndPush'
+    repository: '$(ACR_NAME).azurecr.io/$(IMAGE_NAME)'
+    Dockerfile: '$(System.DefaultWorkingDirectory)/Dockerfile'
+    tags: |
+      latest
+    containerRegistry: 'DockerRegistryConnection'
+
