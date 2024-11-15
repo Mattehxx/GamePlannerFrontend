@@ -89,14 +89,31 @@
     </div>
 
     <div class="modal-loading" *ngIf="this.gn.isLoading">
-        <div class="spinner"></div>
+        <!-- <div class="spinner"></div> -->
+        <img src="/assets/images/dice-animation.gif">
     </div>
     
     <div class="modal-confirm" *ngIf="this.gn.isConfirmModal">
+        <div class="loading-bar"></div>
+        <span class="close" (click)="this.gn.isConfirmModal=false"> <i class="fa-solid fa-x"></i></span>
         <div class="circle">
             <div class="checkmark"></div>
         </div>
-        <div class="message">Registration Confirmed!</div>
+        <div class="message">
+            <h2>Registration Confirmed!</h2>
+            <p>We've sent a confirmation link to your email. </p>
+            <div class="email-container">
+                <div class="email-icon">
+                    <i class="fa-regular fa-envelope"></i>
+                    <span>Check Your Email</span>
+                </div>
+                <div class="email-info">
+                    <span>A confirmation link has been sent to your email. </span>
+                    <span>Please check your inbox to complete the registration.</span>
+                </div>
+            </div>
+            <div class="btn-email" (click)="this.gn.isConfirmModal=false">Close</div>
+        </div>
     </div>
 
     <div class="modal-confirm" *ngIf="this.gn.isQueueModal">
@@ -105,7 +122,6 @@
         </div>
         <div class="message">You have been added to the queue!</div>
     </div>
-
     <div class="modal-sign" *ngIf="this.gn.isSignModal">
         <div class="modal-content">
             <div class="modal-sign-title">Sign in to register</div>

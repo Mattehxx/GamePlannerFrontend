@@ -82,7 +82,7 @@ export class EventDetailComponent implements OnInit{
   }
 
   register() {
-    if (!this.auth.isLogged) {
+    if (this.auth.isLogged) {
       // Mostra la modale di caricamento
       this.gn.isLoading = true;
 
@@ -95,10 +95,10 @@ export class EventDetailComponent implements OnInit{
         this.gn.isConfirmModal = true;
 
         // Nasconde la modale di conferma dopo 3 secondi
-        setTimeout(() => {
-          this.gn.isConfirmModal = false;
-        }, 3000);
-      }, 2000);
+        // setTimeout(() => {
+        //   this.gn.isConfirmModal = false;
+        // }, 3000);
+      }, 1500);
     }
     else{
       this.gn.isSignModal = true;

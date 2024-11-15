@@ -21,6 +21,9 @@ export class MainLayoutComponent implements OnInit{
   private lastScrollPosition = 0;
   @Output() scrollEvent = new EventEmitter<boolean>();
 
+  get isOverlayVisible(): boolean {
+    return this.headerService.filtersVisible || this.gn.isSessionModal || this.gn.isConfirmModal || this.gn.isSignModal || this.gn.isLoading;
+  }
 
   constructor(public headerService: HeaderService, private ds: DashboardService,public gn: GeneralService) {}
 
@@ -45,6 +48,8 @@ export class MainLayoutComponent implements OnInit{
         this.lastScrollPosition = currentScroll;
       });
     }
+
+    
   
   
     
