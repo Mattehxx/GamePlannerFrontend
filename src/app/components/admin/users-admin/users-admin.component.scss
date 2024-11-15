@@ -47,8 +47,8 @@
 .btn-create{
     display: flex;
     width: 100%;
-    justify-content:flex-end;
-    padding-bottom: 1vh;
+    justify-content: flex-start;
+    padding-bottom: 2vh;
 
     button{
         display: flex;
@@ -304,7 +304,7 @@ mat-paginator {
     padding-left: -2vh;
     width: 40vh;
     margin-right: 2vh;
-    padding-top: 15.3vh;
+    padding-top: 19.8vh;
     height: 100vh;
     background: white;
     transition: right 0.5s ease;
@@ -319,7 +319,7 @@ mat-paginator {
 
 .details-page .close-section{
     display: flex;
-    height: 3.6vh;
+    height: 3.7vh;
     cursor: pointer;
     background: var(--lightPurple);
     font-size: 500;
@@ -438,7 +438,7 @@ mat-paginator {
 .btns-cont{
     display: flex;
     width: 90%;
-    margin-top: 12vh;
+    margin-top: 8vh;
     flex-direction: column;
     gap: 1vh;
     border: solid 1px white;

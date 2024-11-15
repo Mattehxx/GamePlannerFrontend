@@ -14,6 +14,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { HeaderService } from '../../../services/header.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { GeneralService } from '../../../services/general.service';
+import { ModalCreateUserComponent } from "./modal-create-user/modal-create-user.component";
 
 @Component({
   selector: 'app-users-admin',
@@ -25,8 +26,7 @@ import { GeneralService } from '../../../services/general.service';
     MatInputModule,
     MatChipsModule,
     MatIconModule,
-    MatPaginator
-  ],
+    MatPaginator, ModalCreateUserComponent],
   templateUrl: './users-admin.component.html',
   styleUrl: './users-admin.component.scss'
 })
@@ -103,20 +103,11 @@ export class UsersAdminComponent implements AfterViewInit {
   }
 
   closeModal() {
-    if(this.gn.isDeleteUserModal){
-      this.gn.isDeleteUserModal = false;
-    }
-
-    if(this.gn.isCreateUserModal){
-      this.gn.isCreateUserModal = false;
-    } 
+    this.gn.isDeleteUserModal = false;
   }
 
   openCreateUserModal() {
     this.gn.isCreateUserModal = true
   }
-
-
-
 
 }
