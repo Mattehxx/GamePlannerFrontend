@@ -8,6 +8,6 @@ RUN npm run build --production
  
 # Stage 2: Serve
 FROM nginx:alpine
-COPY --from=build-stage /app/dist/GamePlanner /usr/share/nginx/html
+COPY --from=build-stage /app/dist/game-planner /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
