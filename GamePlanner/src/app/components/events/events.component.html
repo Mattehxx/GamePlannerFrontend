@@ -75,8 +75,13 @@
             </div>
             <div class="event-details">
                 <div class="info">
-                    <div class="event-date"><i class="fa-regular fa-clock"></i> {{event.eventDate | date:'EEE, MMM d - HH:mm'}}</div>
-                    <div class="spots">4 spots left</div>  <!-- sennò lo metto arancione con scritta Join Queue -->
+                    <div class="event-date" *ngIf="event && event.gameSessions && event.gameSessions.length > 0"><i class="fa-regular fa-clock"></i> {{event.gameSessions[0].startDate| date:'MMM d'}} - {{ event.gameSessions[event.gameSessions.length - 1].endDate| date:'MMM d' }} </div>
+                    <div class="event-date" *ngIf="event && event.gameSessions && event.gameSessions.length == 0"><i class="fa-regular fa-clock"></i> {{event.gameSessions[0].startDate| date:'EEE, MMM d - HH:mm'}}  </div>
+                    <div class="spots" *ngIf="event && event.gameSessions" [ngClass]="{
+                        'spots-low': event.gameSessions!.length == 1,
+                        'spots-medium': event.gameSessions!.length > 1 && event.gameSessions!.length <= 3,
+                        'spots-high': event.gameSessions!.length >= 4
+                    }">{{event.gameSessions!.length}} sessions </div>  <!-- sennò lo metto arancione con scritta Join Queue -->
                 </div>
             </div>
             <div class="bottom-card">

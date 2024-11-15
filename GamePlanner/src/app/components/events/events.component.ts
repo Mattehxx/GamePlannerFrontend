@@ -110,7 +110,7 @@ export class EventsComponent implements OnInit {
       gameId: 101,
       adminId: 201,
       admin: this.admin,
-      gameSessions: [this.gameSession,this.gameSession2,this.gameSession3]
+      gameSessions: [this.gameSession]
     },
     {
       eventId: 2,
@@ -126,7 +126,7 @@ export class EventsComponent implements OnInit {
       gameId: 102,
       adminId: 202,
       admin: this.admin,
-      gameSessions: [this.gameSession,this.gameSession2,this.gameSession3]
+      gameSessions: [this.gameSession,this.gameSession2]
     },
     {
       eventId: 3,
@@ -141,7 +141,7 @@ export class EventsComponent implements OnInit {
       recurrenceId: 3,
       gameId: 103,
       adminId: 203,
-      gameSessions: [this.gameSession,this.gameSession2,this.gameSession3]
+      gameSessions: [this.gameSession]
     },
     {
       eventId: 4,
@@ -156,7 +156,7 @@ export class EventsComponent implements OnInit {
       recurrenceId: 4,
       gameId: 104,
       adminId: 204,
-      gameSessions: [this.gameSession,this.gameSession2,this.gameSession3]
+      gameSessions: [this.gameSession,this.gameSession2,this.gameSession3,this.gameSession,this.gameSession2]
     },
     {
       eventId: 4,
@@ -210,6 +210,7 @@ export class EventsComponent implements OnInit {
 
   
   ngOnInit() {
+    window.scrollTo({top: 0});
     this.filteredEvents = [...this.arrayEvent];
     this.totalPages = Math.ceil(this.filteredEvents.length / this.itemsPerPage);
     this.updatePaginatedEvents();

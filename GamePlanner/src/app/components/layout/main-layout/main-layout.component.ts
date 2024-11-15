@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { HeaderComponent } from "../../header/header.component";
 import { FooterComponent } from "../../footer/footer.component";
-import { RouterOutlet } from '@angular/router';
+import { Event as RouterEvent, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 import { HeaderService } from '../../../services/header.service';
 import { DashboardService } from '../../../services/dashboard.service';
 import { EventsComponent } from '../../events/events.component';
@@ -24,10 +25,25 @@ export class MainLayoutComponent implements OnInit{
   get isOverlayVisible(): boolean {
     return this.headerService.filtersVisible || this.gn.isSessionModal || this.gn.isConfirmModal || this.gn.isSignModal || this.gn.isLoading;
   }
-
-  constructor(public headerService: HeaderService, private ds: DashboardService,public gn: GeneralService) {}
+  constructor(
+    public headerService: HeaderService, 
+    private ds: DashboardService,
+    public gn: GeneralService,
+    private router: Router,
+    private viewportScroller: ViewportScroller
+  ) {}
 
   ngOnInit() {
+
+    this.router.events.subscribe((event: RouterEvent) => {
+      if (event instanceof NavigationEnd) {
+        setTimeout(() => {
+          document.getElementsByClassName('main-content')[0].scrollTo(0, 0);
+          this.headerService.updateHeaderVisibility(true);
+        }, 0);
+      }
+    });
+    
     const content = document.querySelector('.main-content') as HTMLElement;
     if (content) {
       content.addEventListener('scroll', () => {
@@ -47,12 +63,7 @@ export class MainLayoutComponent implements OnInit{
 
         this.lastScrollPosition = currentScroll;
       });
-    }
-
-    
-  
-  
-    
+    }    
    
   }
 

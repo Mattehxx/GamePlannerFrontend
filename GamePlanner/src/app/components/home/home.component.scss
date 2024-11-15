@@ -391,6 +391,29 @@
     }
 }
 
+.btn-all{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5vh;
+    padding-inline: 4vh;
+    font-size: 2vh;
+    background: #7a2bff;
+    color: white;
+    border-radius: 1vh;
+    margin-left: 2vh;
+    margin-top: 1vh;
+    cursor: pointer;
+
+    & i{
+        margin-left: 1vh;
+    }
+
+    &:hover{
+        background: #6e1afd; ;
+    }
+}
+
 @media (max-width: 750px){
     .info-container{
         flex-direction: column;

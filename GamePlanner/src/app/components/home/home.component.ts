@@ -5,7 +5,7 @@ import { EventModel } from '../../models/event.model';
 import { DurationPipe } from '../../pipes/duration.pipe';
 import { User } from '../../models/user.model';
 import { gameSessionModel } from '../../models/gameSession.model';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { reservationModel } from '../../models/reservation.model';
 
 @Component({
@@ -162,7 +162,7 @@ export class HomeComponent{
     }
   ];
 
-  constructor(){}
+  constructor(public router: Router){}
 
   @ViewChild('eventList') eventList!: ElementRef;
 
@@ -200,6 +200,10 @@ export class HomeComponent{
       left: scrollAmount,
       behavior: 'smooth'
     });
+  }
+
+  navigateToEvent(){
+    this.router.navigate(['/events']);
   }
 
 }

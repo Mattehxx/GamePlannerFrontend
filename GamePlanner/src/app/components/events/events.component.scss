@@ -10,7 +10,7 @@
 
 .above-image {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,7 +23,7 @@
     transition: height 0.5s ease;
     box-shadow: 0 0 2vh #0000004d;
     margin-bottom: 5vh;
-    animation: zoomBackground 10s infinite alternate;
+    animation: moveBackground 15s infinite alternate;
 
     &::before {
         content: '';
@@ -64,12 +64,12 @@
     }
 }
 
-@keyframes zoomBackground {
+@keyframes moveBackground {
     0% {
-        background-size: 100%;
+        background-position: center;
     }
     100% {
-        background-size: 110%;
+        background-position: center 90%;
     }
 }
 
@@ -264,10 +264,21 @@
     width: max-content;
     padding: 1vh;
     border-radius: 4vh;
-    background: #9147ff;
     color: white;
 }
 
+.spots-low{
+    background: #00d9ff;
+}
+
+.spots-medium{
+    background: #9147ff;
+}
+
+.spots-high{
+    background: #5047ff;
+
+}
 
 .event-image {
     width: 100%;
