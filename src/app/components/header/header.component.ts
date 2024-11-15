@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { User } from '../../models/user.model';
-import { HeaderService } from '../../services/header.service';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
+import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public headerService: HeaderService, public router: Router, private elementRef: ElementRef, public as:AuthService) { }
+  constructor(public headerService: HeaderService, public router: Router, private elementRef: ElementRef, public as: AuthService) { }
 
   @ViewChild('modalElement') modalElement!: ElementRef;
   @ViewChild('overlayElement') overlayElement!: ElementRef;
@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
     this.headerService.isModalOpen = false;
   }
 
-  navigateAndClose(){
+  navigateAndClose() {
     this.router.navigate(['userSettings']);
     this.headerService.isModalOpen = false;
   }
@@ -62,23 +62,25 @@ export class HeaderComponent implements OnInit {
 
   handleClickOutside(event: MouseEvent) {
 
-    if(this.headerService.isModalOpen){
+    if (this.headerService.isModalOpen) {
 
       setTimeout(() => {
         const clickedInsideHeader = this.elementRef.nativeElement.contains(event.target);
-  
+
         const clickedInsideModal = this.modalElement.nativeElement.contains(event.target);
-    
+
         const clickedInsideOverlay = this.overlayElement.nativeElement.contains(event.target);
-    
+
         if (this.headerService.isModalOpen && !clickedInsideHeader && !clickedInsideModal && !clickedInsideOverlay) {
-    
+
           this.closeModal();
-    
+
         }
       }, 100);
     }
 
   }
-
+  logOut() {
+    this.as.logout();
+  }
 }

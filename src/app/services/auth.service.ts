@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
-import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../environments/environment';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError, Observable, tap, throwError } from 'rxjs';
+import { environment } from '../environments/environment';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,7 @@ export class AuthService {
 
   isAdmin : boolean = true;
   isLogged: boolean = true;
+  user: User | null = null;
 
 
   register(user: User): Observable<any> {
@@ -32,15 +33,6 @@ export class AuthService {
         console.error(error);
       }
     })
-  }
-
-  getUser() {
-    if (localStorage.getItem('user')) {
-      return JSON.parse(localStorage.getItem('user')!);
-    }
-    else {
-      return null;
-    }
   }
 
   setToken(token: string): void {
@@ -62,6 +54,7 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.isLogged = false;
+    this.router.navigate(['/home']);
   }
 
   isAuthenticated(): boolean {
