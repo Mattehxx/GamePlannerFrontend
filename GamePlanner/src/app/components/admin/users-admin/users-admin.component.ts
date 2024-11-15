@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { HeaderService } from '../../../services/header.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ModalService } from '../../../services/modal.service';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-users-admin',
@@ -33,7 +33,8 @@ import { ModalService } from '../../../services/modal.service';
 export class UsersAdminComponent implements AfterViewInit {
 
 
-  constructor(public ds: DashboardService, public headerService: HeaderService, private modalService: ModalService) { }
+
+  constructor(public ds: DashboardService, public headerService: HeaderService, public gn: GeneralService,) { }
 
   selectedUser: User | undefined;
 
@@ -98,8 +99,21 @@ export class UsersAdminComponent implements AfterViewInit {
   }
 
   openDeleteModal() {
-    const dialogRef = this.modalService.openDialog();
-    // utilizza la referenza alla finestra di dialogo
+    this.gn.isDeleteUserModal = true;
+  }
+
+  closeModal() {
+    if(this.gn.isDeleteUserModal){
+      this.gn.isDeleteUserModal = false;
+    }
+
+    if(this.gn.isCreateUserModal){
+      this.gn.isCreateUserModal = false;
+    } 
+  }
+
+  openCreateUserModal() {
+    this.gn.isCreateUserModal = true
   }
 
 

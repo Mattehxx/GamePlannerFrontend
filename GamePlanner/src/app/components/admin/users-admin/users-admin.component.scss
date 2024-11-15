@@ -4,7 +4,7 @@
     padding: 5vh 10vh;
     padding-left: 20vh;
     transition: 0.3s ease;
-    padding-top: 3vh;
+    padding-top: 2vh;
 }
 
 .container.dashboarsIsOpen {
@@ -20,7 +20,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2vh;
 }
 
 .page-title {
@@ -33,21 +32,44 @@
 .search-bar {
     width: 35vh;
     margin-right: 2vh;
+    transition: 0.5s ease;
 }
 
 .searchBarUserDetailOpen{
-    z-index: 1000;
-    width: 45vh;
+    z-index: 11;
+    width: 37vh;
+    position: relative;
+    margin-right: -37vh;
+    transition: ease 0.5s;
+}
+
+
+.btn-create{
+    display: flex;
+    width: 100%;
+    justify-content:flex-end;
+    padding-bottom: 1vh;
+
+    button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        width: 15vh;
+        height: 5vh;
+        font-size: 2.2vh;
+        color: white;
+        background-color: var(--purple);
+        border: 1px solid var(--purple);
+        border-radius: 1vh;
+        cursor: pointer;
+    }
 }
 
 .page-container {
     overflow-x: auto;
 }
 
-.user-table {
-    min-width: 60vh;
-    width: 100%;
-}
 
 th,
 td {
@@ -55,6 +77,8 @@ td {
 }
 
 .user-table {
+    min-width: 60vh;
+    transition: 0.8s ease;
     width: 100%;
     margin-bottom: 1vh;
     border-radius: 3vh;
@@ -95,6 +119,10 @@ mat-row {
     background-color: #ffffff;
     transition: background-color 0.3s ease;
 
+}
+
+.userDisabled{
+    opacity: 50%;
 }
 
 mat-row:hover {
@@ -280,7 +308,7 @@ mat-paginator {
     height: 100vh;
     background: white;
     transition: right 0.5s ease;
-    z-index: 1000;
+    z-index: 10;
     display: flex;
     flex-direction: column;
 }
@@ -318,6 +346,7 @@ mat-paginator {
     flex-direction: column;
     align-items: center;
     border-left: solid 1px #dedbdb;
+    border-right: solid 1px #f1f1f1;
     height: 100%;
 }
 
@@ -453,6 +482,147 @@ mat-paginator {
     height: 0.1vh;
     margin-top: 2vh;
     margin-bottom: 2vh;
+}
+
+.modal-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+.modal-sessions {
+    z-index: 100;
+    width: 90%;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 2vh;
+    border-radius: 1vh;
+    border: 1px solid rgba(0, 0, 0, 0.1803921569);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40vh;
+    min-width: 250px;
+    height: 20vh;
+    justify-content: space-between;
+}
+
+.modal-title {
+    color: var(--purple);
+    font-weight: 500;
+    font-size: 2.5vh;
+}
+
+.modal-btns{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.modal-btns .close{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 9vh;
+    height: 4vh;
+    font-size: 2vh;
+    color: white;
+    background-color: var(--purple);
+    border: 1px solid #7e2bf9;
+    border-radius: 1vh;
+    align-items: center;
+}
+
+.modal-btns .delete{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 9vh;
+    height: 4vh;
+    font-size: 2vh;
+    color: white;
+    background-color: red;
+    border: 1px solid red;
+    border-radius: 1vh;
+    align-items: center;
+}
+
+
+.modal-create-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+.modal-create {
+    z-index: 100;
+    margin-left: 5vh;
+    width: 84%;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 2vh;
+    border-radius: 1vh;
+    border: 1px solid rgba(0, 0, 0, 0.1803921569);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 250px;
+    height: 80vh;
+    justify-content: space-between;
+}
+
+.modal-create-title {
+    color: var(--purple);
+    font-weight: 500;
+    font-size: 2.5vh;
+}
+
+.modal-create-btns{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.modal-create-btns .close{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 9vh;
+    height: 4vh;
+    font-size: 2vh;
+    color: white;
+    background-color: var(--purple);
+    border: 1px solid #7e2bf9;
+    border-radius: 1vh;
+    align-items: center;
+}
+
+.modal-create-btns .delete{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 9vh;
+    height: 4vh;
+    font-size: 2vh;
+    color: white;
+    background-color: red;
+    border: 1px solid red;
+    border-radius: 1vh;
+    align-items: center;
 }
 
 @media (max-width:480px) {

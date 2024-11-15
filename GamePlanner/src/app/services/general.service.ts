@@ -17,4 +17,7 @@ export class GeneralService {
 
   eventRoute: string = '';
 
+  isDeleteUserModal: boolean = false;
+  isCreateUserModal : boolean = false;
+
 }

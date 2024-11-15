@@ -4,7 +4,7 @@
         <!-- Barra del titolo e della ricerca -->
         <div class="header-bar">
             <h1 class="page-title">User Management</h1>
-            <div class="search-bar-cont" >
+            <div class="search-bar-cont">
 
                 <mat-form-field class="search-bar" appearance="outline" [class.searchBarUserDetailOpen]="this.ds.userDetailPanel">
                     <mat-label>Search</mat-label>
@@ -13,11 +13,13 @@
             </div>
         </div>
 
-        <!-- Tabella degli utenti -->
+        <div class="btn-create">
+            <button (click)="openCreateUserModal()">Create User</button>
+        </div>
+        
 
         <table mat-table [dataSource]="dataSource" [class.userDetailOpen]="this.ds.userDetailPanel"
             class="mat-elevation-z8 user-table">
-            <!-- Colonna Immagine -->
             <ng-container matColumnDef="user">
                 <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
                 <mat-cell *matCellDef="let user">
@@ -74,7 +76,7 @@
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-            <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row" [class.userDisabled]="row.isDeleted"
                 (click)="$event.stopPropagation(); toggleFilters(row)">
 
             </mat-row>
@@ -145,16 +147,37 @@
                     }
                     <div class="delete" (click)="openDeleteModal()">Delete User</div>
                 </div>
-
-
-
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-sessions" *ngIf="this.gn.isDeleteUserModal">
+    <div class="modal-content">
+        <div class="modal-title">
+            User Delete
+        </div>
+        <div class="modal-subtitle">
+            Do you really want to delete this user?
+        </div>
+        <div class="modal-btns">
+            <button  class="delete">Delete</button>
+            <button (click)="closeModal()" class="close">Close</button>
 
         </div>
-
-
     </div>
-
-
-
 </div>
+
+<div class="modal-create" *ngIf="this.gn.isCreateUserModal">
+    <div class="modal-create-content">
+        <div class="modal-create-title">
+            Create User
+        </div>
+       
+        <div class="modal-create-btns">
+            <button (click)="closeModal()" class="close">Close</button>
+        </div>
+    </div>
+</div>
+
+
