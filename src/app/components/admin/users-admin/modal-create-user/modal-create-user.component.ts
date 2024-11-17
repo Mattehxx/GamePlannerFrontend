@@ -16,7 +16,7 @@ export class ModalCreateUserComponent{
   
   hidePassword: boolean = true;
   userForm: FormGroup;
-  constructor(public as: AdminService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(public as: AdminService, private formBuilder: FormBuilder, private router: Router,private gn: GeneralService) {
 
 
     this.userForm = this.formBuilder.group({
@@ -44,7 +44,9 @@ export class ModalCreateUserComponent{
   createUser() {
     throw new Error('Method not implemented.');
     }
+
   closeModal() {
+    this.gn.isOverlayOn$.next(false);
     this.as.isCreateUserModal = false;
   }
 }

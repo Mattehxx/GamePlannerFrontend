@@ -14,7 +14,7 @@
             <div class="details-title">Event Details</div>
             <div class="details-subtitle">Basic information about the event</div>
 
-            <div class="event-image">
+            <div class="event-image" [class.image-background]="!event.imgUrl">
                 <div class="image-container">
                     <img *ngIf="event?.imgUrl && event?.imgUrl !== ''" [src]="event.imgUrl" alt="Event Image">
                     <div *ngIf="!event?.imgUrl || event?.imgUrl === ''" class="no-image">No Image Available</div>

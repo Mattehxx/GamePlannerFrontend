@@ -44,6 +44,7 @@ export class MainLayoutComponent implements OnInit{
     this.router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationEnd) {
         setTimeout(() => {
+          if(document.getElementsByClassName('main-content')[0])
           document.getElementsByClassName('main-content')[0].scrollTo(0, 0);
           this.headerService.updateHeaderVisibility(true);
         }, 0);

@@ -157,6 +157,9 @@
     align-items: center;
     width: 40vh;
     height: 20vh;
+}
+
+.image-background{
     border: 1px solid rgb(165, 165, 165);
     border-radius: 1vh;
     background-color: #f0f0f0;
@@ -641,6 +644,15 @@ input#game{
     .form-group{
         margin-bottom: 0;
     }
+
+    .image-container{
+        width: 30vh;
+    }
+    
+    .event-image{
+        flex-direction: column;
+        gap: 5vh;
+    }
     
 }
 
@@ -667,10 +679,6 @@ input#game{
         width: 80%;
     }
 
-    .event-image{
-        flex-direction: column;
-        gap: 5vh;
-    }
 
     .detail-header{
         flex-direction: column;
