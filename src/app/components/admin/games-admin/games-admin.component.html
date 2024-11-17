@@ -1,3 +1,81 @@
 <div class="container" [class.dashboarsIsOpen]="this.ds.isOpen">
-    <div class="title">Games administration</div>
-</div>
+    <div class="table-container">
+        <div class="header-bar">
+            <h1 class="page-title">Games Management</h1>
+            <div class="search-bar-cont">
+
+                <mat-form-field class="search-bar" appearance="outline">
+                    <mat-label>Search</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Search games" />
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="btn-create">
+            <button (click)="openCreateOrUpdateGamesModal(undefined)">Create Game</button>
+        </div>
+
+
+        <table mat-table [dataSource]="dataSource" [class.userDetailOpen]="this.ds.userDetailPanel"
+            class="mat-elevation-z8 user-table">
+            <ng-container matColumnDef="imgUrl">
+                <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
+                <mat-cell *matCellDef="let game">
+
+                    <div class="cont-user-cell">
+
+                        @if(game.imgUrl === undefined){
+                        <div class="profile-image"> <i class="fa-regular fa-user"></i></div>
+                        }
+                        <img alt="Profile" class="profile-image" [src]="game.imgUrl">
+
+
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let game"> {{game.name}} </mat-cell>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="isDisabled">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let game">
+
+                    @if(game.isDeleted){
+                    <div class="status-disabled"> <span>INACT </span></div>
+                    }
+                    @else {
+                    <div class="status-enabled"> <span>ACT </span> </div>
+                    }
+                </mat-cell>
+
+            </ng-container>
+
+
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"
+                [class.gameDisabled]="row.isDeleted"
+                (click)="$event.stopPropagation(); openCreateOrUpdateGamesModal(row)">
+            </mat-row>
+
+        </table>
+
+        <div class="modal-cont" [class.details-visible]="this.as.isGameDetail" >
+
+            <div class="close-modal" [class.btn-visible]="this.as.isGameDetail" (click)="closeModal()">
+                <button><i class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="game-title" [style.backgroundImage]="'url(' + imageObject.backgroundUrl + ')'" [class.title-visible]="this.as.isGameDetail">
+               <div><span>{{this.selectedGame?.name}}</span></div> 
+            </div>
+            <div class="game-details-cont" [class.details-visible]="this.as.isGameDetail"></div>
+        </div>
+
+    </div>

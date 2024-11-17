@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { DashboardService } from '../../../services/dashboard.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GeneralService } from '../../../services/general.service';
+import { AdminService } from '../../../services/admin.service';
 
 @Component({
   selector: 'app-auth-layout',
@@ -14,10 +15,11 @@ import { GeneralService } from '../../../services/general.service';
 })
 export class AuthLayoutComponent {
 
-  constructor(private gn: GeneralService) {}
+  constructor(private as: AdminService, private router: Router) {}
   get isOverlayVisible(): boolean {
-    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal;
+    return this.as.isDeleteUserModal || this.as.isCreateUserModal || this.as.isGameDetail;
   }
+
   
 
  
