@@ -3,31 +3,39 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DashboardService } from '../../../services/dashboard.service';
+import { AdminService } from '../../../services/admin.service';
 
 @Component({
   selector: 'app-dashboard-admin',
   standalone: true,
-  imports: [RouterLink,CommonModule,RouterOutlet],
+  imports: [RouterLink, CommonModule, RouterOutlet],
   templateUrl: './dashboard-admin.component.html',
   styleUrl: './dashboard-admin.component.scss'
 })
-export class DashboardAdminComponent implements OnInit{
-  
+export class DashboardAdminComponent implements OnInit {
+
+
   isSidebarOpen: boolean = false;
 
-  constructor(public ds:DashboardService, public router: Router){}
+  constructor(public ds: DashboardService, public router: Router, private as: AdminService) { }
 
-  ngOnInit(){
-    // this.isOpen = this.ds.isOpen;
+  ngOnInit() {
+
   }
-  
+
   onMouseEnter() {
-    console.log (this.ds.isOpen)
+    console.log(this.ds.isOpen)
     this.ds.isOpen = true;
-    console.log (this.ds.isOpen)
+    console.log(this.ds.isOpen)
 
   }
   onMouseLeave() {
     this.ds.isOpen = false;
   }
+
+  closeOverlay() {
+    this.as.isGameDetail = false;
+    this.as.isCreateUserModal = false;
+  }
+
 }

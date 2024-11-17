@@ -260,7 +260,13 @@ export class EventDetailAdminComponent implements OnInit {
 
   openEditSession(session: gameSessionModel) {
     this.sessionEdit = { ...session };
-    this.gameSearch = this.sessionEdit!.game!.name ? this.sessionEdit!.game!.name : '';
+    if(this.sessionEdit.game){
+      this.gameSearch = this.sessionEdit.game.name;
+    }
+    else{
+      this.gameSearch = '';
+    }
+    console.log(this.sessionEdit.reservations);
     this.gameMasterSearch = this.sessionEdit!.master!.name ? `${this.sessionEdit!.master!.name} ${this.sessionEdit!.master!.surname}` : '';
     this.sessionEditStartDate = this.formatDate(this.sessionEdit.startDate);
     this.sessionEditEndDate = this.formatDate(this.sessionEdit.endDate);

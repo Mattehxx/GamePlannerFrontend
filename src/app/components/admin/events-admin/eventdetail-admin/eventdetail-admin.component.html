@@ -201,7 +201,7 @@
                 <div class="form-group">
                     <label for="reservations">Add Players</label>
                     <div #dropdownElementReservation class="custom-dropdown-double ">
-                        <div class="selected-users">
+                        <div class="selected-users" *ngIf="sessionEdit!.reservations!.length > 0">
                             <span *ngFor="let reservations of sessionEdit?.reservations" class="selected-user">
                                 {{ reservation.user!.name }} {{ reservations.user!.surname }}
                                 <i class="fa-solid fa-xmark" (click)="removeReservationEdit(reservation)"></i>

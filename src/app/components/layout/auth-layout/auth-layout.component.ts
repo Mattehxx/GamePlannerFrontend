@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { DashboardService } from '../../../services/dashboard.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GeneralService } from '../../../services/general.service';
+import { AdminService } from '../../../services/admin.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -15,7 +16,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class AuthLayoutComponent implements OnInit,OnDestroy{
 
-  constructor(public gn: GeneralService) {}
+  constructor(public gn: GeneralService,private as: AdminService, private router: Router) {}
 
   death$ = new Subject<void>();
 
@@ -50,8 +51,9 @@ export class AuthLayoutComponent implements OnInit,OnDestroy{
 
 
   get isOverlayVisible(): boolean {
-    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay;
+    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay || this.as.isGameDetail;;
   }
+
   
 
  

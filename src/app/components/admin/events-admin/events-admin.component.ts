@@ -58,6 +58,7 @@ export class EventsAdminComponent implements AfterViewInit {
     isDeleted: false,
     sessionId: 1,
     userId: '1',
+    user: this.admin
   }
 
   gameSession: gameSessionModel = {
