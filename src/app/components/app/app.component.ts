@@ -4,6 +4,7 @@ import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from "../footer/footer.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { GeneralService } from '../../services/general.service';
 
 @Component({
   selector: 'app-root',
@@ -13,5 +14,13 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+
+  constructor(private router: Router,private gn: GeneralService) {
+    this.router.events.subscribe(event => {
+      if(this.gn.isOverlayOn$.value){
+        this.gn.isOverlayOn$.next(false);
+      }
+    });
+  }
 
 }

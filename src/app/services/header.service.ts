@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class HeaderService {
   filtersVisible : boolean = false;
+  isMobileMenuOpen : boolean = false;
   
 
   private headerVisibilitySubject = new BehaviorSubject<boolean>(true);

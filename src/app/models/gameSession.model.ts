@@ -9,7 +9,7 @@ export interface gameSessionModel{
     endDate: Date,
     seats: number,
     isDeleted: boolean,
-    masterId: number,
+    masterId: string,
     master?: User,
     eventId: number,
     event?: EventModel,

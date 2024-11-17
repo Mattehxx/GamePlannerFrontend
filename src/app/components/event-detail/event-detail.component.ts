@@ -22,6 +22,9 @@ export class EventDetailComponent implements OnInit{
 
   event : EventModel | undefined;
 
+  sessionDetail: gameSessionModel | undefined;
+  isSessionDetail: boolean = false;
+
   admin: User = {
     userId: 'sfasf',
     name: 'Yassine',
@@ -42,7 +45,7 @@ export class EventDetailComponent implements OnInit{
     isConfirmed: false,
     isDeleted: false,
     sessionId: 1,
-    userId: 1,
+    userId: '1',
   }
 
   gameSession: gameSessionModel = {
@@ -50,7 +53,7 @@ export class EventDetailComponent implements OnInit{
     startDate: new Date('2023-11-01'),
     endDate: new Date('2023-11-02'),
     isDeleted: false,
-    masterId: 301,
+    masterId: '301',
     eventId: 1,
     master: this.admin,
     seats: 4,
@@ -65,14 +68,9 @@ export class EventDetailComponent implements OnInit{
         eventId: 4,
         name: 'The Wild Beyond the Witchlight',
         description: "Join us for an exciting adventure in the Feywild! In this campaign, we'll explore the whimsical and sometimes dangerous realm of the Feywild, encountering magical creatures, solving riddles, and unraveling the mysteries of the Wild Beyond the Witchlight.",
-        eventDate: new Date('2024-02-01'),
-        eventEndDate: new Date('2024-02-02'),
-        duration: 1,
         isPublic: false,
         imgUrl: '/assets/images/wallpaper2.jpg',
         isDeleted: false,
-        recurrenceId: 4,
-        gameId: 104,
         adminId: 204,
         gameSessions: [this.gameSession,this.gameSession,this.gameSession,this.gameSession,this.gameSession,this.gameSession]
       }
@@ -118,6 +116,21 @@ export class EventDetailComponent implements OnInit{
     else{
       this.router.navigate(['register']);
     }
+  }
+
+  openSessionDetail(session: gameSessionModel) {
+    if(this.gn.isSessionModal){
+      this.gn.isSessionModal=false;
+    }
+    this.sessionDetail = session;
+    this.isSessionDetail = true;
+    this.gn.isOverlayOn$.next(true);
+  }
+
+  closeSessionDetail() {
+    this.isSessionDetail = false;
+    this.gn.isOverlayOn$.next(false);
+    this.sessionDetail = undefined;
   }
 
 }

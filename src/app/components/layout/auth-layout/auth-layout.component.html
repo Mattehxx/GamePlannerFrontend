@@ -1,4 +1,6 @@
 <div class="display">
     <router-outlet></router-outlet>
-    <div class="dark-overlay"*ngIf="isOverlayVisible"></div>
+    <div class="dark-overlay"*ngIf="isOverlayVisible || isLoading">
+        <img src="/assets/images/loading.gif" *ngIf="isLoading">
+    </div>
 </div>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EventModel } from '../models/event.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,8 @@ export class GeneralService {
 
   isDeleteUserModal: boolean = false;
   isCreateUserModal : boolean = false;
+
+  isOverlayOn$ = new BehaviorSubject<boolean>(false);
+  isLOadingScreen$ = new BehaviorSubject<boolean>(false);
 
 }
