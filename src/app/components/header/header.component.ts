@@ -2,21 +2,21 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterModule } from '@angular/router';
+import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterLink,RouterModule],
+  imports: [CommonModule, FormsModule, RouterLink, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public headerService: HeaderService, public router: Router, private elementRef: ElementRef, public as: AuthService) { 
-    
-  }
+  user: User | undefined
+  constructor(public headerService: HeaderService, public router: Router, private elementRef: ElementRef, public as: AuthService) { }
 
   @ViewChild('modalElement') modalElement!: ElementRef;
   @ViewChild('overlayElement') overlayElement!: ElementRef;
@@ -33,6 +33,16 @@ export class HeaderComponent implements OnInit {
       }
     });
 
+    this.as.user?.subscribe({
+      next: (response) => {
+        console.log(response);
+        if(response){
+          this.user = response;
+          console.log(this.user)
+        }
+        
+      }
+    })
   }
 
   toggleModal() {
@@ -69,19 +79,19 @@ export class HeaderComponent implements OnInit {
       }, 100);
     }
 
-    if(this.headerService.isMobileMenuOpen){
-        
-        setTimeout(() => {
-          const clickedInsideHeader = this.elementRef.nativeElement.contains(event.target);
-    
-          const clickedInsideMobileMenu = this.elementRef.nativeElement.querySelector('.mobile-menu')?.contains(event.target);
-      
-          if (this.headerService.isMobileMenuOpen && !clickedInsideHeader && !clickedInsideMobileMenu) {
-      
-            this.headerService.isMobileMenuOpen = false;
-      
-          }
-        }, 0);
+    if (this.headerService.isMobileMenuOpen) {
+
+      setTimeout(() => {
+        const clickedInsideHeader = this.elementRef.nativeElement.contains(event.target);
+
+        const clickedInsideMobileMenu = this.elementRef.nativeElement.querySelector('.mobile-menu')?.contains(event.target);
+
+        if (this.headerService.isMobileMenuOpen && !clickedInsideHeader && !clickedInsideMobileMenu) {
+
+          this.headerService.isMobileMenuOpen = false;
+
+        }
+      }, 0);
     }
 
   }

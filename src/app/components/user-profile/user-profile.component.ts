@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GameModel } from '../../models/game.model';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 
@@ -13,29 +12,37 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './user-profile.component.scss'
 })
 export class UserProfileComponent implements OnInit {
-
-  userForm: FormGroup;
-
-  constructor(public as: AuthService, private formBuilder: FormBuilder) {
-    this.userToEdit = this.as.user
-
-    this.userForm = this.formBuilder.group({
-      email: [this.userToEdit?.email, [Validators.required, Validators.email]],
-      name: [this.userToEdit?.name, [Validators.required]],
-      surname: [this.userToEdit?.surname, [Validators.required]],
-      phone: [this.userToEdit?.phone, [Validators.required]],
-      birthdate: [this.userToEdit?.birthDate, [Validators.required]],
-      canBeMaster: [this.userToEdit?.canBeMaster, [Validators.required]]
-    });
-  }
+  
 
   userToEdit: User | undefined;
-  games: Array<GameModel> = [];
+  userForm = new FormGroup({
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    name: new FormControl<string>('', [Validators.required]),
+    surname: new FormControl<string>('', [Validators.required]),
+    phone: new FormControl<string>('', [Validators.required]),
+    birthdate: new FormControl<Date | null>(null, [Validators.required])
+  });
+  preferenceForm: FormGroup | undefined;
+
+  constructor(public as: AuthService) { }
 
   ngOnInit(): void {
-    //get game
-    //subscribe a behavioursubject
+    if (this.as.isLogged) {
+      console.log("ngOnInit: user-profile");
+      this.as.user?.subscribe({
+        next: (user) => {
+          this.userToEdit = user;
+          this.userForm.controls['email'].setValue(this.userToEdit.email ?? null);
+          this.userForm.controls['name'].setValue(user.name);
+          this.userForm.controls['surname'].setValue(user.surname);
+          this.userForm.controls['phone'].setValue(user.phone ?? null);
+          this.userForm.controls['birthdate'].setValue(user.birthDate ?? null);
+        }
+      });
+      console.log(this.userToEdit);
+    }
   }
+
   onSubmit() {
     throw new Error('Method not implemented.');
   }

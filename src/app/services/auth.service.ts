@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../environment/environment';
 import { User } from '../models/user.model';
 
@@ -15,7 +15,7 @@ export class AuthService {
 
   isAdmin: boolean = true;
   isLogged: boolean = false;
-  user: User | undefined;
+  user: BehaviorSubject<User> = new BehaviorSubject<User>({name: '', surname: '', role: ''});
 
   register(user: User): Observable<any> {
     return this.http.post(`${environment.apiUrl}/register`, user);
@@ -36,11 +36,11 @@ export class AuthService {
       }
     })
   }
+
   getUser(id: string) {
     return this.http.get<User[]>(`${environment.apiUrl}/ApplicationUser?$filter=id eq '${id}'`).subscribe({
       next: (response) => {
-        this.user = response[0];
-        console.log(this.user)
+        this.user?.next(response[0]);
         this.isLogged = true
       },
       error: (error) => {

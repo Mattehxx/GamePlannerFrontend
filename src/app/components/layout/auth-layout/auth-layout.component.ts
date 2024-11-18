@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { DashboardService } from '../../../services/dashboard.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { GeneralService } from '../../../services/general.service';
-import { AdminService } from '../../../services/admin.service';
+import { Router, RouterOutlet } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { AdminService } from '../../../services/admin.service';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-auth-layout',
@@ -16,7 +15,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class AuthLayoutComponent implements OnInit,OnDestroy{
 
-  constructor(public gn: GeneralService,private as: AdminService, private router: Router) {}
+  constructor(public gn: GeneralService,public as: AdminService, private router: Router) {}
 
   death$ = new Subject<void>();
 
