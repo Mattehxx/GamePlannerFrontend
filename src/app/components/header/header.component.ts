@@ -23,8 +23,8 @@ export class HeaderComponent implements OnInit {
   @ViewChild('overlayElement') overlayElement!: ElementRef;
 
   logOut() {
-    this.as.logout();
     this.toggleModal();
+    this.as.logout();
   }
   ngOnInit() {
     this.headerService.headerVisibility$.subscribe(isVisible => {

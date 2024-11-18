@@ -4,21 +4,41 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../environment/environment';
 import { User } from '../models/user.model';
+import { GeneralService } from './general.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router,private gn: GeneralService) {
   }
 
   isAdmin: boolean = true;
   isLogged: boolean = false;
   user: BehaviorSubject<User> = new BehaviorSubject<User>({ name: '', surname: '', role: '' });
 
-  register(user: User): Observable<any> {
-    return this.http.post(`${environment.apiUrl}api/register`, user);
+  register(user: User): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.post(`${environment.apiUrl}api/register`, user).subscribe({
+        next: (res) => {
+          resolve(res);
+          this.gn.confirmMessage = 'User registered successfully';
+          this.gn.setConfirm();
+        },
+        error: (error) => {
+          if (error.status === 400) {
+            this.gn.errorMessage = 'User with this email already exists';
+            this.gn.setError();
+          } else {
+            console.error(error);
+            this.gn.errorMessage = 'Server Error, please try again later';
+            this.gn.setError();
+          }
+          reject(error);
+        }
+      });
+    });
   }
 
   login(request: any) {
@@ -32,7 +52,14 @@ export class AuthService {
         this.getUser(response.userId);
       },
       error: (error) => {
-        console.error(error);
+        if (error.status === 401) {
+          this.gn.errorMessage = 'Invalid email or password';
+          this.gn.setError();
+        } else {
+          console.error(error);
+          this.gn.errorMessage = 'Server Error, please try again later';
+          this.gn.setError();
+        }
       }
     })
   }
@@ -72,7 +99,9 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.isLogged = false;
-    this.router.navigate(['/home'])
+    this.router.navigate(['/login']);
+    this.gn.confirmMessage = 'Logged out successfully';
+    this.gn.setConfirm();
   }
 
   isAuthenticated(): boolean {

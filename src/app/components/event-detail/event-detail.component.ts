@@ -44,6 +44,9 @@ export class EventDetailComponent implements OnInit{
   register(session: gameSessionModel) {
     if (this.auth.isLogged) {
       // Mostra la modale di caricamento
+      if(this.isSessionDetail){
+        this.closeSessionDetail();
+      }
       this.gn.isLoading = true;
         this.resService.createReservation(session.sessionId).then(() => {
           this.gn.isLoading = false;
@@ -73,6 +76,9 @@ export class EventDetailComponent implements OnInit{
   joinQueue(session: gameSessionModel) {
     if (this.auth.isLogged) {
       // Mostra la modale di caricamento
+      if(this.isSessionDetail){
+        this.closeSessionDetail();
+      }
       this.gn.isLoading = true;
         this.resService.createReservation(session.sessionId).then(() => {
           this.gn.isLoading = false;
