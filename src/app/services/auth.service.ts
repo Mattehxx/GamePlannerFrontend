@@ -18,11 +18,11 @@ export class AuthService {
   user: BehaviorSubject<User> = new BehaviorSubject<User>({ name: '', surname: '', role: '' });
 
   register(user: User): Observable<any> {
-    return this.http.post(`${environment.apiUrl}api//register`, user);
+    return this.http.post(`${environment.apiUrl}api/register`, user);
   }
 
   login(request: any) {
-    return this.http.post<any>(`${environment.apiUrl}api//login`, request).subscribe({
+    return this.http.post<any>(`${environment.apiUrl}api/login`, request).subscribe({
       next: (response) => {
         this.setToken(response.token);
         this.setRefreshToken(response.refreshToken);

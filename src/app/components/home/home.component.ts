@@ -12,123 +12,15 @@ import { EventService } from '../../services/event.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule,FormsModule,DurationPipe,RouterLink],
+  imports: [CommonModule, FormsModule, DurationPipe, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
 
   //#region Models
-  admin: User = {
-    userId: 'sfasf',
-    name: 'Yassine',
-    surname: 'admin',
-    email: '',
-    phone: '',
-    birthDate: new Date('1995-01-01'),
-    imgUrl: '',
-    level: 1,
-    isDeleted: false,
-    role: 'User'
-  }
-
-  reservation: reservationModel = {
-    reservationId: 1,
-    token: '',
-    isConfirmed: false,
-    isDeleted: false,
-    sessionId: 1,
-    userId: '1',
-  }
-
-  gameSession: gameSessionModel = {
-    sessionId: 1,
-    startDate: new Date('2023-11-01'),
-    endDate: new Date('2023-11-02'),
-    isDeleted: false,
-    masterId: '301',
-    eventId: 1,
-    master: this.admin,
-    seats: 4,
-    gameId: 101,
-    reservations: [this.reservation]
-  }
-
-
-  arrayEvent: EventModel[] = [
-    {
-      eventId: 1,
-      name: 'Event 1',
-      description: 'Description for Event 1',
-      isPublic: true,
-      imgUrl: '/assets/images/wallpaper2.jpg',
-      isDeleted: false,
-      adminId: 201,
-      admin: this.admin,
-      sessions: [this.gameSession]
-    },
-    {
-      eventId: 2,
-      name: 'Event 2',
-      description: 'Description for Event 2',
-      isPublic: false,
-      imgUrl: '/assets/images/wallpaper2.jpg',
-      isDeleted: false,
-      adminId: 202,
-      admin: this.admin,
-      sessions: [this.gameSession]
-    },
-    {
-      eventId: 3,
-      name: 'Event 3',
-      description: 'Description for Event 3',
-      isPublic: true,
-      imgUrl: '/assets/images/wallpaper2.jpg',
-      isDeleted: false,
-      adminId: 203,
-      sessions: [this.gameSession]
-    },
-    {
-      eventId: 4,
-      name: 'Event 4',
-      description: 'Description for Event 4',
-      isPublic: false,
-      imgUrl: '/assets/images/wallpaper2.jpg',
-      isDeleted: false,
-      adminId: 204,
-      sessions: [this.gameSession]
-    },
-    {
-      eventId: 4,
-      name: 'Event 4',
-      description: 'Description for Event 4',
-      isPublic: false,
-      imgUrl: '/assets/images/wallpaper2.jpg',
-      isDeleted: false,
-      adminId: 204,
-      sessions: [this.gameSession]
-    },
-    {
-      eventId: 4,
-      name: 'Event 4',
-      description: 'Description for Event 4',
-      imgUrl: '/assets/images/wallpaper2.jpg',
-      isPublic: false,
-      isDeleted: false,
-      adminId: 204
-    },
-    {
-      eventId: 4,
-      name: 'Event 4',
-      description: 'Description for Event 4',
-      isPublic: false,
-      imgUrl: '/assets/images/wallpaper2.jpg',
-      isDeleted: false,
-      adminId: 204
-    }
-  ];
-//#endregion
-  constructor(public router: Router,protected eventService : EventService){}
+  //#endregion
+  constructor(public router: Router, protected eventService: EventService) { }
 
   ngOnInit(): void {
     this.eventService.getUpcomingEvents();
@@ -172,7 +64,7 @@ export class HomeComponent implements OnInit{
     });
   }
 
-  navigateToEvent(){
+  navigateToEvent() {
     this.router.navigate(['/events']);
   }
 
