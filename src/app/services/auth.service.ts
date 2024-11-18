@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
-import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../environment/environment';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError, Observable, tap, throwError } from 'rxjs';
+import { environment } from '../environment/environment';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient,private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
-  isAdmin : boolean = true;
-  isLogged: boolean = true;
-
+  isAdmin: boolean = true;
+  isLogged: boolean = false;
+  user : User | undefined;
 
   register(user: User): Observable<any> {
     return this.http.post(`${environment.apiUrl}/register`, user);
@@ -27,20 +27,23 @@ export class AuthService {
         this.setRefreshToken(response.refreshToken);
         this.isLogged = true;
         this.router.navigate(['/home'])
+        this.getUser(response.userId);
       },
       error: (error) => {
         console.error(error);
       }
     })
   }
-
-  getUser() {
-    if (localStorage.getItem('user')) {
-      return JSON.parse(localStorage.getItem('user')!);
-    }
-    else {
-      return null;
-    }
+  getUser(id: string) {
+    return this.http.get<User[]>(`${environment.apiUrl}/ApplicationUser?$filter=id eq '${id}'`).subscribe({
+      next: (response) => {
+        this.user=response[0];
+        console.log(this.user)
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
   }
 
   setToken(token: string): void {
@@ -71,7 +74,7 @@ export class AuthService {
 
   refreshAccessToken(): Observable<any> {
     const refreshToken = this.getRefreshToken();
-    
+
     if (!refreshToken) {
       return throwError(() => new Error('No refresh token available'));
     }
