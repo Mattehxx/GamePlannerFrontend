@@ -31,7 +31,7 @@ export class AuthLayoutComponent implements OnInit,OnDestroy{
         this.isOverlay = false;
       }
     });
-    this.gn.isLOadingScreen$.pipe(takeUntil(this.death$)).subscribe((value) => {
+    this.gn.isLoadingScreen$.pipe(takeUntil(this.death$)).subscribe((value) => {
       if(value){
         this.isLoading = true;
       }

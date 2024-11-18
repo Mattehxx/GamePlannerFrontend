@@ -13,6 +13,8 @@ import { EventsComponent } from './components/events/events.component';
 import { EventDetailComponent } from './components/event-detail/event-detail.component';
 import { MobileComponent } from './components/mobile/mobile.component';
 import { EventDetailAdminComponent } from './components/admin/events-admin/eventdetail-admin/eventdetail-admin.component';
+import { ConfirmRegistrationComponent } from './components/confirm-registration/confirm-registration.component';
+import { RemoveRegistrationComponent } from './components/remove-registration/remove-registration.component';
 
 export const routes: Routes = [
     {
@@ -40,7 +42,9 @@ export const routes: Routes = [
               {path: 'events/:id', component: EventDetailAdminComponent },
               {path:'games', component:GamesAdminComponent}
             ]
-          }
+          },
+          { path: 'confirm', component: ConfirmRegistrationComponent},
+          {path: 'delete', component: RemoveRegistrationComponent}
         ]
       },
       { path: '**', redirectTo: 'home' }

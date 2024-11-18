@@ -1,0 +1,26 @@
+<div class="content">
+    <div class="modal-container" *ngIf="reservationDetail">
+        <div class="modal-header">
+            <div class="icon-container">
+                <i class="fa-solid fa-exclamation-circle"></i>
+            </div>
+            <div class="title">Cancel Registration</div>
+            <div class="subtitle">Are you sure you want to cancel your registration for this session?</div>
+        </div>
+        <div class="divisor"></div>
+        <div class="modal-body"  *ngIf="reservationDetail.session" >
+            <div class="session">
+                <i class="fa-regular fa-calendar"></i> 
+                {{ reservationDetail.session.startDate | date:'MMM dd' }} - {{ reservationDetail.session.startDate  | date:'MMM dd' }}
+            </div>
+            <div class="session" *ngIf="reservationDetail.session.game">
+                <i class="fa-solid fa-gamepad"></i> 
+                {{reservationDetail.session.game.name}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn cancel" (click)="onCancel()">Yes, Cancel Registration</button>
+            <button class="btn keep" (click)="onKeep()">No, Keep Registration</button>
+        </div>
+    </div>
+</div>
