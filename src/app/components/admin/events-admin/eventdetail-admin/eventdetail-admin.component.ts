@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { EventService } from '../../../../services/event.service';
+import { Router } from '@angular/router';
 import { EventModel } from '../../../../models/event.model';
+import { GameModel } from '../../../../models/game.model';
 import { gameSessionModel } from '../../../../models/gameSession.model';
 import { reservationModel } from '../../../../models/reservation.model';
 import { User } from '../../../../models/user.model';
-import { GameModel } from '../../../../models/game.model';
 import { DashboardService } from '../../../../services/dashboard.service';
+import { EventService } from '../../../../services/event.service';
 import { GeneralService } from '../../../../services/general.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-eventdetail-admin',
@@ -100,7 +100,6 @@ export class EventDetailAdminComponent implements OnInit {
     phone: '',
     birthDate: new Date('1995-01-01'),
     imgUrl: '/assets/images/pfp.jpg',
-    canBeMaster: true,
     level: 1,
     isDeleted: false,
     role: 'User'

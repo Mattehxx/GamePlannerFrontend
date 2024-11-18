@@ -15,7 +15,7 @@ export class AuthService {
 
   isAdmin: boolean = true;
   isLogged: boolean = false;
-  user: BehaviorSubject<User> = new BehaviorSubject<User>({name: '', surname: '', role: ''});
+  user: BehaviorSubject<User> = new BehaviorSubject<User>({ name: '', surname: '', role: '' });
 
   register(user: User): Observable<any> {
     return this.http.post(`${environment.apiUrl}/register`, user);
@@ -72,6 +72,7 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.isLogged = false;
+    this.router.navigate(['/home'])
   }
 
   isAuthenticated(): boolean {

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { GeneralService } from '../../../../services/general.service';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AdminService } from '../../../../services/admin.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { GeneralService } from '../../../../services/general.service';
 
 @Component({
   selector: 'app-modal-create-user',
@@ -27,7 +27,6 @@ export class ModalCreateUserComponent{
       password: ['', [Validators.required]],
       phone: ['', [Validators.required]],
       birthdate: ["", [Validators.required]],
-      canBeMaster: [false, [Validators.required]]
     });
   }
 

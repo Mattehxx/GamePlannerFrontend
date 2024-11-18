@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { EventModel } from '../../models/event.model';
 import { gameSessionModel } from '../../models/gameSession.model';
+import { reservationModel } from '../../models/reservation.model';
 import { User } from '../../models/user.model';
 import { DurationPipe } from "../../pipes/duration.pipe";
-import { HeaderService } from '../../services/header.service';
-import { Router } from '@angular/router';
 import { GeneralService } from '../../services/general.service';
-import { reservationModel } from '../../models/reservation.model';
+import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-events',
@@ -40,7 +40,6 @@ export class EventsComponent implements OnInit {
     phone: '',
     birthDate: new Date('1995-01-01'),
     imgUrl: '',
-    canBeMaster: true,
     level: 1,
     isDeleted: false,
     role: 'User'

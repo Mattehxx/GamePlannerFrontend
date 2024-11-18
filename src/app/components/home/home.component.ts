@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { EventModel } from '../../models/event.model';
-import { DurationPipe } from '../../pipes/duration.pipe';
-import { User } from '../../models/user.model';
-import { gameSessionModel } from '../../models/gameSession.model';
 import { Router, RouterLink } from '@angular/router';
+import { EventModel } from '../../models/event.model';
+import { gameSessionModel } from '../../models/gameSession.model';
 import { reservationModel } from '../../models/reservation.model';
+import { User } from '../../models/user.model';
+import { DurationPipe } from '../../pipes/duration.pipe';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +25,6 @@ export class HomeComponent{
     phone: '',
     birthDate: new Date('1995-01-01'),
     imgUrl: '',
-    canBeMaster: true,
     level: 1,
     isDeleted: false,
     role: 'User'
