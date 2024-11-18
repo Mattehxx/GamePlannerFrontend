@@ -1,4 +1,4 @@
 <div class="display">
     <router-outlet></router-outlet>
-    <div class="dark-overlay"*ngIf="isOverlayVisible"></div>
+    <div class="dark-overlay"*ngIf="isOverlayVisible" [class.isGameDeleteModal]="this.as.isDeleteGameModal"></div>
 </div>

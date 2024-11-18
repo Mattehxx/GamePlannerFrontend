@@ -18,7 +18,7 @@
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form-container">
     
             <div class="wrapper">
-                <label for="email"><i class="fa-regular fa-user"></i>Name</label>
+                <label for="name"><i class="fa-regular fa-user"></i>Name</label>
                 <div class="input-group">
                     <input type="text" formControlName="name" placeholder="Name" required
                         [class.input-error]="userForm.get('name')?.invalid && (userForm.get('name')?.touched || userForm.get('name')?.dirty)">

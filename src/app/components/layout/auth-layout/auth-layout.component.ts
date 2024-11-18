@@ -15,7 +15,7 @@ import { AdminService } from '../../../services/admin.service';
 })
 export class AuthLayoutComponent {
 
-  constructor(private as: AdminService, private router: Router) {}
+  constructor(public as: AdminService, private router: Router) {}
   get isOverlayVisible(): boolean {
     return this.as.isDeleteUserModal || this.as.isCreateUserModal || this.as.isGameDetail;
   }

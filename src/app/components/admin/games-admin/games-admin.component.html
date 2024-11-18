@@ -45,11 +45,11 @@
                 <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
                 <mat-cell *matCellDef="let game">
 
-                    @if(game.isDeleted){
-                    <div class="status-disabled"> <span>INACT </span></div>
+                    @if(game.isDisabled){
+                    <div class="status-disabled"> <span>DISABLED </span></div>
                     }
                     @else {
-                    <div class="status-enabled"> <span>ACT </span> </div>
+                    <div class="status-enabled"> <span>ENABLED</span> </div>
                     }
                 </mat-cell>
 
@@ -67,15 +67,198 @@
 
         </table>
 
-        <div class="modal-cont" [class.details-visible]="this.as.isGameDetail" >
+        <div class="modal-cont" [class.details-visible]="this.as.isGameDetail">
 
-            <div class="close-modal" [class.btn-visible]="this.as.isGameDetail" (click)="closeModal()">
-                <button><i class="fa-solid fa-x"></i></button>
+
+            <div class="game-details-cont" [class.details-visible]="this.as.isGameDetail" >
+
+                <div class="close-modal" [class.btn-visible]="this.as.isGameDetail" (click)="closeModal()">
+                    <button><i class="fa-solid fa-x"></i></button>
+                </div>
+
+                <div class="image-upload-container" *ngIf="this.editStates['imgUrl'].isEditMode">
+                    <div class="image-preview" *ngIf="selectedImage">
+                      <img [src]="selectedImage" alt="Preview" />
+                    </div>
+                  
+                    <form [formGroup]="form" class="input-cont img">
+                      <div class="wrapper">
+                        <div class="input-group">
+                          <label for="fileInput" class="file-label">
+                            Scegli un'immagine
+                            <input
+                              id="fileInput"
+                              type="file"
+                              accept="image/*"
+                              (change)="onFileSelected($event)"
+                              class="file-input"
+                            />
+                          </label>
+                        </div>
+                        <div class="button-group">
+                          <button 
+                            type="button" 
+                            (click)="saveImage()" 
+                            [disabled]="!selectedImage" 
+                            class="save-btn img"
+                          >
+                            <i class="fa-solid fa-check"></i> Salva
+                          </button>
+                          <button 
+                            type="button" 
+                            (click)="cancelImage()" 
+                            class="cancel-btn img"
+                          >
+                            <i class="fa-solid fa-x"></i> Annulla
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+
+                <div class="game-img-name-cont" *ngIf="!this.editStates['imgUrl'].isEditMode">
+
+
+                    <div class="game-img-cont" *ngIf="!editStates['imgUrl'].isEditMode"
+                        (mouseenter)="onMouseEnter('imgUrl') ; this.imgHover=true"
+                        (mouseleave)="onMouseLeave('imgUrl') ; this.imgHover=false">
+                        @if(this.selectedGame?.imgUrl === undefined){
+                        <div class="game-img"> <i class="fa-regular fa-user"></i></div>
+                        }
+                        @else if (this.imgHover) {
+                        <div class="imgHover" [ngStyle]="{ 'background-image': 'url(' + selectedGame?.imgUrl + ')' }"
+                            *ngIf="editStates['imgUrl'].editToggle" (click)="enableEdit(this.selectedGame, 'imgUrl')">
+
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </div>
+                        }
+                        @else{
+                            <div class="imgHover"  [ngStyle]="{ 'background-image': 'url(' + selectedGame?.imgUrl + ')' }">                  </div>
+                        }
+                    </div>
+
+                   
+
+
+                    <div class="game-name" *ngIf="!editStates['name'].isEditMode" (mouseenter)="onMouseEnter('name')"
+                        (mouseleave)="onMouseLeave('name')">
+                        <span>
+                            {{this.selectedGame?.name}}
+                        </span>
+
+                        <div *ngIf="editStates['name'].editToggle" (click)="enableEdit(this.selectedGame, 'name')"
+                            class="edit-btn">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </div>
+                    </div>
+                    <form class="input-cont" *ngIf="editStates['name'].isEditMode" [formGroup]="form">
+                        <div class="wrapper">
+                            <div class="input-group">
+                                <input type="text" formControlName="name" placeholder="Name" required
+                                    [class.input-error]="form.get('name')?.invalid && (form.get('name')?.touched || form.get('name')?.dirty)">
+                            </div>
+                            <div *ngIf="form.get('name')?.invalid && (form.get('name')?.touched || form.get('name')?.dirty)"
+                                class="display-errors">
+                                <small class="error" *ngIf="form.get('name')?.errors?.['required']">The title of the
+                                    game is required</small>
+                            </div>
+                        </div>
+
+                        <div (click)="saveProperty(this.selectedGame, 'name')" class="save-btn">
+                            <button [disabled]="form.get('name')?.pristine"
+                                [class.disabled]="form.get('name')?.pristine">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                            <button (click)="cancelEdit('name')">
+                                <i class="fa-solid fa-x"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+
+
+                <div class="description-cont" *ngIf="!editStates['description'].isEditMode &&!this.editStates['imgUrl'].isEditMode "
+                    (mouseenter)="onMouseEnter('description')" (mouseleave)="onMouseLeave('description')">
+                    <span>
+                        {{this.selectedGame?.description}}
+                    </span>
+
+                    <div *ngIf="editStates['description'].editToggle"
+                        (click)="enableEdit(this.selectedGame, 'description')" class="edit-btn">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </div>
+                </div>
+                <form class="input-cont description" *ngIf="editStates['description'].isEditMode && !this.editStates['imgUrl'].isEditMode" [formGroup]="form">
+                    <div class="wrapper description">
+                        <div class="input-group description">
+                            <textarea type="text" formControlName="description" placeholder="Description" required
+                                [class.input-error]="form.get('description')?.invalid && (form.get('description')?.touched || form.get('description')?.dirty)">
+                        </textarea>
+                        </div>
+                        <div *ngIf="form.get('description')?.invalid && (form.get('description')?.touched || form.get('description')?.dirty)"
+                            class="display-errors">
+                            <small class="error" *ngIf="form.get('description')?.errors?.['required']">The description
+                                of the game is
+                                required</small>
+                        </div>
+                    </div>
+
+                    <div (click)="saveProperty(this.selectedGame, 'description')" class="save-btn">
+                        <button [disabled]="form.get('description')?.pristine"
+                            [class.disabled]="form.get('description')?.pristine">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button (click)="cancelEdit('description')">
+                            <i class="fa-solid fa-x"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="status-cont" *ngIf="!this.editStates['imgUrl'].isEditMode">
+                    <span>Status</span>
+
+                    @if(selectedGame?.isDisabled){
+                    <div class="circle-status">
+                        <div class="circle-disable"></div>
+                        <div class="status-disabled"> <span>DISABLED</span></div>
+                    </div>
+                    }
+                    @else {
+                    <div class="circle-status">
+                        <div class="circle-enable"></div>
+                        <div class="status-enabled"> <span>ENABLED</span> </div>
+                    </div>
+                    }
+                </div>
+
+                <div class="btns-cont" *ngIf="!this.editStates['imgUrl'].isEditMode">
+                    @if(this.selectedGame?.isDisabled){
+                    <div class="disable" (click)="ableOrDisableGame()">Restore Game</div>
+                    }
+                    @else {
+                    <div class="disable" (click)="ableOrDisableGame()">Disable Game</div>
+                    }
+                    <div class="delete" (click)="toggleDeleteGameModal()">Delete Game</div>
+                </div>
             </div>
-            <div class="game-title" [style.backgroundImage]="'url(' + imageObject.backgroundUrl + ')'" [class.title-visible]="this.as.isGameDetail">
-               <div><span>{{this.selectedGame?.name}}</span></div> 
+        </div>
+
+        <div class="modal-sessions" *ngIf="this.as.isDeleteGameModal">
+            <div class="modal-content">
+                <div class="modal-title">
+                    Delete Game
+                </div>
+                <div class="modal-subtitle">
+                    Do you really want to delete this game?
+                </div>
+                <div class="modal-btns">
+                    <button class="delete">Delete</button>
+                    <button (click)="toggleDeleteGameModal()" class="close">Close</button>
+
+                </div>
             </div>
-            <div class="game-details-cont" [class.details-visible]="this.as.isGameDetail"></div>
         </div>
 
     </div>
