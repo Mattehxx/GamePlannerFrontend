@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MobileService } from '../../services/mobile.service';
 
 @Component({
@@ -9,12 +9,13 @@ import { MobileService } from '../../services/mobile.service';
   templateUrl: './mobile.component.html',
   styleUrl: './mobile.component.scss'
 })
-export class MobileComponent {
+export class MobileComponent implements OnInit {
 
-  constructor(private mobileService: MobileService) { }
+  constructor(public mobileService: MobileService) { }
 
-  downloadFile() {
+  ngOnInit(): void {
     this.mobileService.downloadFile();
   }
 
+ 
 }

@@ -16,7 +16,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class AuthLayoutComponent implements OnInit,OnDestroy{
 
-  constructor(public gn: GeneralService,private as: AdminService, private router: Router) {}
+  constructor(public gn: GeneralService,public as: AdminService, private router: Router) {}
 
   death$ = new Subject<void>();
 
@@ -32,7 +32,7 @@ export class AuthLayoutComponent implements OnInit,OnDestroy{
         this.isOverlay = false;
       }
     });
-    this.gn.isLOadingScreen$.pipe(takeUntil(this.death$)).subscribe((value) => {
+    this.gn.isLoadingScreen$.pipe(takeUntil(this.death$)).subscribe((value) => {
       if(value){
         this.isLoading = true;
       }

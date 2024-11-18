@@ -1,0 +1,30 @@
+<div class="content" *ngIf="!isLoading">
+    <div class="modal-container">
+        <div class="modal-header">
+            <div class="icon-container">
+                <i class="fa-solid fa-check-circle"></i>
+            </div>
+            <div class="title">Registration Confirmed!</div>
+            <div class="subtitle">You're all set for the adventure</div>
+        </div>
+        <div class="divisor"></div>
+        <div class="modal-body" *ngIf="sessionDetail">
+            <div class="session">
+                <i class="fa-regular fa-calendar"></i> 
+                {{ sessionDetail.startDate | date:'MMM dd' }} - {{ sessionDetail.endDate | date:'MMM dd' }}
+            </div>
+            <div class="session">
+                <i class="fa-regular fa-clock"></i> 
+                {{ sessionDetail.startDate | date:'h:mm a' }} - {{ sessionDetail.endDate | date:'h:mm a' }}
+            </div>
+            <div class="session">
+                <i class="fa-solid fa-gamepad"></i> 
+                {{ sessionDetail.game?.name }}
+            </div>
+            <div class="session">
+                <i class="fa-solid fa-users"></i> 
+                {{ confirmedReservationsCount }}/{{ sessionDetail.seats }} attendees
+            </div>
+        </div>
+    </div>
+</div>

@@ -150,7 +150,7 @@ export class EventDetailAdminComponent implements OnInit {
         isDeleted: false,
         adminId: 201,
         admin: this.admin,
-        gameSessions: [this.gameSession]
+        gameSessions: [this.gameSession,this.gameSession,this.gameSession]
       };
     } else {
       this.event = this.eventService.eventDetail;
@@ -352,9 +352,9 @@ export class EventDetailAdminComponent implements OnInit {
   saveChanges() {
     //chiamata api per salvare le modifiche
     //loading screen da usare nella chiamata api del servizio mentre si aspetta la risposta
-    this.gn.isLOadingScreen$.next(true);
+    this.gn.isLoadingScreen$.next(true);
     setTimeout(() => {
-      this.gn.isLOadingScreen$.next(false);
+      this.gn.isLoadingScreen$.next(false);
       this.router.navigate(['/dashboard-admin/events']);
     }, 1000);
   }

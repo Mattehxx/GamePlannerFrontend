@@ -10,11 +10,14 @@ export class MobileService {
 
     constructor(private http: HttpClient) { }
 
+    linkApk: string | null = null;
+
 
     downloadFile() {
-        return this.http.get(`${environment.apiUrl}/ApplicationUser/download-apk`).subscribe({
+        return this.http.get<any>(`${environment.apiUrl}/api/ApplicationUser/download-apk`).subscribe({
             next: (res) => {
                 console.log(res);
+                this.linkApk = res.message;
             },
             error: (err) => {
                 console.error(err);
