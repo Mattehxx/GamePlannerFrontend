@@ -42,21 +42,22 @@
         </div>        
         <div class="event-list"  #eventList (touchstart)="handleTouchStart($event)"
         (touchend)="handleTouchEnd($event)">
-            <div class="event-card" *ngFor="let event of arrayEvent">
+            <div class="event-card" *ngFor="let event of eventService.upcomingEvent$ | async">
                 <div class="event-image">
-                    <img [src]="event.imgUrl" alt="event image">
+                    <!-- <img [src]="event.imgUrl" alt="event image"> -->
+                    <img src="/assets/images/wallpaper2.jpg" alt="event image">
                 </div>
                 <div class="event-details">
-                    <div class="event-title">{{event.name}}</div>
+                    <div class="event-title">{{event.event.name}}</div>
                     <div class="event-game">Dungeons And Dragons</div>
-                    <div class="info" *ngIf="event.gameSessions">
-                        <div class="event-date"><i class="fa-regular fa-clock"></i>  {{event.gameSessions[0].startDate| date:'EEE, MMM d, y - HH:mm'}}</div>
-                        <div class="event-duration"><i class="fa-solid fa-hourglass-end"></i>     {{ event.gameSessions[0].startDate | duration: event.gameSessions[0].endDate }}
+                    <div class="info" *ngIf="event">
+                        <div class="event-date"><i class="fa-regular fa-clock"></i>  {{event.startDate}}</div>
+                        <div class="event-duration"><i class="fa-solid fa-hourglass-end"></i>     {{ event.startDate | duration: event.endDate }}
                         </div>
                     </div>
                     <div class="display-admin">
                         <img src="assets/images/pfp.jpg">
-                         <span *ngIf="event.gameSessions">{{event.gameSessions![0].master?.name}}</span> 
+                         <span *ngIf="event">{{event.master?.name}}</span> 
                     </div>
                 </div>
             </div>

@@ -13,4 +13,21 @@ export interface EventModel{
     adminId: number,
     admin?: User,
 }
+export interface EventSessionsModel{
+    sessionId : number,
+    startDate : Date,
+    endDate : Date,
+    seats : number,
+    master : User | undefined,
+    game :  {
+        name : string,
+        description : string,
+        imgUrl: string
+    },
+    event : {
+        eventId : number,
+        name: string,
+        description : string
+    }
+}
 

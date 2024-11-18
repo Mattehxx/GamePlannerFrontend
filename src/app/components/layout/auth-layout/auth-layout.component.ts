@@ -16,7 +16,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class AuthLayoutComponent implements OnInit,OnDestroy{
 
-  constructor(public gn: GeneralService,private as: AdminService, private router: Router) {}
+  constructor(public gn: GeneralService,public as: AdminService, private router: Router) {}
 
   death$ = new Subject<void>();
 

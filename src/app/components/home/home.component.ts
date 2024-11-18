@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EventModel } from '../../models/event.model';
 import { DurationPipe } from '../../pipes/duration.pipe';
@@ -7,6 +7,7 @@ import { User } from '../../models/user.model';
 import { gameSessionModel } from '../../models/gameSession.model';
 import { Router, RouterLink } from '@angular/router';
 import { reservationModel } from '../../models/reservation.model';
+import { EventService } from '../../services/event.service';
 
 @Component({
   selector: 'app-home',
@@ -15,8 +16,9 @@ import { reservationModel } from '../../models/reservation.model';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent{
+export class HomeComponent implements OnInit,OnDestroy{
 
+  //#region Models
   admin: User = {
     userId: 'sfasf',
     name: 'Yassine',
@@ -126,8 +128,14 @@ export class HomeComponent{
       adminId: 204
     }
   ];
-
-  constructor(public router: Router){}
+//#endregion
+  constructor(public router: Router,protected eventService : EventService){}
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
+  ngOnInit(): void {
+    this.eventService.getUpcomingEvents();
+  }
 
   @ViewChild('eventList') eventList!: ElementRef;
 

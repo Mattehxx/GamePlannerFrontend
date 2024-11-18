@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventModel } from '../models/event.model';
+import { EventModel, EventSessionsModel } from '../models/event.model';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -13,12 +13,14 @@ import { EventInputModel } from '../models/input-models/event.input.model';
 export class EventService {
 
   eventDetail: EventModel | undefined;
-  deletedEventDetail : EventModel | undefined;
+  deletedEventDetail: EventModel | undefined;
   odataQuery: string | undefined;
 
   private eventSubject = new BehaviorSubject<EventModel[]>([]);
+  private upcomingEventSubject = new BehaviorSubject<EventSessionsModel[]>([]);
   isModalOpen: boolean = false;
   event$ = this.eventSubject.asObservable();
+  upcomingEvent$ = this.upcomingEventSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -34,30 +36,40 @@ export class EventService {
           }
         });
   }
-  public post(model : EventInputModel){
-    this.http.post<EventModel>(`${environment.apiUrl}api/Event`,model).subscribe({
+  public post(model: EventInputModel) {
+    this.http.post<EventModel>(`${environment.apiUrl}api/Event`, model).subscribe({
       next: (res) => {
         const events = this.eventSubject.value;
         events.push(res);
         this.eventSubject.next(events);
-      },error : (msg) => {
+      }, error: (msg) => {
         console.error(msg);
       }
     });
   }
-  public delete(id : number){
+  public delete(id: number) {
     this.http.delete<EventModel>(`${environment.apiUrl}/api/Event/${id}`).subscribe({
       next: (res) => {
         this.deletedEventDetail = res;
-      },error: (msg)=>{
+      }, error: (msg) => {
         console.error(msg);
       }
     });
   }
-  public patch(){
-    
+  public patch() {
+
   }
-  
+
   //#endregion
 
+  //eventualmente spostare in session
+  public getUpcomingEvents() {
+    this.http.get<Array<EventSessionsModel>>(`${environment.apiUrl}api/Session/upcoming`).subscribe({
+      next: (res) => {
+        this.upcomingEventSubject.next(res);
+      }, error: (msg) => {
+        console.error(msg);
+      }
+    })
+  }
 }
