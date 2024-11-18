@@ -15,13 +15,12 @@ import { HeaderService } from '../../services/header.service';
 export class HeaderComponent implements OnInit {
 
   constructor(public headerService: HeaderService, public router: Router, private elementRef: ElementRef, public as: AuthService) { 
-  
+    
   }
 
   @ViewChild('modalElement') modalElement!: ElementRef;
   @ViewChild('overlayElement') overlayElement!: ElementRef;
 
-   //devo recuperare le info quando vengono emittate dal authservice, dopo la login
   logOut() {
     this.as.logout();
     this.toggleModal();

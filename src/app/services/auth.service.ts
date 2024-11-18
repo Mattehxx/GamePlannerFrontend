@@ -10,11 +10,12 @@ import { User } from '../models/user.model';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {
+  }
 
   isAdmin: boolean = true;
   isLogged: boolean = false;
-  user : User | undefined;
+  user: User | undefined;
 
   register(user: User): Observable<any> {
     return this.http.post(`${environment.apiUrl}/register`, user);
@@ -25,6 +26,7 @@ export class AuthService {
       next: (response) => {
         this.setToken(response.token);
         this.setRefreshToken(response.refreshToken);
+        this.setUserId(response.userId);
         this.isLogged = true;
         this.router.navigate(['/home'])
         this.getUser(response.userId);
@@ -37,8 +39,9 @@ export class AuthService {
   getUser(id: string) {
     return this.http.get<User[]>(`${environment.apiUrl}/ApplicationUser?$filter=id eq '${id}'`).subscribe({
       next: (response) => {
-        this.user=response[0];
+        this.user = response[0];
         console.log(this.user)
+        this.isLogged = true
       },
       error: (error) => {
         console.error(error);
@@ -52,6 +55,10 @@ export class AuthService {
 
   setRefreshToken(refreshToken: string): void {
     localStorage.setItem('refreshToken', refreshToken);
+  }
+
+  setUserId(id: string): void {
+    localStorage.setItem('userId', id);
   }
 
   getToken(): string | null {

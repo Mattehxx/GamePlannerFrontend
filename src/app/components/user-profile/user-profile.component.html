@@ -161,32 +161,37 @@
       <div class="radio-context">
         Would you like to be available as a Game Master?
       </div>
-      <div class="radio-input-group">
-        <div class="radio-input-label">
-          <input
-            type="radio"
-            id="masterYes"
-            formControlName="canBeMaster"
-            name="canBeMaster"
-            [value]="true"
-          />
-          <label for="masterYes" class="radio-label">Yes</label>
-        </div>
-        <div class="radio-input-label">
-          <input
-            type="radio"
-            id="masterNo"
-            formControlName="canBeMaster"
-            name="canBeMaster"
-            [value]="false"
-          />
-          <label for="masterNo" class="radio-label">No</label>
+      <div>
+        <div class="radio-input-group">
+            <div class="display-radios">
+                      <div class="radio-input-label">
+            <input
+              type="radio"
+              id="masterYes"
+              formControlName="canBeMaster"
+              name="canBeMaster"
+              [value]="true"
+            />
+            <label for="masterYes" class="radio-label">Yes</label>
+          </div>
+          <div class="radio-input-label">
+            <input
+              type="radio"
+              id="masterNo"
+              formControlName="canBeMaster"
+              name="canBeMaster"
+              [value]="false"
+            />
+            <label for="masterNo" class="radio-label">No</label>
+          </div>
+            </div>
+            <div class="game-name">Gioco</div> 
         </div>
       </div>
-    </div>
-    <div class="bottom-buttons">
-      <button class="btn-cancel">Cancel</button>
-      <button class="btn-save">Save Changes</button>
+      <div class="bottom-buttons">
+        <button class="btn-cancel">Cancel</button>
+        <button class="btn-save">Save Changes</button>
+      </div>
     </div>
   </div>
 </div>
