@@ -715,6 +715,130 @@
     }
 }
 
+.master-img img{
+    width: 5vh;
+    border-radius: 50%;
+}
+
+.master-infop{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1vh;
+}
+
+.master-name{
+    font-weight: 500;
+    font-size: 2vh;
+}
+
+.gamemaster{
+    color: var(--light-gray2);
+    font-size: 1.7vh;
+}
+
+.master-info{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.master{
+    display: flex;
+    flex-direction: row;
+    gap: 2vh;
+}
+
+.session-details{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2vh;
+    padding: 2vh;
+    border: 1px solid rgb(183, 183, 183);
+    border-radius: 1vh;
+    background: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.37);
+    width: 30vw;
+    min-width: 200px;
+    max-width: 400px; 
+}
+
+.session-detail-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+}
+
+.session-detail-title{
+    font-size: 2.5vh;
+    font-weight: 500;
+    margin-bottom: 4vh;
+}
+
+.session-detail-info{
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2vh;
+}
+
+.session-detail{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    font-size: 2vh;
+    font-weight: 500;
+
+    & i{
+        margin-right: 2vh;
+        color: var(--purple);
+    }
+}
+
+.master-session{
+    padding-top: 2vh;
+    width: 100%;
+    border-top: 1px solid rgb(201, 201, 201);
+    display: flex;
+    gap: 2vh;
+}
+
+.lowtop{
+    margin-top: 1vh !important;
+}
+
+.date{
+    align-items: center;
+}
+
+.light{
+    color: var(--light-gray2);
+    font-size: 2vh;
+    margin-left: 0.5em;
+}
+
+.light-font{
+    font-size: 2.2vh !important;
+    font-weight: 500 !important;
+}
+
+
 @media (max-width: 1200px) {
     .event-title {
         font-size: 3vh;

@@ -9,6 +9,7 @@ import { EventsComponent } from '../../events/events.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GeneralService } from '../../../services/general.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-main-layout',
@@ -20,11 +21,17 @@ import { GeneralService } from '../../../services/general.service';
 export class MainLayoutComponent implements OnInit{
 
   private lastScrollPosition = 0;
+
+  death$ = new Subject<void>();
+
+  isOverlay : boolean = false;
+  
   @Output() scrollEvent = new EventEmitter<boolean>();
 
   get isOverlayVisible(): boolean {
-    return this.headerService.filtersVisible || this.gn.isSessionModal || this.gn.isConfirmModal || this.gn.isSignModal || this.gn.isLoading;
+    return this.headerService.filtersVisible || this.gn.isSessionModal || this.gn.isConfirmModal || this.gn.isSignModal || this.gn.isLoading || this.headerService.isMobileMenuOpen || this.isOverlay;
   }
+  
   constructor(
     public headerService: HeaderService, 
     private ds: DashboardService,
@@ -34,10 +41,10 @@ export class MainLayoutComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-
     this.router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationEnd) {
         setTimeout(() => {
+          if(document.getElementsByClassName('main-content')[0])
           document.getElementsByClassName('main-content')[0].scrollTo(0, 0);
           this.headerService.updateHeaderVisibility(true);
         }, 0);
@@ -64,6 +71,15 @@ export class MainLayoutComponent implements OnInit{
         this.lastScrollPosition = currentScroll;
       });
     }    
+
+    this.gn.isOverlayOn$.pipe(takeUntil(this.death$)).subscribe((value) => {
+      if(value){
+        this.isOverlay = true;
+      }
+      else{
+        this.isOverlay = false;
+      }
+    });
    
   }
 

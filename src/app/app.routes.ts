@@ -11,6 +11,8 @@ import { EventsAdminComponent } from './components/admin/events-admin/events-adm
 import { GamesAdminComponent } from './components/admin/games-admin/games-admin.component';
 import { EventsComponent } from './components/events/events.component';
 import { EventDetailComponent } from './components/event-detail/event-detail.component';
+import { MobileComponent } from './components/mobile/mobile.component';
+import { EventDetailAdminComponent } from './components/admin/events-admin/eventdetail-admin/eventdetail-admin.component';
 
 export const routes: Routes = [
     {
@@ -21,7 +23,8 @@ export const routes: Routes = [
           { path: 'home', component: HomeComponent },
           { path: 'userSettings', component: UserProfileComponent},
           { path: 'events',component: EventsComponent},
-          { path: 'events/:id', component: EventDetailComponent }
+          { path: 'events/:id', component: EventDetailComponent },
+          { path: 'mobile', component: MobileComponent }
         ]
       },
       {
@@ -34,6 +37,7 @@ export const routes: Routes = [
             children:[
               {path:'users', component:UsersAdminComponent},
               {path:'events', component:EventsAdminComponent},
+              {path: 'events/:id', component: EventDetailAdminComponent },
               {path:'games', component:GamesAdminComponent}
             ]
           }

@@ -37,7 +37,7 @@ export class UsersAdminComponent implements AfterViewInit {
 
 
 
-  constructor(public ds: DashboardService, public headerService: HeaderService, public as: AdminService, private router : Router) { }
+  constructor(public ds: DashboardService, public headerService: HeaderService, public as: AdminService, private router : Router,private gn:GeneralService) { }
 
   selectedUser: User | undefined;
 
@@ -110,6 +110,7 @@ export class UsersAdminComponent implements AfterViewInit {
   }
 
   openCreateUserModal() {
+    this.gn.isOverlayOn$.next(true);
     this.as.isCreateUserModal = true
   }
 
