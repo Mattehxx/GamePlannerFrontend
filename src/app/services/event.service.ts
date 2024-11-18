@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EventModel, EventSessionsModel } from '../models/event.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../environment/environment';
@@ -48,7 +48,7 @@ export class EventService {
     });
   }
   public delete(id: number) {
-    this.http.delete<EventModel>(`${environment.apiUrl}/api/Event/${id}`).subscribe({
+    this.http.delete<EventModel>(`${environment.apiUrl}api/Event/${id}`).subscribe({
       next: (res) => {
         this.deletedEventDetail = res;
       }, error: (msg) => {
@@ -59,6 +59,36 @@ export class EventService {
   public patch() {
 
   }
+
+  getEventCount(): Observable<number> {
+    return this.http.get<any>(`${environment.apiUrl}odata/Event?$count=true`).pipe(
+      map(response => response['@odata.count'])
+    );
+  }
+
+  
+  getPagination(skip: number = 0, top: number = 10) {
+    const query = `${environment.apiUrl}odata/Event?$count=true&$skip=${skip}&$top=${top}`;
+    const expandedQuery = `${query}&$expand=Sessions($expand=Game,Reservations)`;
+    return this.http.get<ODataResponse<EventModel>>(expandedQuery).pipe(
+      map((res: ODataResponse<EventModel>) => {
+        this.eventSubject.next(res.value);
+        return res;
+      })
+    );
+  }
+
+  filterEventsByName(name: string, skip: number = 0, top: number = 10): Observable<ODataResponse<EventModel>> {
+    const query = `${environment.apiUrl}odata/Event?$filter=contains(tolower(name),'${name.toLowerCase()}')&$skip=${skip}&$top=${top}`;
+    const expandedQuery = `${query}&$expand=Sessions($expand=Game,Reservations)`;
+    return this.http.get<ODataResponse<EventModel>>(expandedQuery).pipe(
+      map((res: ODataResponse<EventModel>) => {
+        this.eventSubject.next(res.value);
+        return res;
+      })
+    );
+  }
+  
 
   //#endregion
 

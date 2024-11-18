@@ -149,7 +149,7 @@ export class EventDetailAdminComponent implements OnInit {
         isDeleted: false,
         adminId: 201,
         admin: this.admin,
-        gameSessions: [this.gameSession,this.gameSession,this.gameSession]
+        sessions: [this.gameSession,this.gameSession,this.gameSession]
       };
     } else {
       this.event = this.eventService.eventDetail;
@@ -337,7 +337,7 @@ export class EventDetailAdminComponent implements OnInit {
   }
 
   deleteSession() {
-    this.event!.gameSessions = this.event!.gameSessions!.filter(session => session.sessionId !== this.sessionId);
+    this.event!.sessions = this.event!.sessions!.filter(session => session.sessionId !== this.sessionId);
     this.isDeleteModalSession = false;
     this.sessionId = 0;
     this.gn.isOverlayOn$.next(false);

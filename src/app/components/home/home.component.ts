@@ -16,7 +16,7 @@ import { EventService } from '../../services/event.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit,OnDestroy{
+export class HomeComponent implements OnInit{
 
   //#region Models
   admin: User = {
@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit,OnDestroy{
       isDeleted: false,
       adminId: 201,
       admin: this.admin,
-      gameSessions: [this.gameSession]
+      sessions: [this.gameSession]
     },
     {
       eventId: 2,
@@ -76,7 +76,7 @@ export class HomeComponent implements OnInit,OnDestroy{
       isDeleted: false,
       adminId: 202,
       admin: this.admin,
-      gameSessions: [this.gameSession]
+      sessions: [this.gameSession]
     },
     {
       eventId: 3,
@@ -86,7 +86,7 @@ export class HomeComponent implements OnInit,OnDestroy{
       imgUrl: '/assets/images/wallpaper2.jpg',
       isDeleted: false,
       adminId: 203,
-      gameSessions: [this.gameSession]
+      sessions: [this.gameSession]
     },
     {
       eventId: 4,
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit,OnDestroy{
       imgUrl: '/assets/images/wallpaper2.jpg',
       isDeleted: false,
       adminId: 204,
-      gameSessions: [this.gameSession]
+      sessions: [this.gameSession]
     },
     {
       eventId: 4,
@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit,OnDestroy{
       imgUrl: '/assets/images/wallpaper2.jpg',
       isDeleted: false,
       adminId: 204,
-      gameSessions: [this.gameSession]
+      sessions: [this.gameSession]
     },
     {
       eventId: 4,
@@ -129,9 +129,7 @@ export class HomeComponent implements OnInit,OnDestroy{
   ];
 //#endregion
   constructor(public router: Router,protected eventService : EventService){}
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
-  }
+
   ngOnInit(): void {
     this.eventService.getUpcomingEvents();
   }

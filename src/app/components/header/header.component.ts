@@ -5,6 +5,7 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { HeaderService } from '../../services/header.service';
+import { GeneralService } from '../../services/general.service';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +17,7 @@ import { HeaderService } from '../../services/header.service';
 export class HeaderComponent implements OnInit {
 
   user: User | undefined
-  constructor(public headerService: HeaderService, public router: Router, private elementRef: ElementRef, public as: AuthService) { }
+  constructor(public headerService: HeaderService, public router: Router, private elementRef: ElementRef, public as: AuthService,private gn: GeneralService) { }
 
   @ViewChild('modalElement') modalElement!: ElementRef;
   @ViewChild('overlayElement') overlayElement!: ElementRef;
@@ -46,16 +47,19 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleModal() {
-    this.headerService.isModalOpen = !this.headerService.isModalOpen
+    this.headerService.isModalOpen = !this.headerService.isModalOpen;
+    this.gn.isOverlayOn$.next(this.headerService.isModalOpen);
   }
 
   closeModal() {
     this.headerService.isModalOpen = false;
+    this.gn.isOverlayOn$.next(false);
   }
 
   navigateAndClose() {
-    this.router.navigate(['userSettings']);
     this.headerService.isModalOpen = false;
+    this.gn.isOverlayOn$.next(false);
+    this.router.navigate(['userSettings']);
   }
 
   @HostListener('document:click', ['$event'])
@@ -89,12 +93,31 @@ export class HeaderComponent implements OnInit {
         if (this.headerService.isMobileMenuOpen && !clickedInsideHeader && !clickedInsideMobileMenu) {
 
           this.headerService.isMobileMenuOpen = false;
+          this.gn.isOverlayOn$.next(false);
 
         }
       }, 0);
     }
 
   }
+
+  mobileMenu(status: boolean) {
+    if(status){
+      this.headerService.isMobileMenuOpen = true;
+      this.gn.isOverlayOn$.next(true);
+    }
+    else{
+      this.headerService.isMobileMenuOpen = false;
+      this.gn.isOverlayOn$.next(false);
+    }
+  }
+
+  navigateDashboardAdmin() {
+    this.headerService.isMobileMenuOpen = false;
+    this.gn.isOverlayOn$.next(false);
+    this.router.navigate(['dashboard-admin']);
+  }
+
 
 
 

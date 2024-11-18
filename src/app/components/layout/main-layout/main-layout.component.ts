@@ -29,7 +29,7 @@ export class MainLayoutComponent implements OnInit{
   @Output() scrollEvent = new EventEmitter<boolean>();
 
   get isOverlayVisible(): boolean {
-    return this.headerService.filtersVisible || this.gn.isSessionModal || this.gn.isConfirmModal || this.gn.isSignModal || this.gn.isLoading || this.headerService.isMobileMenuOpen || this.isOverlay;
+    return this.headerService.filtersVisible || this.gn.isConfirmModal || this.gn.isSignModal || this.gn.isLoading  || this.isOverlay;
   }
   
   constructor(

@@ -18,11 +18,11 @@ export class AuthService {
   user: BehaviorSubject<User> = new BehaviorSubject<User>({ name: '', surname: '', role: '' });
 
   register(user: User): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/register`, user);
+    return this.http.post(`${environment.apiUrl}api//register`, user);
   }
 
   login(request: any) {
-    return this.http.post<any>(`${environment.apiUrl}/login`, request).subscribe({
+    return this.http.post<any>(`${environment.apiUrl}api//login`, request).subscribe({
       next: (response) => {
         this.setToken(response.token);
         this.setRefreshToken(response.refreshToken);
@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   getUser(id: string) {
-    return this.http.get<User[]>(`${environment.apiUrl}/ApplicationUser?$filter=id eq '${id}'`).subscribe({
+    return this.http.get<User[]>(`${environment.apiUrl}api/ApplicationUser?$filter=id eq '${id}'`).subscribe({
       next: (response) => {
         this.user?.next(response[0]);
         this.isLogged = true
@@ -87,7 +87,7 @@ export class AuthService {
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return this.http.post<any>(`${environment.apiUrl}/refresh`, { refreshToken })
+    return this.http.post<any>(`${environment.apiUrl}api/refresh`, { refreshToken })
       .pipe(
         tap(response => {
           this.setToken(response.token);

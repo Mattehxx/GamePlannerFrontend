@@ -8,6 +8,7 @@ import { reservationModel } from '../../models/reservation.model';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { GeneralService } from '../../services/general.service';
+import { ReservationService } from '../../services/reservation.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -18,92 +19,84 @@ import { GeneralService } from '../../services/general.service';
 })
 export class EventDetailComponent implements OnInit{
 
-  constructor(public gn: GeneralService,public auth: AuthService,private router: Router) { }
+  constructor(public gn: GeneralService,public auth: AuthService,private router: Router,private resService: ReservationService) { }
 
   event : EventModel | undefined;
 
   sessionDetail: gameSessionModel | undefined;
   isSessionDetail: boolean = false;
 
-  admin: User = {
-    userId: 'sfasf',
-    name: 'Yassine',
-    surname: 'admin',
-    email: '',
-    phone: '',
-    birthDate: new Date('1995-01-01'),
-    imgUrl: '',
-    level: 1,
-    isDeleted: false,
-    role: 'User'
-  }
-
-  reservation: reservationModel = {
-    reservationId: 1,
-    token: '',
-    isConfirmed: false,
-    isDeleted: false,
-    sessionId: 1,
-    userId: '1',
-  }
-
-  gameSession: gameSessionModel = {
-    sessionId: 1,
-    startDate: new Date('2023-11-01'),
-    endDate: new Date('2023-11-02'),
-    isDeleted: false,
-    masterId: '301',
-    eventId: 1,
-    master: this.admin,
-    seats: 4,
-    gameId: 101,
-    reservations: [this.reservation]
-  }
-
+  userId: string | null = null;
 
   ngOnInit() {
-    if(this.gn.eventDetail == undefined){ //provvisorio
-      this.event= {
-        eventId: 4,
-        name: 'The Wild Beyond the Witchlight',
-        description: "Join us for an exciting adventure in the Feywild! In this campaign, we'll explore the whimsical and sometimes dangerous realm of the Feywild, encountering magical creatures, solving riddles, and unraveling the mysteries of the Wild Beyond the Witchlight.",
-        isPublic: false,
-        imgUrl: '/assets/images/wallpaper2.jpg',
-        isDeleted: false,
-        adminId: 204,
-        gameSessions: [this.gameSession,this.gameSession,this.gameSession,this.gameSession,this.gameSession,this.gameSession]
-      }
+    this.userId = localStorage.getItem('userId');
+    if(this.gn.eventDetail == undefined){ 
+      this.router.navigate(['events']);
+    } else {
+      this.gn.eventDetail.sessions = this.gn.eventDetail.sessions?.sort((a, b) => {
+      return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+      });
     }
-    else
-       this.event= this.gn.eventDetail;
+    this.event= this.gn.eventDetail;
+
   }
 
-  register() {
+  register(session: gameSessionModel) {
     if (this.auth.isLogged) {
       // Mostra la modale di caricamento
       this.gn.isLoading = true;
-
+        this.resService.createReservation(session.sessionId).then(() => {
+          this.gn.isLoading = false;
+          this.gn.isConfirmModal = true;
+        }).catch(() => {
+          this.gn.isLoading = false;
+        });
       // Simula una chiamata con un ritardo di 2 secondi
-      setTimeout(() => {
-        // Nasconde la modale di caricamento
-        this.gn.isLoading = false;
+      // setTimeout(() => {
+      //   // Nasconde la modale di caricamento
+      //   this.gn.isLoading = false;
 
-        // Simula un risultato positivo e mostra la modale di conferma
-        this.gn.isConfirmModal = true;
+      //   // Simula un risultato positivo e mostra la modale di conferma
+      //   this.gn.isConfirmModal = true;
 
-        // Nasconde la modale di conferma dopo 3 secondi
-        // setTimeout(() => {
-        //   this.gn.isConfirmModal = false;
-        // }, 3000);
-      }, 1500);
+      //   // Nasconde la modale di conferma dopo 3 secondi
+      //   // setTimeout(() => {
+      //   //   this.gn.isConfirmModal = false;
+      //   // }, 3000);
+      // }, 1500);
     }
     else{
       this.gn.isSignModal = true;
     }
   }
 
-  joinQueue() {
+  joinQueue(session: gameSessionModel) {
+    if (this.auth.isLogged) {
+      // Mostra la modale di caricamento
+      this.gn.isLoading = true;
+        this.resService.createReservation(session.sessionId).then(() => {
+          this.gn.isLoading = false;
+          this.gn.isConfirmModal = true;
+        }).catch(() => {
+          this.gn.isLoading = false;
+        });
+      // Simula una chiamata con un ritardo di 2 secondi
+      // setTimeout(() => {
+      //   // Nasconde la modale di caricamento
+      //   this.gn.isLoading = false;
 
+      //   // Simula un risultato positivo e mostra la modale di conferma
+      //   this.gn.isConfirmModal = true;
+
+      //   // Nasconde la modale di conferma dopo 3 secondi
+      //   // setTimeout(() => {
+      //   //   this.gn.isConfirmModal = false;
+      //   // }, 3000);
+      // }, 1500);
+    }
+    else{
+      this.gn.isSignModal = true;
+    }
   }
 
   redirect(login: boolean) {
@@ -130,6 +123,21 @@ export class EventDetailComponent implements OnInit{
     this.isSessionDetail = false;
     this.gn.isOverlayOn$.next(false);
     this.sessionDetail = undefined;
+  }
+
+  checkSessionReservation(session: gameSessionModel) {
+    return session.reservations.some(reservation => reservation.userId === this.userId);
+  }
+
+  sessionModal(status: boolean) {
+    if(status){
+      this.gn.isSessionModal = true;
+      this.gn.isOverlayOn$.next(true);
+    }
+    else{
+      this.gn.isSessionModal = false;
+      this.gn.isOverlayOn$.next(false);
+    }
   }
 
 }

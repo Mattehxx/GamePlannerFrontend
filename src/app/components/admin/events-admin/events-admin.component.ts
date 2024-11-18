@@ -84,7 +84,7 @@ export class EventsAdminComponent implements AfterViewInit {
       isDeleted: false,
       adminId: 201,
       admin: this.admin,
-      gameSessions: [this.gameSession]
+      sessions: [this.gameSession]
     },  
     {
       eventId: 1,
@@ -95,7 +95,7 @@ export class EventsAdminComponent implements AfterViewInit {
       isDeleted: true,
       adminId: 201,
       admin: this.admin,
-      gameSessions: [this.gameSession]
+      sessions: [this.gameSession]
     },  
     {
       eventId: 1,
@@ -106,7 +106,7 @@ export class EventsAdminComponent implements AfterViewInit {
       isDeleted: false,
       adminId: 201,
       admin: this.admin,
-      gameSessions: [this.gameSession]
+      sessions: [this.gameSession]
     },    
   ]);
 
