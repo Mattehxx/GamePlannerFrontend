@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { EventModel } from '../../models/event.model';
-import { GeneralService } from '../../services/general.service';
-import { gameSessionModel } from '../../models/gameSession.model';
-import { User } from '../../models/user.model';
-import { reservationModel } from '../../models/reservation.model';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { EventModel } from '../../models/event.model';
+import { gameSessionModel } from '../../models/gameSession.model';
+import { reservationModel } from '../../models/reservation.model';
+import { User } from '../../models/user.model';
+import { AuthService } from '../../services/auth.service';
+import { GeneralService } from '../../services/general.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -33,7 +33,6 @@ export class EventDetailComponent implements OnInit{
     phone: '',
     birthDate: new Date('1995-01-01'),
     imgUrl: '',
-    canBeMaster: true,
     level: 1,
     isDeleted: false,
     role: 'User'

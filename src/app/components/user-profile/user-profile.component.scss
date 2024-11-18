@@ -206,7 +206,13 @@ small {
 .radio-input-group {
   display: flex;
   align-items: center;
+  justify-content: center;
+}
 
+.display-radios{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .radio-input-label {

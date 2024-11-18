@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { EventModel } from '../../models/event.model';
-import { DurationPipe } from '../../pipes/duration.pipe';
-import { User } from '../../models/user.model';
-import { gameSessionModel } from '../../models/gameSession.model';
 import { Router, RouterLink } from '@angular/router';
+import { EventModel } from '../../models/event.model';
+import { gameSessionModel } from '../../models/gameSession.model';
 import { reservationModel } from '../../models/reservation.model';
+import { User } from '../../models/user.model';
+import { DurationPipe } from '../../pipes/duration.pipe';
 import { EventService } from '../../services/event.service';
 
 @Component({
@@ -27,7 +27,6 @@ export class HomeComponent implements OnInit,OnDestroy{
     phone: '',
     birthDate: new Date('1995-01-01'),
     imgUrl: '',
-    canBeMaster: true,
     level: 1,
     isDeleted: false,
     role: 'User'

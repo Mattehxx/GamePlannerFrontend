@@ -1,26 +1,27 @@
-import { Component } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { HeaderComponent } from "../header/header.component";
-import { FooterComponent } from "../footer/footer.component";
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { GeneralService } from '../../services/general.service';
+import { RouterOutlet } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,CommonModule,FormsModule],
+  imports: [RouterOutlet, CommonModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent{
 
-  constructor(private router: Router,private gn: GeneralService) {
-    this.router.events.subscribe(event => {
-      if(this.gn.isOverlayOn$.value){
-        this.gn.isOverlayOn$.next(false);
-      }
-    });
+  userId: string | null = null;
+
+  constructor(private as: AuthService) {
+    this.userId = localStorage.getItem("userId");
+     console.log(this.userId);
+    if (this.userId) {
+      this.as.isLogged = true;
+      this.as.getUser(this.userId)
+    }
   }
 
 }

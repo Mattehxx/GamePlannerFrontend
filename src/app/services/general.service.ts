@@ -22,6 +22,6 @@ export class GeneralService {
   isCreateUserModal : boolean = false;
 
   isOverlayOn$ = new BehaviorSubject<boolean>(false);
-  isLOadingScreen$ = new BehaviorSubject<boolean>(false);
+  isLoadingScreen$ = new BehaviorSubject<boolean>(false);
 
 }

@@ -1,49 +1,98 @@
 <div class="login-container">
-    <div class="login-box">
-      <div class="top">
-        <div class="back-home" (click)="this.router.navigate(['/home'])">
-          <i class="fa-solid fa-arrow-left"></i>
-    </div>
+  <div class="login-box">
+    <div class="top">
+      <div class="back-home" (click)="this.router.navigate(['/home'])">
+        <i class="fa-solid fa-arrow-left"></i>
+      </div>
       <div class="logo" (click)="this.router.navigate(['/home'])">
         <i class="fa-solid fa-dice-d20"></i>
         <h1>Game Planner</h1>
       </div>
-      </div>
-      <div class="login-content">
-        <h2 class="title">Welcome Back</h2>
-        <div class="subtitle">Welcome Back, Please enter Your Details</div>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
-          <div class="cont-input-error">
-
-            <div class="input-group">
-              <input type="email" formControlName="email" placeholder="Email" required [class.input-error]="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)">
-              <i class="fa-solid fa-envelope"></i>
-            </div>
-            <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)" class="display-errors">
-              <small class="error" *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</small>
-              <small class="error" *ngIf="loginForm.get('email')?.errors?.['email']">The email format is incorrect.</small>
-            </div>
-          </div>
+    </div>
+    <div class="login-content">
+      <h2 class="title">Welcome Back</h2>
+      <div class="subtitle">Welcome Back, Please enter Your Details</div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="cont-input-error">
           <div class="input-group">
-            <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Password" required [class.input-error]="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)">
-            <i class="fa-solid" [class.fa-eye]="hidePassword" [class.fa-eye-slash]="!hidePassword" (click)="togglePasswordVisibility()" style="cursor: pointer;"></i>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="Email"
+              required
+              [class.input-error]="
+                loginForm.get('email')?.invalid &&
+                (loginForm.get('email')?.touched ||
+                  loginForm.get('email')?.dirty)
+              "
+            />
+            <i class="fa-solid fa-envelope"></i>
           </div>
-          <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)" class="display-errors">
-            <small class="error" *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</small>
+          <div
+            *ngIf="
+              loginForm.get('email')?.invalid &&
+              (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)
+            "
+            class="display-errors"
+          >
+            <small
+              class="error"
+              *ngIf="loginForm.get('email')?.errors?.['required']"
+              >Email is required</small
+            >
+            <small
+              class="error"
+              *ngIf="loginForm.get('email')?.errors?.['email']"
+              >The email format is incorrect.</small
+            >
           </div>
-          <button type="submit" class="login-button" (click)="onSubmit()">
-            Log In
-          </button>
-        </form>
-        <div class="divider">
         </div>
-  
-        <p class="register-link">
-          Don't have an account? <a href="/register">Register </a>
-        </p>
-      </div>
+        <div class="input-group">
+          <input
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Password"
+            required
+            [class.input-error]="
+              loginForm.get('password')?.invalid &&
+              (loginForm.get('password')?.touched ||
+                loginForm.get('password')?.dirty)
+            "
+          />
+          <i
+            class="fa-solid"
+            [class.fa-eye]="hidePassword"
+            [class.fa-eye-slash]="!hidePassword"
+            (click)="togglePasswordVisibility()"
+            style="cursor: pointer"
+          ></i>
+        </div>
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            (loginForm.get('password')?.touched ||
+              loginForm.get('password')?.dirty)
+          "
+          class="display-errors"
+        >
+          <small
+            class="error"
+            *ngIf="loginForm.get('password')?.errors?.['required']"
+            >Password is required</small
+          >
+        </div>
+        <button type="submit" class="login-button" (click)="onSubmit()">
+          Log In
+        </button>
+      </form>
+      <div class="divider"></div>
+
+      <p class="register-link">
+        Don't have an account? <a href="/register">Register </a>
+      </p>
     </div>
-    <div class="right-img">
-      <img src="/assets/images/logo.png">
-    </div>
-    </div>
+  </div>
+  <div class="right-img">
+    <img src="/assets/images/logo.png" />
+  </div>
+</div>

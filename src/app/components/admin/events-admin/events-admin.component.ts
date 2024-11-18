@@ -1,20 +1,20 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { DashboardService } from '../../../services/dashboard.service';
 import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
-import { EventModel } from '../../../models/event.model';
-import { reservationModel } from '../../../models/reservation.model';
-import { gameSessionModel } from '../../../models/gameSession.model';
-import { User } from '../../../models/user.model';
-import { EventService } from '../../../services/event.service';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { EventModel } from '../../../models/event.model';
+import { gameSessionModel } from '../../../models/gameSession.model';
+import { reservationModel } from '../../../models/reservation.model';
+import { User } from '../../../models/user.model';
+import { DashboardService } from '../../../services/dashboard.service';
+import { EventService } from '../../../services/event.service';
 
 @Component({
   selector: 'app-events-admin',
@@ -45,7 +45,6 @@ export class EventsAdminComponent implements AfterViewInit {
     phone: '',
     birthDate: new Date('1995-01-01'),
     imgUrl: '/assets/images/pfp.jpg',
-    canBeMaster: true,
     level: 1,
     isDeleted: false,
     role: 'User'

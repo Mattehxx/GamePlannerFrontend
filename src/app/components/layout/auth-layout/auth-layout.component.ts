@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { DashboardService } from '../../../services/dashboard.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { GeneralService } from '../../../services/general.service';
-import { AdminService } from '../../../services/admin.service';
+import { Router, RouterOutlet } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { AdminService } from '../../../services/admin.service';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-auth-layout',
@@ -32,7 +31,7 @@ export class AuthLayoutComponent implements OnInit,OnDestroy{
         this.isOverlay = false;
       }
     });
-    this.gn.isLOadingScreen$.pipe(takeUntil(this.death$)).subscribe((value) => {
+    this.gn.isLoadingScreen$.pipe(takeUntil(this.death$)).subscribe((value) => {
       if(value){
         this.isLoading = true;
       }
