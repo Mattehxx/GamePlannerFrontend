@@ -57,15 +57,17 @@
                     </div>
                     @if (event.master){
                         <div class="display-admin">
-                            <img src="assets/images/pfp.jpg">
+                            @if(event.master.imgUrl){
+                                <img [src]="event.master.imgUrl">
+                            }
+                            @else {
+                                <div class="user-icon" >
+                                    <i class="fa-regular fa-user"></i>
+                                </div>   
+                            }
                              <span *ngIf="event">{{event.master!.name}}</span> 
                         </div>
                     }@else {
-                        <div class="display-admin">
-                            <div class="user-icon" >
-                                <i class="fa-regular fa-user"></i>
-                            </div>   
-                        </div>
                    }
                 </div>
             </div>
