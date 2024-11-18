@@ -25,7 +25,7 @@ export class EventService {
   constructor(private http: HttpClient, private router: Router) { }
 
   //#region CRUD
-  public get() {
+  get() {
     this.http.get<ODataResponse<EventModel>>(`${environment.apiUrl}odata/Event
       ${this.odataQuery && this.odataQuery.trim() != ""
         ? `/${this.odataQuery}` : ""}`).subscribe({
@@ -36,7 +36,7 @@ export class EventService {
           }
         });
   }
-  public post(model: EventInputModel) {
+  post(model: EventInputModel) {
     this.http.post<EventModel>(`${environment.apiUrl}api/Event`, model).subscribe({
       next: (res) => {
         const events = this.eventSubject.value;
@@ -47,7 +47,7 @@ export class EventService {
       }
     });
   }
-  public delete(id: number) {
+  delete(id: number) {
     this.http.delete<EventModel>(`${environment.apiUrl}/api/Event/${id}`).subscribe({
       next: (res) => {
         this.deletedEventDetail = res;
@@ -56,14 +56,14 @@ export class EventService {
       }
     });
   }
-  public patch() {
+  patch() {
 
   }
 
   //#endregion
 
   //eventualmente spostare in session
-  public getUpcomingEvents() {
+  getUpcomingEvents() {
     this.http.get<Array<EventSessionsModel>>(`${environment.apiUrl}api/Session/upcoming`).subscribe({
       next: (res) => {
         this.upcomingEventSubject.next(res);
