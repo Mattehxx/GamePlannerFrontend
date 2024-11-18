@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterLink,RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -69,6 +69,23 @@ export class HeaderComponent implements OnInit {
       }, 100);
     }
 
+    if(this.headerService.isMobileMenuOpen){
+        
+        setTimeout(() => {
+          const clickedInsideHeader = this.elementRef.nativeElement.contains(event.target);
+    
+          const clickedInsideMobileMenu = this.elementRef.nativeElement.querySelector('.mobile-menu')?.contains(event.target);
+      
+          if (this.headerService.isMobileMenuOpen && !clickedInsideHeader && !clickedInsideMobileMenu) {
+      
+            this.headerService.isMobileMenuOpen = false;
+      
+          }
+        }, 0);
+    }
+
   }
+
+
 
 }

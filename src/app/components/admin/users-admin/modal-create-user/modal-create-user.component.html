@@ -1,4 +1,4 @@
-<div class="modal-create" *ngIf="this.gn.isCreateUserModal">
+<div class="modal-create" *ngIf="this.as.isCreateUserModal">
     <div class="modal-create-content">
         <div class="modal-create-title">
             Create User
@@ -81,25 +81,25 @@
                   
                 </div>
        
+                <div class="wrapper-radio">
+                    <!-- <label for="canBeMaster">Available as Game Master</label> -->
+                     <div class="radio-title"><i class="fa-solid fa-shield"></i> Game Master Status</div>
+                     <div class="radio-context">Would you like to be available as a Game Master?</div>
+                    <div class="radio-input-group">
+                        <div class="radio-input-label">
+                            <input type="radio" id="masterYes" formControlName="canBeMaster" name="canBeMaster" [value]="true">
+                            <label for="masterYes" class="radio-label">Yes</label>
+                          </div>
+                          <div class="radio-input-label">
+                            <input type="radio" id="masterNo" formControlName="canBeMaster"  name="canBeMaster"  [value]="false">
+                            <label for="masterNo" class="radio-label">No</label>
+                          </div>
+                    </div>
+                  
+                </div>
         
             </form>
         
-            <div class="wrapper-radio">
-                <!-- <label for="canBeMaster">Available as Game Master</label> -->
-                 <div class="radio-title"><i class="fa-solid fa-shield"></i> Game Master Status</div>
-                 <div class="radio-context">Would you like to be available as a Game Master?</div>
-                <div class="radio-input-group">
-                    <div class="radio-input-label">
-                        <input type="radio" id="masterYes" formControlName="canBeMaster" name="canBeMaster" [value]="true">
-                        <label for="masterYes" class="radio-label">Yes</label>
-                      </div>
-                      <div class="radio-input-label">
-                        <input type="radio" id="masterNo" formControlName="canBeMaster"  name="canBeMaster"  [value]="false">
-                        <label for="masterNo" class="radio-label">No</label>
-                      </div>
-                </div>
-              
-            </div>
             
         </div>
        

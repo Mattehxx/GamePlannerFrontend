@@ -7,7 +7,7 @@ export interface reservationModel {
     isConfirmed: boolean,
     isDeleted: boolean,
     sessionId: number,
-    userId: number,
+    userId: string,
     session?: gameSessionModel,
     user?: User
 }

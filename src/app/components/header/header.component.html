@@ -1,72 +1,141 @@
 <div class="header-container">
-  <div class="right-img" (click)="this.router.navigate(['home'])">
-    <img src="/assets/images/logo.png" />
-    <div class="logo-title">Game Planner</div>
-  </div>
-  @if (!this.as.isLogged) {
-  <div class="login-registration-cont">
-    <div
-      (click)="this.router.navigate(['login'])"
-      class="login-registration login"
-    >
-      Log In
-    </div>
-    <div
-      (click)="this.router.navigate(['register'])"
-      class="login-registration"
-    >
-      Sign Up
-    </div>
-  </div>
-  } @else {
-  <div class="user-icon" (click)="toggleModal()">
-    <i class="fa-regular fa-user"></i>
-  </div>
-  <div
-    *ngIf="this.headerService.isModalOpen"
-    #overlayElement
-    class="overlay"
-    (click)="closeModal()"
-  ></div>
-  <div
-    class="menu-container"
-    *ngIf="this.headerService.isModalOpen"
-    (click)="$event.stopPropagation()"
-  >
-    @if (this.as.user) {
-    <div class="img-name">
-      @if(this.as.user!.imgUrl=== undefined){
-      <div class="img-name-border"><i class="fa-regular fa-user"></i></div>
-      } @else {
-      <div>{{ this.as.user.imgUrl }}</div>
-      }
-      <div class="username-email">
-        <div class="username">
-          {{ this.as.user.name }} {{ this.as.user.surname }}
+    <div class="right-img" (click)="this.router.navigate(['home'])">
+        <img src="/assets/images/logo.png">
+        <div class="logo-title">
+            Game Planner
         </div>
-        <div class="email">{{ this.as.user.email }}</div>
-      </div>
     </div>
-    <div class="divisor"></div>
-    <div class="options-container" #modalElement>
-      <div
-        class="settings-cont"
-        *ngIf="this.as.isAdmin"
-        (click)="this.router.navigate(['dashboard-admin/users'])"
-      >
-        <div><i class="fa-solid fa-user-tie"></i></div>
-        <div class="settings">Dashboard Admin</div>
-      </div>
-      <div class="settings-cont" (click)="navigateAndClose()">
-        <div><i class="fa-solid fa-gear"></i></div>
-        <div class="settings">Account Settings</div>
-      </div>
-      <div (click)="logOut()" class="settings-cont red">
-        <div><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
-        <div>logout</div>
-      </div>
+
+    <div class="navigate">
+        <div class="section" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            Home</div>
+        <div class="section" routerLink="/events" routerLinkActive="active" >
+            Events</div>
+        <div class="section" routerLink="/mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            Mobile</div>
     </div>
-    }
-  </div>
-  }
+
+    <div class="auth-container">
+        <ng-container *ngIf="!this.as.isLogged; else loggedIn">
+            <div class="login-registration-cont">
+                <div class="login-registration login">Log In</div>
+                <div class="login-registration">Sign Up</div>
+            </div>
+        </ng-container>
+        <ng-template #loggedIn>
+            <div class="user-icon" (click)="toggleModal()">
+                <i class="fa-regular fa-user"></i>
+            </div>
+        </ng-template>
+    </div>
+
+    <div class="bars-container" (click)="this.headerService.isMobileMenuOpen=true">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+
+
+    <div *ngIf="this.headerService.isModalOpen" #overlayElement class="overlay" (click)="closeModal()"></div>
+
+    <div class="menu-container" *ngIf="this.headerService.isModalOpen" (click)="$event.stopPropagation()">
+        <div class="img-name">
+            @if(user.imgUrl=== undefined){
+            <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
+            }
+            <div>{{user.imgUrl}}</div>
+            <div class="username-email">
+                <div class="username">{{user.name}} {{user.surname}}</div>
+                <div class="email">{{user.email}}</div>
+            </div>
+        </div>
+        <div class="divisor"></div>
+
+        <div class="options-container" #modalElement>
+
+            <div class="settings-cont" *ngIf="this.as.isAdmin"
+                (click)="this.router.navigate(['dashboard-admin/users'])" (click)="this.headerService.isModalOpen=false">
+
+                <div><i class="fa-solid fa-user-tie"></i></div>
+                <div class="settings">Dashboard Admin</div>
+            </div>
+            <div class="settings-cont" (click)="navigateAndClose()">
+
+                <div><i class="fa-solid fa-gear"></i></div>
+                <div class="settings">Account Settings</div>
+            </div>
+            <div class="settings-cont red">
+                <div><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                <div>logout</div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="mobile-menu" [ngClass]="{'open': headerService.isMobileMenuOpen}">
+ 
+       <!-- <div class="logo-mobile">
+            <div class="logo-text-mobile"><img src="/assets/images/logo.png" alt="logo">
+                <div class="logo-title">
+                    Game Planner
+                </div>
+            </div>
+        </div>-->
+         
+        <div class="close-header" (click)="this.headerService.isMobileMenuOpen=false">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+
+        <div>
+            <div class="menu-item" routerLink="home" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"  (click)="this.headerService.isMobileMenuOpen=false"><i class="fa-solid fa-house"></i> Home</div>
+            <div class="menu-item" routerLink="events" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"  (click)="this.headerService.isMobileMenuOpen=false"><i class="fa-solid fa-calendar"></i> Events</div>
+            <div class="menu-item" routerLink="mobile" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"  (click)="this.headerService.isMobileMenuOpen=false"><i class="fa-solid fa-mobile-screen-button"></i> Mobile</div>
+        </div>
+
+        <div class="mobile-auth" [class.center]="this.as.isLogged">
+            <div class="login-registration-cont buttons-mobile" *ngIf="!this.as.isLogged">
+                <div class="login-registration login btn-mobile">Log In</div>
+                <div class="login-registration btn-mobile">Sign Up</div>
+            </div>
+
+            <div class="user" *ngIf="this.as.isLogged">
+                <div class="img-name-mobile">
+                    @if(user.imgUrl=== undefined){
+                    <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
+                    }
+                    <div>{{user.imgUrl}}</div>
+                    <div class="username-email-mobile">
+                        <div class="username">{{user.name}} {{user.surname}}</div>
+                        <div class="email">{{user.email}}</div>
+                    </div>
+                </div>
+                <div class="divisor"></div>
+        
+                <div class="options-container cont-mobile" #modalElement>
+        
+                    <div class="settings-cont mobile-font" *ngIf="this.as.isAdmin"
+                        (click)="this.router.navigate(['dashboard-admin/users'])" >
+        
+                        <div><i class="fa-solid fa-user-tie"></i></div>
+                        <div class="settings">Dashboard Admin</div>
+                    </div>
+                    <div class="settings-cont mobile-font" (click)="navigateAndClose()">
+        
+                        <div><i class="fa-solid fa-gear"></i></div>
+                        <div class="settings">Account Settings</div>
+                    </div>
+                    <div class="settings-cont red mobile-font">
+                        <div><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                        <div>logout</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
 </div>

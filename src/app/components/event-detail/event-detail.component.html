@@ -17,12 +17,12 @@
                     <div class="event-description">{{event.description}}</div>
                 </div>
             </div>
-            <div class="divisor"></div>
-            <div class="display-admin">
+            <!-- <div class="divisor"></div> -->
+            <!-- <div class="display-admin">
                 <img src="assets/images/pfp.jpg">
-                <!-- <span *ngIf="event.gameSessions">{{event.gameSessions![0].master?.name}}</span>  -->
+                <span *ngIf="event.gameSessions">{{event.gameSessions![0].master?.name}}</span>  
                 <span>Yassine</span>
-            </div>
+            </div> -->
 
            
         </div>
@@ -31,14 +31,18 @@
     <div class="right">
         <div class="event-details" *ngIf="this.event">
             <div class="event-display">
-                <div class="initial">Event Details</div>
-                <div class="detail-info">
-                    <div class="detail"><i class="fa-solid fa-users"></i>  3 / 8 </div>
-                    <div class="detail"><i class="fa-regular fa-clock"></i> {{event.eventDate | date:'EEE, MMM d - HH:mm'}}
+                <div class="initial">Next Session</div>
+                <div class="detail-info"*ngIf="this.event.gameSessions">
+                    <div class="detail master" >
+                        <div class="master-img"><img src="assets/images/pfp.jpg"></div>
+                        <div class="master-info"><span class="master-name">{{this.event.gameSessions[0].master?.name}}</span><span class="gamemaster">Game Master</span></div>
                     </div>
+                    <div class="detail" *ngIf="this.event.gameSessions[0].game"><i class="fa-solid fa-gamepad"></i> {{this.event.gameSessions[0].game!.name}}</div>
+                    <div class="detail"><i class="fa-solid fa-users"></i>  {{this.event.gameSessions[0].reservations.length}} / {{this.event.gameSessions[0].seats}} </div>
+                    <div class="detail" ><i class="fa-regular fa-clock"></i> {{this.event.gameSessions[0].startDate| date:'EEE, MMM d - HH:mm'}}</div>
                 </div>
                 <div class="buttons">
-                    <div class="btn-register" (click)="register()">Register for Event</div>
+                    <div class="btn-register" (click)="register()">Register for this Session</div>
                     <!-- <div class="btn-queue" (click)="joinQueue()">Join Queue</div> -->
                 </div>
             </div>
@@ -46,7 +50,7 @@
     
         <div class="event-details" *ngIf="this.event"> 
             <div class="event-display">
-                <div class="initial lowbottom">Other sessions</div>
+                <div class="initial lowbottom">All sessions</div>
                 <div class="session" *ngFor="let session of event.gameSessions | slice:0:3">
                     <div class="session-info">
                         <div class="session-date">
@@ -54,7 +58,7 @@
                             <div class="time">{{ session.startDate | date:'HH:mm' }}</div>
                         </div>
                         <div class="session-seats">{{session.seats - session.reservations.length}} seats left
-                            <div class="btn-view">Details</div>
+                            <div class="btn-view" (click)="openSessionDetail(session)">Details</div>
                         </div>
                     </div>
                 </div>
@@ -79,9 +83,9 @@
                         </div>
                     </div>
 
-                    <div class="session-seats"><i class="fa-solid fa-users"></i> {{session.reservations.length}} / {{session.seats}}
+                    <div class="session-seats light-font"><i class="fa-solid fa-users"></i> {{session.reservations.length}} / {{session.seats}} 
                     </div>
-                    <div class="btn-view">Details</div>
+                    <div class="btn-view" (click)="openSessionDetail(session)">Details</div>
 
                 </div>
             </div>
@@ -122,6 +126,7 @@
         </div>
         <div class="message">You have been added to the queue!</div>
     </div>
+
     <div class="modal-sign" *ngIf="this.gn.isSignModal">
         <div class="modal-content">
             <div class="modal-sign-title">Sign in to register</div>
@@ -130,6 +135,32 @@
             <div class="buttons sign">
                 <div class="btn-log" (click)="redirect(true)">Log In</div>
                 <div class="btn-sign" (click)="redirect(false)">Sign Up</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="session-details" *ngIf="isSessionDetail || sessionDetail">
+        <div class="session-detail-content">
+            <span class="close" (click)="closeSessionDetail()"> <i class="fa-solid fa-x"></i></span>
+            <div class="session-detail-title">Session Details</div>
+            <div class="session-detail-info">
+                <div class="session-detail date">
+                    <i class="fa-solid fa-calendar"></i>
+                    <div class="session-date">
+                        <div class="date">{{ sessionDetail!.startDate | date:'EEE, MMM d' }}</div>
+                        <div class="time">{{ sessionDetail!.startDate | date:'HH:mm' }} - {{ sessionDetail!.endDate | date:'HH:mm' }}</div>
+                    </div>
+                </div>
+                <div class="session-detail seats"><i class="fa-solid fa-users"></i> {{sessionDetail!.reservations.length}} / {{sessionDetail!.seats}} <span class="light">players</span>
+                </div>
+                <div class="session-detail game" *ngIf="sessionDetail?.game?.name"><i class="fa-solid fa-gamepad"></i> {{sessionDetail!.game?.name}}</div>
+                <div class="detail master-session" *ngIf="sessionDetail?.master">
+                    <div class="master-img"><img src="assets/images/pfp.jpg"></div>
+                    <div class="master-info"><span class="master-name">{{sessionDetail!.master?.name}}</span><span class="gamemaster">Game Master</span></div>
+                </div>
+            <div class="buttons lowtop">
+                <div class="btn-register" (click)="register()">Register for the Session</div>
+                <!-- <div class="btn-queue" (click)="joinQueue()">Join Queue</div> -->
             </div>
         </div>
     </div>

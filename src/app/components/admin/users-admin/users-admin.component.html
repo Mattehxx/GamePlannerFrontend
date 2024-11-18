@@ -77,7 +77,7 @@
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
             <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row" [class.userDisabled]="row.isDeleted"
-                (click)="$event.stopPropagation(); toggleFilters(row)">
+                (click)="$event.stopPropagation(); toggleUserDetails(row)">
 
             </mat-row>
 
@@ -86,7 +86,7 @@
         <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
 
         <div class="details-page" [class.visible]="this.ds.userDetailPanel">
-            <div class="close-section" (click)="toggleFilters(undefined)">
+            <div class="close-section" (click)="toggleUserDetails(undefined)">
                 <span class="close"><i class="fa-solid fa-arrow-left"></i></span>
                 <div>Close</div>
             </div>
@@ -152,7 +152,7 @@
     </div>
 </div>
 
-<div class="modal-sessions" *ngIf="this.gn.isDeleteUserModal">
+<div class="modal-sessions" *ngIf="this.as.isDeleteUserModal">
     <div class="modal-content">
         <div class="modal-title">
             User Delete

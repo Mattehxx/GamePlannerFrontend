@@ -11,15 +11,15 @@
             </div>
         </div>
         <nav>
-            <div [routerLink]="['users']">
+            <div [routerLink]="['users']" (click)=" closeOverlay()">
                 <i class="fa-solid fa-user"></i>
                 <span *ngIf="this.ds.isOpen">Users</span>
             </div>
-            <div [routerLink]="['events']">
+            <div [routerLink]="['events']" (click)=" closeOverlay()">
                 <i class="fa-solid fa-calendar-days"></i>
                 <span *ngIf="this.ds.isOpen">Events</span>
             </div>
-            <div [routerLink]="['games']">
+            <div [routerLink]="['games']" (click)=" closeOverlay()">
                 <i class="fa-solid fa-dice-d20"></i>
                 <span *ngIf="this.ds.isOpen">Games</span>
             </div>

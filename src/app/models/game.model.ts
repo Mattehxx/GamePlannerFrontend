@@ -1,5 +1,5 @@
 export interface GameModel{
-    gameId: number,
+    gameId?: number,
     name: string,
     description: string,
     imgUrl: string,

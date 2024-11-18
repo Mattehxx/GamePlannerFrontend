@@ -53,6 +53,12 @@
     border: 1px solid #7e2bf9;
     border-radius: 1vh;
     align-items: center;
+
+    &:hover{
+        color: var(--dark-purple);
+        background-color: var(--lightPurple);
+        cursor: pointer;
+    }
 }
 
 .modal-create-btns .close{
@@ -67,6 +73,12 @@
     border: 1px solid #7e2bf9;
     border-radius: 1vh;
     align-items: center;
+
+    &:hover{
+        color: var(--dark-purple);
+        background-color: var(--lightPurple);
+        cursor: pointer;
+    }
 }
 
 

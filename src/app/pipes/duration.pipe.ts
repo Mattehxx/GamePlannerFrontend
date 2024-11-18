@@ -5,8 +5,18 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true
 })
 export class DurationPipe implements PipeTransform {
-  transform(hours: number): string {
-    if (hours === 1) return '1 hour';
-    return `${hours} hours`;
+
+  transform(startDate: Date, endDate: Date): string {
+    if (!startDate || !endDate) {
+      return '';
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const durationInMilliseconds = end.getTime() - start.getTime();
+    const durationInHours = durationInMilliseconds / (1000 * 60 * 60);
+
+    return `${durationInHours.toFixed(2)} hours`;
   }
+  
 }

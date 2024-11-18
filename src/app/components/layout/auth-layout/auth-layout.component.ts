@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { DashboardService } from '../../../services/dashboard.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GeneralService } from '../../../services/general.service';
+import { AdminService } from '../../../services/admin.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-auth-layout',
@@ -12,12 +14,46 @@ import { GeneralService } from '../../../services/general.service';
   templateUrl: './auth-layout.component.html',
   styleUrl: './auth-layout.component.scss'
 })
-export class AuthLayoutComponent {
+export class AuthLayoutComponent implements OnInit,OnDestroy{
 
-  constructor(private gn: GeneralService) {}
-  get isOverlayVisible(): boolean {
-    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal;
+  constructor(public gn: GeneralService,private as: AdminService, private router: Router) {}
+
+  death$ = new Subject<void>();
+
+  isOverlay : boolean = false;
+  isLoading : boolean = false;
+
+  ngOnInit(): void {
+    this.gn.isOverlayOn$.pipe(takeUntil(this.death$)).subscribe((value) => {
+      if(value){
+        this.isOverlay = true;
+      }
+      else{
+        this.isOverlay = false;
+      }
+    });
+    this.gn.isLOadingScreen$.pipe(takeUntil(this.death$)).subscribe((value) => {
+      if(value){
+        this.isLoading = true;
+      }
+      else{
+        this.isLoading = false;
+      }
+    });
   }
+
+  ngOnDestroy(): void {
+    this.death$.next();
+    this.death$.complete();
+  }
+
+
+
+
+  get isOverlayVisible(): boolean {
+    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay || this.as.isGameDetail;;
+  }
+
   
 
  
