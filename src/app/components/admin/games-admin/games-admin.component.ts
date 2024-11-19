@@ -197,7 +197,7 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     const control = this.form.get(key);
 
     if (control !== null && control instanceof FormControl) {
-      element = { ...element, name: control.value };
+      element = { ...element, [key]: control.value };
     }
     // console.log(this.gs.gameDetail, element);
 
@@ -205,7 +205,7 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     console.log(patch)
 
     this.gs.patch(this.gs.gameDetail!, patch).then((res) => {
-      this.gs.gameDetail = { ...element, name: control!.value };
+      this.gs.gameDetail = { ...element, [key]: control!.value };
     })
       .finally(() => {
         this.disableEdit(key);

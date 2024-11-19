@@ -30,8 +30,6 @@
                         <div class="profile-image"> <i class="fa-regular fa-user"></i></div>
                         }
                         <img alt="Profile" class="profile-image" [src]="game.imgUrl">
-
-
                     </div>
                 </mat-cell>
             </ng-container>
@@ -40,8 +38,6 @@
                 <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
                 <mat-cell *matCellDef="let game"> {{game.name}} </mat-cell>
             </ng-container>
-
-
 
             <ng-container matColumnDef="isDisabled">
                 <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
@@ -56,9 +52,6 @@
                 </mat-cell>
 
             </ng-container>
-
-
-
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
