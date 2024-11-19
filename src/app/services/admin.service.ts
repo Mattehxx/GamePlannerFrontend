@@ -10,8 +10,9 @@ export class AdminService {
   isDeleteUserModal: boolean = false;
   isCreateUserModal : boolean = false;
 
-  isGameDetail: boolean = false;
+  showGameDetail: boolean = false;
   isDeleteGameModal: boolean = false;
+  isCreateGameModal: boolean = false; 
 
  
 

@@ -50,7 +50,9 @@ export class ConfirmRegistrationComponent implements OnInit{
         this.isLoading=false;
       })
       .catch((error) => {
-        console.error('Error confirming reservation:', error);
+        this.isLoading=false;
+        this.gn.isLoadingScreen$.next(false);
+        this.router.navigate(['home']);
       });
   }
 

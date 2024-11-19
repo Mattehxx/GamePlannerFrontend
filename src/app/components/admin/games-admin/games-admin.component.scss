@@ -296,7 +296,7 @@ mat-paginator {
 
 
 
-.modal-cont{
+.modal-cont {
     display: flex;
     position: fixed;
     z-index: 100;
@@ -373,7 +373,7 @@ mat-paginator {
     transition: 0.5s ease;
 }
 
-.game-img-name-cont{
+.game-img-name-cont {
     display: flex;
     gap: 5vh;
     width: 80%;
@@ -383,7 +383,7 @@ mat-paginator {
 
 }
 
-.game-img-cont{
+.game-img-cont {
     display: flex;
     width: 20vh;
     height: 20vh;
@@ -392,24 +392,26 @@ mat-paginator {
     transition: 0.3s ease;
     align-items: center;
     justify-content: center;
-  
 
 
-    img{
+
+    img {
         width: 100%;
         height: 100%;
         border-radius: 15vh;
         margin: 0vh;
-       
 
-        alt{
+
+        alt {
             display: flex;
             width: 100%
-        };
+        }
+
+        ;
     }
 }
 
-.imgHover{
+.imgHover {
     display: flex;
     width: 20vh;
     height: 20vh;
@@ -417,19 +419,25 @@ mat-paginator {
     background-size: cover;
     align-items: center;
     justify-content: center;
-    i{
-        color: white;
-        font-size: 5vh; 
-        z-index: 110;
-      
-    }
 
 }
-.opacity{
+
+.img-icon {
+    display: flex;
+    position: fixed;
+
+    i {
+        color: var(--dark-purple);
+        font-size: 5vh;
+        z-index: 110;
+    }
+}
+
+.opacity {
     opacity: 50%;
 }
-    
-.game-name{
+
+.game-name {
     height: 10vh;
     display: flex;
     width: fit-content;
@@ -440,22 +448,22 @@ mat-paginator {
     font-weight: 600;
 }
 
-.description-cont{
+.description-cont {
     display: flex;
     gap: 1vh;
     flex-direction: row;
     justify-content: flex-start;
     width: 80%;
     align-items: center;
-    
-    span{
+
+    span {
         font-size: 2.5vh;
         font-weight: 400;
         color: #7a7a7a;
     }
 
 
-    div .edit-btn{
+    div .edit-btn {
         padding: 1.5vh;
         border-radius: 1vh;
         color: white;
@@ -467,32 +475,36 @@ mat-paginator {
     }
 }
 
-.status-cont{
+.status-cont {
     display: flex;
     flex-direction: column;
     width: 80%;
 
-    span{
+    span {
         font-size: 2.2vh;
         font-weight: 500;
     }
-    .circle-status{
+
+    .circle-status {
         display: flex;
         flex-direction: row;
         align-items: center;
 
-        .status-enabled, .status-disabled{
+        .status-enabled,
+        .status-disabled {
             width: 14%;
             background: none;
             font-size: 2.5vh;
         }
-        .circle-enable{
+
+        .circle-enable {
             width: 2vh;
             height: 2vh;
             border-radius: 50%;
             background-color: green;
         }
-        .circle-disable{
+
+        .circle-disable {
             width: 2vh;
             height: 2vh;
             border-radius: 50%;
@@ -501,7 +513,7 @@ mat-paginator {
     }
 }
 
-.btns-cont{
+.btns-cont {
     display: flex;
     width: 80%;
     flex-direction: column;
@@ -509,7 +521,7 @@ mat-paginator {
     border: solid 1px white;
 }
 
-.btns-cont .delete{
+.btns-cont .delete {
     display: flex;
     background-color: rgb(255, 0, 0);
     color: white;
@@ -520,12 +532,12 @@ mat-paginator {
     align-items: center;
     justify-content: center;
 
-    &:hover{
+    &:hover {
         background-color: rgb(255, 109, 109);
     }
 }
 
-.btns-cont .disable{
+.btns-cont .disable {
     display: flex;
     background-color: rgb(255, 255, 255);
     color: black;
@@ -536,12 +548,12 @@ mat-paginator {
     align-items: center;
     justify-content: center;
 
-    &:hover{
+    &:hover {
         background-color: rgb(231, 231, 231);
     }
 }
 
-.edit-btn{
+.edit-btn {
     padding: 1.5vh;
     border-radius: 1vh;
     color: white;
@@ -552,12 +564,12 @@ mat-paginator {
     font-size: 2vh;
 }
 
-.input-cont{
+.input-cont {
     gap: 2vh;
     display: flex;
     align-items: center;
 
-    input{
+    input {
         width: fit-content;
         height: 4vh;
         border: solid 2px var(--dark-purple);
@@ -565,16 +577,18 @@ mat-paginator {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 2.5vh;
     }
-    .save-btn{
+
+    .save-btn {
 
         display: flex;
         flex-direction: row;
         gap: 1vh;
-        .disabled{
-            opacity: 50%    ;
+
+        .disabled {
+            opacity: 50%;
         }
 
-        button{
+        button {
             display: flex;
             display: flex;
             padding: 1.4vh;
@@ -595,17 +609,17 @@ mat-paginator {
             background: var(--dark-purple);
             font-size: 2vh;
 
-            &:hover{
+            &:hover {
                 cursor: pointer;
             }
         }
-        
+
     }
 }
 
 
 
-.wrapper{
+.wrapper {
     display: flex;
     width: fit-content;
     height: 4.6vh;
@@ -615,21 +629,21 @@ mat-paginator {
     border-radius: 2vh;
     flex-direction: column;
 
-    label{
+    label {
         display: flex;
         gap: 1vh;
         font-size: 2.5vh;
         align-items: center;
 
-        i{
+        i {
             color: var(--dark-purple);
         }
     }
 
-  
+
 }
 
-.wrapper.description{
+.wrapper.description {
     display: flex;
     gap: 1vh;
     width: 100%;
@@ -639,13 +653,13 @@ mat-paginator {
     flex-direction: column;
 }
 
-.input-cont.description{
+.input-cont.description {
     width: 80%;
 
-    .input-group.description{
+    .input-group.description {
         display: flex;
-    
-        textarea{
+
+        textarea {
             width: 100%;
             height: 10vh;
             background: white;
@@ -654,10 +668,10 @@ mat-paginator {
             padding: 1vh;
             font-size: 2.2vh;
             font-family: "Segoe UI",
-            Tahoma,
-            Geneva,
-            Verdana,
-            sans-serif;
+                Tahoma,
+                Geneva,
+                Verdana,
+                sans-serif;
             resize: none;
         }
     }
@@ -668,17 +682,17 @@ mat-paginator {
     display: flex;
     justify-content: start;
     flex-direction: column;
-  }
-  
-  small {
+}
+
+small {
     color: red;
     margin-top: -1vh;
     margin-bottom: 1vh;
-  }
-  
-  .input-error {
+}
+
+.input-error {
     border: 2px solid red;
-  }
+}
 
 
 .modal-content {
@@ -717,13 +731,13 @@ mat-paginator {
     font-size: 2.5vh;
 }
 
-.modal-btns{
+.modal-btns {
     display: flex;
     width: 100%;
     justify-content: space-around;
 }
 
-.modal-btns .close{
+.modal-btns .close {
     display: flex;
     align-content: center;
     justify-content: center;
@@ -737,7 +751,7 @@ mat-paginator {
     align-items: center;
 }
 
-.modal-btns .delete{
+.modal-btns .delete {
     display: flex;
     align-content: center;
     justify-content: center;
@@ -758,9 +772,9 @@ mat-paginator {
     flex-direction: column;
     gap: 2vh;
     align-items: center;
-  }
-  
-  .image-preview {
+}
+
+.image-preview {
     width: 80%;
     padding-inline: 4vh;
     top: 3vh;
@@ -772,22 +786,22 @@ mat-paginator {
     align-items: center;
     justify-content: center;
     background-color: #f9f9f9;
-  }
-  
-  .image-preview img {
+}
+
+.image-preview img {
     max-width: 100%;
     max-height: 100%;
     object-fit: cover;
-  }
+}
 
-  .input-cont.img{
+.input-cont.img {
     gap: 2vh;
     width: 100%;
     height: fit-content;
     display: flex;
     align-items: center;
 
-    .wrapper{
+    .wrapper {
         display: flex;
         width: 100%;
         height: fit-content;
@@ -799,9 +813,9 @@ mat-paginator {
         align-items: center;
     }
 }
-  
-  .file-label {
-      display: block;
+
+.file-label {
+    display: block;
     cursor: pointer;
     padding: 1vh 2vh;
     background-color: var(--dark-purple);
@@ -810,41 +824,42 @@ mat-paginator {
     border-radius: 4px;
     text-align: center;
     font-size: 14px;
-  }
-  
-  .file-input {
-    display: none; /* Nasconde l'input file */
-  }
-  
-  .button-group {
+}
+
+.file-input {
+    display: none;
+    /* Nasconde l'input file */
+}
+
+.button-group {
     display: flex;
     color: var(--light-black);
     gap: 1vh;
-  }
-  
-  .save-btn,
-  .cancel-btn {
+}
+
+.save-btn,
+.cancel-btn {
     padding: 1vh;
     font-size: 2vh;
     border: none;
     border-radius: 2vh;
     cursor: pointer;
-  }
-  
-  .save-btn.img{
+}
+
+.save-btn.img {
     background-color: var(--dark-purple);
     color: white;
     border: solid 2px var(--dark-purple);
-  }
-  
-  .cancel-btn.img {
+}
+
+.cancel-btn.img {
     background-color: white;
     color: var(--dark-purple);
     border: solid 2px;
-  }
-  
-  .save-btn.img:disabled {
+}
+
+.save-btn.img:disabled {
     background-color: #6c757d;
     border: solid 2px #6c757d;
     cursor: not-allowed;
-  }
+}

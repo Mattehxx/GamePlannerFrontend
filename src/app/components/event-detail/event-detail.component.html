@@ -1,11 +1,11 @@
 <div class="container" *ngIf="this.event"
-    [ngStyle]="{'background': 'url(' + this.event.imgUrl + ') no-repeat center center'}">
+[ngStyle]="{'background': 'url(/assets/images/wallpaper2.jpg) no-repeat center center'}" > <!--[ngStyle]="{'background': 'url(' + this.event.imgUrl + ') no-repeat center center'}"-->
     <div class="main-event" *ngIf="this.event">
         <div class="event-image">
             <img [src]="this.event!.imgUrl" alt="event image">
             <div class="event-overlay">
                 <div class="event-title">{{this.event!.name}}</div>
-                <div class="event-game">Dungeons And Dragons</div>
+                <!-- <div class="event-game">Dungeons And Dragons</div> -->
             </div>
         </div>
         <div class="details">
@@ -29,29 +29,30 @@
     </div>
 
     <div class="right">
-        <div class="event-details" *ngIf="this.event">
+        <div class="event-details" *ngIf="this.event && this.event.sessions!.length > 0">
             <div class="event-display">
                 <div class="initial">Next Session</div>
-                <div class="detail-info"*ngIf="this.event.gameSessions">
-                    <div class="detail master" >
+                <div class="detail-info"*ngIf="this.event.sessions">
+                    <div class="detail master" *ngIf="this.event.sessions[0].master" >
                         <div class="master-img"><img src="assets/images/pfp.jpg"></div>
-                        <div class="master-info"><span class="master-name">{{this.event.gameSessions[0].master?.name}}</span><span class="gamemaster">Game Master</span></div>
+                        <div class="master-info"><span class="master-name">{{this.event.sessions[0].master!.name}}</span><span class="gamemaster">Game Master</span></div>
                     </div>
-                    <div class="detail" *ngIf="this.event.gameSessions[0].game"><i class="fa-solid fa-gamepad"></i> {{this.event.gameSessions[0].game!.name}}</div>
-                    <div class="detail"><i class="fa-solid fa-users"></i>  {{this.event.gameSessions[0].reservations.length}} / {{this.event.gameSessions[0].seats}} </div>
-                    <div class="detail" ><i class="fa-regular fa-clock"></i> {{this.event.gameSessions[0].startDate| date:'EEE, MMM d - HH:mm'}}</div>
+                    <div class="detail" *ngIf="this.event.sessions[0].game"><i class="fa-solid fa-gamepad"></i> {{this.event.sessions[0].game!.name}}</div>
+                    <div class="detail" *ngIf="this.event.sessions.length > 0 && this.event.sessions[0].reservations"><i class="fa-solid fa-users"></i>  {{this.event.sessions[0].reservations.length}} / {{this.event.sessions[0].seats}} </div>
+                    <div class="detail" *ngIf="this.event.sessions.length > 0"><i class="fa-regular fa-clock"></i> {{this.event.sessions[0].startDate| date:'EEE, MMM d - HH:mm'}}</div>
                 </div>
-                <div class="buttons">
-                    <div class="btn-register" (click)="register()">Register for this Session</div>
-                    <!-- <div class="btn-queue" (click)="joinQueue()">Join Queue</div> -->
+                <div class="buttons"*ngIf="this.event.sessions">
+                    <div class="btn-register" (click)="register(this.event.sessions[0])" *ngIf="this.event.sessions[0].reservations.length < this.event.sessions[0].seats && !checkSessionReservation(this.event.sessions[0])">Register for this Session</div>
+                    <div class="btn-queue" (click)="joinQueue(this.event.sessions[0])" *ngIf="this.event.sessions[0].reservations.length >= this.event.sessions[0].seats && !checkSessionReservation(this.event.sessions[0])">Join Queue</div>
+                    <div class="btn-arleady" *ngIf="checkSessionReservation(this.event.sessions[0])">Already Registered</div>
                 </div>
             </div>
         </div>
     
-        <div class="event-details" *ngIf="this.event"> 
+        <div class="event-details" *ngIf="this.event && this.event.sessions!.length > 0"> 
             <div class="event-display">
                 <div class="initial lowbottom">All sessions</div>
-                <div class="session" *ngFor="let session of event.gameSessions | slice:0:3">
+                <div class="session" *ngFor="let session of event.sessions | slice:0:3">
                     <div class="session-info">
                         <div class="session-date">
                             <div class="date">{{ session.startDate | date:'EEE, MMM d' }}</div>
@@ -63,18 +64,18 @@
                     </div>
                 </div>
                 <div class="buttons lowtop">
-                    <div class="btn-register" (click)="this.gn.isSessionModal=true">View all Sessions</div>
+                    <div class="btn-register" (click)="sessionModal(true)">View all Sessions</div>
                 </div>
             </div>
             </div>
     </div>
 
-    <div class="modal-sessions" *ngIf="this.gn.isSessionModal">
+    <div class="modal-sessions" *ngIf="this.gn.isSessionModal ">
         <div class="modal-content">
             <div class="modal-title">All Sessions</div>
-            <span class="close" (click)="this.gn.isSessionModal=false"> <i class="fa-solid fa-x"></i></span>
+            <span class="close" (click)="sessionModal(false)"> <i class="fa-solid fa-x"></i></span>
             <div class="modal-session-container">
-                <div class="modal-session" *ngFor="let session of event.gameSessions">
+                <div class="modal-session" *ngFor="let session of event.sessions">
                     <div class="date-container">
                         <i class="fa-solid fa-calendar" style="color: var(--purple);"></i>
                         <div class="session-date">
@@ -158,9 +159,10 @@
                     <div class="master-img"><img src="assets/images/pfp.jpg"></div>
                     <div class="master-info"><span class="master-name">{{sessionDetail!.master?.name}}</span><span class="gamemaster">Game Master</span></div>
                 </div>
-            <div class="buttons lowtop">
-                <div class="btn-register" (click)="register()">Register for the Session</div>
-                <!-- <div class="btn-queue" (click)="joinQueue()">Join Queue</div> -->
+            <div class="buttons lowtop" *ngIf="sessionDetail">
+                <div class="btn-register" (click)="register(sessionDetail!)" *ngIf="sessionDetail!.reservations.length < sessionDetail!.seats && !checkSessionReservation(sessionDetail)">Register for the Session</div>
+                 <div class="btn-queue" (click)="joinQueue(sessionDetail!)" *ngIf="sessionDetail!.reservations.length >= sessionDetail!.seats && !checkSessionReservation(sessionDetail)">Join Queue</div>
+                 <div class="btn-arleady" *ngIf="checkSessionReservation(sessionDetail)">Already Registered</div>
             </div>
         </div>
     </div>

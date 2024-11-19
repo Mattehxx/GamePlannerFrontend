@@ -4,9 +4,9 @@
         <div class="search-bar">
             <input type="text" placeholder="Search events..." (input)="filterEvents()" [(ngModel)]="userInput">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <div class="filters" (click)="toggleFilters()"><i class="fa-solid fa-filter"></i> Filters <span
+            <!-- <div class="filters" (click)="toggleFilters()"><i class="fa-solid fa-filter"></i> Filters <span
                     class="numbers-filters" *ngIf="this.activeFilters.length!==0">({{this.activeFilters.length}})</span>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -70,18 +70,19 @@
                 <img [src]="event.imgUrl" alt="event image">
                 <div class="event-overlay">
                     <div class="event-title">{{event.name}}</div>
-                    <div class="event-game">Dungeons And Dragons</div>
+                    <!-- <div class="event-game">Dungeons And Dragons</div> -->
                 </div>
             </div>
             <div class="event-details">
-                <div class="info">
-                    <div class="event-date" *ngIf="event && event.gameSessions && event.gameSessions.length > 0"><i class="fa-regular fa-clock"></i> {{event.gameSessions[0].startDate| date:'MMM d'}} - {{ event.gameSessions[event.gameSessions.length - 1].endDate| date:'MMM d' }} </div>
-                    <div class="event-date" *ngIf="event && event.gameSessions && event.gameSessions.length == 0"><i class="fa-regular fa-clock"></i> {{event.gameSessions[0].startDate| date:'EEE, MMM d - HH:mm'}}  </div>
-                    <div class="spots" *ngIf="event && event.gameSessions" [ngClass]="{
-                        'spots-low': event.gameSessions!.length == 1,
-                        'spots-medium': event.gameSessions!.length > 1 && event.gameSessions!.length <= 3,
-                        'spots-high': event.gameSessions!.length >= 4
-                    }">{{event.gameSessions!.length}} sessions </div>  <!-- sennò lo metto arancione con scritta Join Queue -->
+                <div class="info" >
+                    <div class="event-date" *ngIf="event && event.sessions && event.sessions.length > 0"><i class="fa-regular fa-clock"></i> {{event.sessions[0].startDate| date:'MMM d'}} - {{ event.sessions[event.sessions.length - 1].endDate| date:'MMM d' }} </div>
+                    <div class="event-date" *ngIf="event && event.sessions && event.sessions.length == 0"> No Dates Available  </div>
+                    <div class="spots" *ngIf="event && event.sessions" [ngClass]="{
+                        'spots-zero': event.sessions!.length == 0,
+                        'spots-low': event.sessions!.length == 1,
+                        'spots-medium': event.sessions!.length > 1 && event.sessions!.length <= 3,
+                        'spots-high': event.sessions!.length >= 4
+                    }">{{event.sessions!.length}} sessions </div>  
                 </div>
             </div>
             <div class="bottom-card">
