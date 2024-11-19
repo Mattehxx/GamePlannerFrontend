@@ -20,4 +20,5 @@ export interface User {
     reservations?: Array<reservationModel>;
     preferences?: Array<preferenceModel>;
 }
+
  
