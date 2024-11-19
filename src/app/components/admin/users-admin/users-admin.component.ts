@@ -49,9 +49,8 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.aus.User$.pipe(takeUntil(this.death$)).subscribe({
-      next: (users) => {
-        this.dataSource.data = users;
-        console.log(users);
+      next: (games) => {
+        this.dataSource.data = games;
       }
     })
     this.aus.getUsers();
@@ -82,8 +81,6 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
       this.selectedUser = user
       this.ds.userDetailPanel = true
     }
-     
-
   }
 
   ableOrDisableUser() {

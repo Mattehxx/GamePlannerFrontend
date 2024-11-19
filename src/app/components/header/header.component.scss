@@ -407,17 +407,19 @@
   display: flex;
   align-content: center;
   justify-content: center;
-  width: 10vh;
-  height: 10vh;
+  width: 5vh;
+  height: 5vh;
   border: 1px solid rgba(128, 128, 128, 0.1803921569);
-  border-radius: 20vh;
+  border-radius: 10vh;
   align-items: center;
   background: #eeeeee;
-  box-shadow: 0 0 3vh 0.3vh rgba(145, 71, 255, 0.5);
   ;
 }
 
 .img i {
   font-size: 5vh;
   color: var(--purple);
+}
+div{
+    user-select: none;
 }

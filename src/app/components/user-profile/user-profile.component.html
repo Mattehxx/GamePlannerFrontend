@@ -14,9 +14,10 @@
         </div>
         }
         <div class="buttons">
-          <button class="btn-upload">
+          <div class="imgUpload">
+            <input class="btn-upload" type="file" (change)="onFileSelected($event)">
             <i class="fa-solid fa-upload"></i> Upload new image
-          </button>
+          </div>
           <button class="btn-remove" (click)="removeImg()">
             <i class="fa-solid fa-xmark"></i> Remove image
           </button>
@@ -102,28 +103,92 @@
     </form>
 
     <div class="wrapper-radio">
-      <div class="radio-title">
-        <i class="fa-solid fa-shield"></i> Preferences
+      <div class="head-preference-wrapper">
+        <div class="radio-title">
+          <i class="fa-solid fa-shield"></i> Preferences
+        </div>
+        <div class="wrapper-option">
+          <div (click)="changeViewMode('add')"><i class="fa-solid fa-plus"></i> Add</div>
+          <div (click)="changeViewMode('edit')"><i class="fa-solid fa-pen-to-square"></i> Modify</div>
+        </div>
       </div>
-      <div class="preference-form" *ngFor="let preference of userToEdit?.preferences">
-        <div class="game-name">{{preference.game.name}}</div>
-        <div class="display-radios">
-          <div class="radio-input-label">
-            <input type="radio" id="masterYes" name="canBeMaster{{preference.preferenceId}}" [value]="true"
-              [ngModel]="preference.canBeMaster" />
-            <label for="masterYes" class="radio-label">Yes</label>
+      <!--default view-->
+      <div *ngIf="viewMode === 'default'">
+        <div class="preference-form" *ngFor="let preference of userToEdit?.preferences">
+          <div class="game-name">{{preference.game.name}}</div>
+          <div class="display-radios">
+            <div class="radio-input-label">
+              <input type="radio" id="masterYes" name="canBeMaster{{preference.preferenceId}}" [value]="true"
+                [ngModel]="preference.canBeMaster" />
+              <label for="masterYes" class="radio-label">Yes</label>
+            </div>
+            <div class="radio-input-label">
+              <input type="radio" id="masterNo" name="canBeMaster{{preference.preferenceId}}" [value]="false"
+                [ngModel]="preference.canBeMaster" />
+              <label for="masterNo" class="radio-label">No</label>
+            </div>
           </div>
-          <div class="radio-input-label">
-            <input type="radio" id="masterNo" name="canBeMaster{{preference.preferenceId}}" [value]="false"
-              [ngModel]="preference.canBeMaster" />
-            <label for="masterNo" class="radio-label">No</label>
+          <div class="knowledge-name">{{preference.knowledge.name}}</div>
+        </div>
+      </div>
+      <!--edit view-->
+      <div *ngIf="viewMode === 'edit'">
+        <div class="preference-form" *ngFor="let preference of userToEdit?.preferences">
+          <div class="game-name">
+            <select name="game" id="{{this.originalUser?.userId}}GamePreference">
+              <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
+            </select>
+          </div>
+          <div class="display-radios">
+            <div class="radio-input-label">
+              <input type="radio" id="masterYes" name="canBeMaster{{preference.preferenceId}}" [value]="true"
+                [ngModel]="preference.canBeMaster" />
+              <label for="masterYes" class="radio-label">Yes</label>
+            </div>
+            <div class="radio-input-label">
+              <input type="radio" id="masterNo" name="canBeMaster{{preference.preferenceId}}" [value]="false"
+                [ngModel]="preference.canBeMaster" />
+              <label for="masterNo" class="radio-label">No</label>
+            </div>
+          </div>
+          <select name="knowledge" id="{{this.originalUser?.userId}}knowledgePreference">
+            <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
+          </select>
+        </div>
+      </div>
+      <!--add view-->
+      <div *ngIf="viewMode === 'add'">
+        <div class="preference-form">
+          <div class="game-name">
+            <select name="game" id="{{this.originalUser?.userId}}GamePreference">
+              <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
+            </select>
+          </div>
+          <div class="display-radios">
+            <div class="radio-input-label">
+              <input type="radio" id="masterYes" name="canBeMasterAdd" [value]="true" />
+              <label for="masterYes" class="radio-label">Yes</label>
+            </div>
+            <div class="radio-input-label">
+              <input type="radio" id="masterNo" name="canBeMasterAdd" [value]="false" />
+              <label for="masterNo" class="radio-label">No</label>
+            </div>
+          </div>
+          <div class="knowledge-name">
+            <select name="knowledge" id="{{this.originalUser?.userId}}knowledgePreference">
+              <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
+            </select>
           </div>
         </div>
-        <div class="knowledge-name">{{preference.knowledge.name}}</div>
       </div>
       <div class="bottom-buttons">
         <button (click)="resetUserInfo()" class="btn-cancel">Cancel</button>
+        @if (viewMode=== 'add') {
+        <button (click)="PostPreference()" class="btn-save">Add Preference</button>
+        }
+        @else {
         <button class="btn-save">Save Changes</button>
+        }
       </div>
     </div>
   </div>

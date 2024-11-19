@@ -18,7 +18,6 @@ export class ReservationService {
         return new Promise((resolve, reject) => {
             this.http.post<any>(`${environment.apiUrl}api/Reservation`, {sessionId,userId}).subscribe({
                 next: (res) => {
-                    console.log(res);
                     this.gn.confirmMessage='Registration successful';
                     this.gn.setConfirm();
                     resolve(res);

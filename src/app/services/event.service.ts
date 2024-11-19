@@ -109,4 +109,19 @@ export class EventService {
       }
     })
   }
+
+  getEventsId(id: number) : Promise<EventModel>{
+    return new Promise((resolve, reject) => {
+      this.http.get<EventModel>(`${environment.apiUrl}odata/Event?$filter=eventId eq ${id}&$expand=Sessions($expand=Master,Game,Reservations)`).subscribe({
+        next: (res) => {
+          this.eventDetail = res;
+          resolve(res);
+        }, error: (msg) => {
+          console.error(msg);
+          reject(msg);
+        }
+      });
+    });
+  
+  }
 }

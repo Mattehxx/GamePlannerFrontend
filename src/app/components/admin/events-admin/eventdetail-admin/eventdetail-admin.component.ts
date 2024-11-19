@@ -10,6 +10,7 @@ import { User } from '../../../../models/user.model';
 import { DashboardService } from '../../../../services/dashboard.service';
 import { EventService } from '../../../../services/event.service';
 import { GeneralService } from '../../../../services/general.service';
+import { SessionService } from '../../../../services/session.service';
 
 @Component({
   selector: 'app-eventdetail-admin',
@@ -20,7 +21,7 @@ import { GeneralService } from '../../../../services/general.service';
 })
 export class EventDetailAdminComponent implements OnInit {
 
-  constructor(private eventService: EventService, public ds: DashboardService, public gn: GeneralService, private router: Router) { }
+  constructor(private eventService: EventService, public ds: DashboardService, public gn: GeneralService, private router: Router,private sessionService: SessionService) { }
 
   event: EventModel | undefined;
   @ViewChild('dropdownElementMaster') dropdownElementMaster: ElementRef | undefined;
@@ -57,6 +58,8 @@ export class EventDetailAdminComponent implements OnInit {
   gameSearch = '';
   reservationSearch = '';
 
+  arrayAddedSessions: gameSessionModel[] = [];
+
   gameMasters: User[] = [
     { userId: '1', name: 'John', surname: 'Doe', role: 'Game Master' },
     { userId: '2', name: 'Jane', surname: 'Smith', role: 'Game Master' },
@@ -92,70 +95,16 @@ export class EventDetailAdminComponent implements OnInit {
   filteredGames: GameModel[] = [...this.games];
   filteredUsers: User[] = [...this.users];
 
-  admin: User = {
-    userId: 'sfasf',
-    name: 'Yassine',
-    surname: 'Char',
-    email: '',
-    phoneNumber: '',
-    birthDate: new Date('1995-01-01'),
-    imgUrl: '/assets/images/pfp.jpg',
-    level: 1,
-    isDeleted: false,
-    role: 'User'
-  };
-
-  reservation: reservationModel = {
-    reservationId: 1,
-    token: '',
-    isConfirmed: false,
-    isDeleted: false,
-    sessionId: 1,
-    userId: '1',
-    user: this.admin // Assicurati che l'oggetto user esista
-  };
-
-  game: GameModel = {
-    gameId: 101,
-    name: 'D&D',
-    description: 'Description for D&D',
-    isDeleted: false,
-    imgUrl: '/assets/images/wallpaper2.jpg',
-    isDisabled: false
-  };
-
-  gameSession: gameSessionModel = {
-    sessionId: 1,
-    startDate: new Date('2023-11-01'),
-    endDate: new Date('2023-11-02'),
-    isDeleted: false,
-    masterId: '301',
-    eventId: 1,
-    master: this.admin,
-    seats: 4,
-    gameId: 101,
-    game: this.game,
-    reservations: [this.reservation]
-  };
-
   ngOnInit(): void {
-    if (this.eventService.eventDetail === undefined) { //provvisorio
-      this.event = {
-        eventId: 1,
-        name: 'D&D Adventure Night',
-        description: 'Description for Event 1',
-        isPublic: true,
-        imgUrl: '/assets/images/wallpaper2.jpg',
-        isDeleted: false,
-        adminId: 201,
-        admin: this.admin,
-        sessions: [this.gameSession,this.gameSession,this.gameSession]
-      };
+    if (this.eventService.eventDetail === undefined) {
+      this.router.navigate(['/dashboard-admin/events']);
     } else {
-      this.event = this.eventService.eventDetail;
+      this.eventService.getEventsId(this.eventService.eventDetail.eventId).then((event) => {
+        this.event=event;
+        this.newSession.eventId = this.event.eventId;
+      });
     }
 
-    this.newSession.eventId = this.event.eventId;
   }
 
   openAddModal() {
@@ -167,7 +116,7 @@ export class EventDetailAdminComponent implements OnInit {
     this.isAddSessionModal = false;
     this.gn.isOverlayOn$.next(false);
     this.newSession = {
-      sessionId: 0,
+      sessionId: this.addSession.length + 1,
       gameId: 0,
       startDate: new Date(),
       endDate: new Date(),
@@ -186,7 +135,24 @@ export class EventDetailAdminComponent implements OnInit {
   }
 
   addSession() {
-    // this.eventService.addSession(this.gameSession);
+    this.arrayAddedSessions.push(this.newSession);
+    this.event?.sessions?.push(this.newSession);
+    this.newSession = {
+      sessionId: 0,
+      gameId: 0,
+      startDate: new Date(),
+      endDate: new Date(),
+      masterId: '0',
+      seats: 6,
+      eventId: 0,
+      isDeleted: false,
+      reservations: []
+    };
+    //  this.sessionService.addSession(this.newSession).then((session) => {
+    //   this.event?.sessions?.push(session);
+    //  });
+
+     this.closeAddModal();
   }
 
   filterGameMasters() {
@@ -265,12 +231,30 @@ export class EventDetailAdminComponent implements OnInit {
     else{
       this.gameSearch = '';
     }
-    console.log(this.sessionEdit.reservations);
     this.gameMasterSearch = this.sessionEdit!.master!.name ? `${this.sessionEdit!.master!.name} ${this.sessionEdit!.master!.surname}` : '';
     this.sessionEditStartDate = this.formatDate(this.sessionEdit.startDate);
     this.sessionEditEndDate = this.formatDate(this.sessionEdit.endDate);
     this.isEditSessionModal = true;
     this.gn.isOverlayOn$.next(true);
+  }
+
+  editSession() {
+    if (this.sessionEdit) {
+      this.sessionEdit.startDate = this.parseDate(this.sessionEditStartDate);
+      this.sessionEdit.endDate = this.parseDate(this.sessionEditEndDate);
+    }
+    if(this.arrayAddedSessions.some(session => session.sessionId === this.sessionEdit!.sessionId)){
+      const index = this.arrayAddedSessions.findIndex(session => session.sessionId === this.sessionEdit!.sessionId);
+      this.arrayAddedSessions[index] = this.sessionEdit!;
+    }
+
+    if(this.event?.sessions?.some(session => session.sessionId === this.sessionEdit!.sessionId)){
+      const index = this.event.sessions.findIndex(session => session.sessionId === this.sessionEdit!.sessionId);
+      this.event.sessions[index] = this.sessionEdit!;
+    }
+
+    this.isEditSessionModal = false;
+    this.gn.isOverlayOn$.next(false);
   }
 
   openDeleteSession(sessionId: number) {
@@ -379,8 +363,6 @@ export class EventDetailAdminComponent implements OnInit {
     if (this.sessionEdit) {
       this.sessionEdit.startDate = this.parseDate(this.sessionEditStartDate);
       this.sessionEdit.endDate = this.parseDate(this.sessionEditEndDate);
-      console.log('Formatted Start Date:', this.sessionEdit.startDate);
-      console.log('Formatted End Date:', this.sessionEdit.endDate);
     }
   }
 }
