@@ -17,7 +17,7 @@ export class GameService {
   gameDetail: GameModel | undefined;
 
   getGames() {
-    return this.http.get<any>(`${environment.apiUrl}/odata/Game`).subscribe(
+    return this.http.get<any>(`${environment.apiUrl}odata/Game`).subscribe(
       {
         next: (res) => {
           console.log(res.value);
@@ -31,7 +31,7 @@ export class GameService {
   }
 
    getDetails(id: number) {
-     this.http.get<any>(`${environment.apiUrl}/odata/Game/?$filter=gameId eq ${id}`).subscribe(
+     this.http.get<any>(`${environment.apiUrl}odata/Game/?$filter=gameId eq ${id}`).subscribe(
       {
         next: (res) => {
           console.log(res);
@@ -46,15 +46,13 @@ export class GameService {
   }
   
   create(gameModel: any): Observable<GameModel> {
-    return this.http.post<any>(`${environment.apiUrl}/api/Game`, gameModel).pipe(
+    return this.http.post<any>(`${environment.apiUrl}api/Game`, gameModel).pipe(
       tap((res) => {
         console.log('Game created successfully:', res);
-        this.getGames(); // Ricarica i giochi dopo la creazione
-        // TODO: Chiusura modale, chiamare un metodo per chiudere la modale qui
+        this.getGames(); 
       }),
       catchError((err) => {
         console.error('Error creating game:', err);
-        // Gestisci gli errori (ad esempio mostrando una notifica)
         return throwError(() => new Error('Error creating game'));
       })
     );
@@ -68,7 +66,7 @@ export class GameService {
 
     return new Promise((resolve, reject) => {
       this.http.put<GameModel>(
-        `${environment.apiUrl}/api/Game/image/${gameModel.gameId}`,formData
+        `${environment.apiUrl}api/Game/image/${gameModel.gameId}`,formData
       ).subscribe({
         next: (res) => {
           this.gameDetail = res;
@@ -93,7 +91,7 @@ export class GameService {
   patch(gameDetail:GameModel, patch: Operation[]): Promise<any>{
     return new Promise((resolve, reject) => {
       
-      this.http.patch<GameModel>(`${environment.apiUrl}/api/Game/${gameDetail?.gameId}`, patch).subscribe({
+      this.http.patch<GameModel>(`${environment.apiUrl}api/Game/${gameDetail?.gameId}`, patch).subscribe({
         next: (res) => {
           console.log(res);
           const games = this.Games$.value;
@@ -117,7 +115,7 @@ export class GameService {
 
     return new Promise((resolve, reject) => {
       
-      this.http.delete(`${environment.apiUrl}/api/Game/${id}`).subscribe({
+      this.http.delete(`${environment.apiUrl}api/Game/${id}`).subscribe({
         next: () => {
           console.log(`Game with ID ${id} deleted successfully.`);
           const games = this.Games$.value;
