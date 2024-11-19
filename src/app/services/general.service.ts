@@ -22,6 +22,25 @@ export class GeneralService {
   isCreateUserModal : boolean = false;
 
   isOverlayOn$ = new BehaviorSubject<boolean>(false);
-  isLOadingScreen$ = new BehaviorSubject<boolean>(false);
+  isLoadingScreen$ = new BehaviorSubject<boolean>(false);
 
+  serverError: boolean = false;
+  serverConfirm: boolean = false;
+  confirmMessage: string = '';
+  errorMessage: string = 'Server Error, Please Try Again';
+  defErrMessage: string = 'Server Error, Please Try Again';
+
+  setError(){
+    this.serverError=true;
+    setTimeout(() => {
+      this.serverError=false;
+    }, 4000);
+  }
+
+  setConfirm(){
+    this.serverConfirm=true;
+    setTimeout(() => {
+      this.serverConfirm=false;
+    }, 4000);
+  }
 }

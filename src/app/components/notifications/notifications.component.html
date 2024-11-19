@@ -1,0 +1,22 @@
+<div class="notifications-container">
+    <div class="notification" 
+         *ngIf="gn.serverError"
+         [@fadeInOut]>
+      <div class="notification__body">
+        <i class="fa-solid fa-xmark"></i>
+        {{gn.errorMessage}}
+      </div>
+      <div class="notification__progress"></div>
+    </div>
+
+    <div class="notification noti-true" 
+         *ngIf="gn.serverConfirm"
+         [@fadeInOut]>
+      <div class="notification__body">
+        <i class="fa-solid fa-check"></i>
+        {{gn.confirmMessage}}
+      </div>
+      <div class="notification__progress noti-true-progress"></div>
+    </div>
+
+  </div>

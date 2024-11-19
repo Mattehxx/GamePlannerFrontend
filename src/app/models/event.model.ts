@@ -9,8 +9,25 @@ export interface EventModel{
     isPublic: boolean,
     imgUrl: string,
     isDeleted: boolean,
-    gameSessions?: Array<gameSessionModel>,
+    sessions?: Array<gameSessionModel>,
     adminId: number,
     admin?: User,
+}
+export interface EventSessionsModel{
+    sessionId : number,
+    startDate : Date,
+    endDate : Date,
+    seats : number,
+    master : User | undefined,
+    game :  {
+        name : string,
+        description : string,
+        imgUrl: string
+    },
+    event : {
+        eventId : number,
+        name: string,
+        description : string
+    }
 }
 

@@ -21,7 +21,7 @@
                 </div>
                 <div class="image-actions">
                     <div class="btn upload"><i class="fa-solid fa-upload"></i> Upload Image</div>
-                    <div class="btn delete delete-image"><i class="fa-regular fa-trash-can"></i> Delete Image</div>
+                    <!-- <div class="btn delete delete-image"><i class="fa-regular fa-trash-can"></i> Delete Image</div> -->
                 </div>
             </div>
             
@@ -52,21 +52,26 @@
             <div class="details-title">Sessions</div>
             <div class="details-subtitle">Manage event sessions</div>
 
-            <div class="session-container" *ngFor="let session of event.gameSessions; let i = index">
-                <div class="session-header">
-                    <div class="session-title">Session {{i + 1}}</div>
-                    <div class="session-actions">
-                        <div class="edit-session " (click)="openEditSession(session)"><i class="fa-solid fa-pencil"></i></div>
-                        <div class="delete-session " (click)="openDeleteSession(session.sessionId)"><i class="fa-regular fa-trash-can"></i></div>
+           <div class="sessions-container">
+            <div class="session-scrollbar">
+                <div class="session-container" *ngFor="let session of event.sessions; let i = index">
+                    <div class="session-header">
+                        <div class="session-title">Session {{i + 1}}</div>
+                        <div class="session-actions">
+                            <div class="edit-session " (click)="openEditSession(session)"><i class="fa-solid fa-pencil"></i></div>
+                            <div class="delete-session " (click)="openDeleteSession(session.sessionId)"><i class="fa-regular fa-trash-can"></i></div>
+                        </div>
+                    </div>
+                    <div class="session-info">
+                        <div class="session date"> <i class="fa-regular fa-calendar"></i> {{session.startDate | date:'MMM dd, h:mm a'}} - {{session.endDate | date:'MMM dd, h:mm a'}}</div>
+                        <div class="session master"><i class="fa-solid fa-crown"></i> {{session.master?.name}} {{session.master?.surname}}</div>
+                        <div class="session seats"><i class="fa-solid fa-user-group"></i> {{session.reservations.length}} / {{session.seats}}</div>
+                        <div class="session game"><i class="fa-solid fa-gamepad"></i> {{session.game?.name}}</div>
                     </div>
                 </div>
-                <div class="session-info">
-                    <div class="session date"> <i class="fa-regular fa-calendar"></i> {{session.startDate | date:'MMM dd, h:mm a'}} - {{session.endDate | date:'MMM dd, h:mm a'}}</div>
-                    <div class="session master"><i class="fa-solid fa-crown"></i> {{session.master?.name}} {{session.master?.surname}}</div>
-                    <div class="session seats"><i class="fa-solid fa-user-group"></i> {{session.reservations.length}} / {{session.seats}}</div>
-                    <div class="session game"><i class="fa-solid fa-gamepad"></i> {{session.game?.name}}</div>
-                </div>
-            </div>
+                <div class="spacer"></div>
+               </div>
+           </div>
 
             <div class="button-add" (click)="openAddModal()"><i class="fa-solid fa-plus"></i> Add Session</div>
         </div>
@@ -224,7 +229,7 @@
     </div>
 </div>
 
-<div class="modal-delete" *ngIf="isDeleteModalEvent || isDeleteModalSession">
+<div class="modal-delete" *ngIf="isDeleteModalEvent || isDeleteModalSession ">
     <div class="delete-modal-content">
         <div class="modal-header">
             <div class="modal-title" *ngIf="isDeleteModalEvent">Delete Event</div>
@@ -242,3 +247,4 @@
         </div>
     </div>
 </div>
+
