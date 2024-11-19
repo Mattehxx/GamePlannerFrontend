@@ -39,7 +39,7 @@
 
             <ng-container matColumnDef="Admin">
                 <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
-                <mat-cell *matCellDef="let event"> <div class="admin-cell"> <img *ngIf="event.admin" [src]="admin.imgUrl"> {{event.admin?.name}} {{event.admin?.surname}}</div> </mat-cell>
+                <mat-cell *matCellDef="let event"> <div class="admin-cell"> <img *ngIf="event.adminUser" [src]="event.adminUser.imgUrl ?? admin.imgUrl"> {{event.adminUser?.name}} {{event.adminUser?.surname}}</div> </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="Sessions">
