@@ -23,8 +23,8 @@ export class HeaderComponent implements OnInit {
   @ViewChild('overlayElement') overlayElement!: ElementRef;
 
   logOut() {
-    this.toggleModal();
     this.as.logout();
+    this.toggleModal();
   }
   ngOnInit() {
     this.headerService.headerVisibility$.subscribe(isVisible => {
@@ -116,4 +116,18 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['dashboard-admin/users']);
   }
 
+  navigateLogin(status: boolean) {
+    if(status){
+      this.headerService.isMobileMenuOpen = false;
+      this.gn.isOverlayOn$.next(false);
+      this.router.navigate(['login']);
+    }
+    else{
+      this.headerService.isMobileMenuOpen = false;
+      this.gn.isOverlayOn$.next(false);
+      this.router.navigate(['register']);
+    }
+
+  }
+    
 }

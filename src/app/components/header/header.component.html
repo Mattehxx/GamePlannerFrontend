@@ -97,8 +97,8 @@
 
         <div class="mobile-auth" [class.center]="this.as.isLogged">
             <div class="login-registration-cont buttons-mobile" *ngIf="!this.as.isLogged">
-                <div class="login-registration login btn-mobile">Log In</div>
-                <div class="login-registration btn-mobile">Sign Up</div>
+                <div class="login-registration login btn-mobile" (click)="navigateLogin(true)">Log In</div>
+                <div class="login-registration btn-mobile" (click)="navigateLogin(false)">Sign Up</div>
             </div>
 
             <div class="user" *ngIf="this.as.isLogged && this.user">
