@@ -148,7 +148,7 @@ mat-paginator {
 }
 
 .name-cont div{
-    width: 10vh; 
+    width: 16vh; 
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
@@ -365,10 +365,17 @@ mat-paginator {
     display: flex;
     width: 18vh;
     height: 18vh;
+    background-color: rgba(128, 128, 128, 0.252);
     border-radius: 50%;
+    background-color: rgba(128, 128, 128, 0.252);
     background-size: cover;
     align-items: center;
     justify-content: center;
+
+    i{
+        font-size: 6vh;
+        color: var(--dark-purple);
+    }
 }
 
 .profile-image-details{

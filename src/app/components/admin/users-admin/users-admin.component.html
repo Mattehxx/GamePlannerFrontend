@@ -75,9 +75,9 @@
                             {{ user.role }}
                         </div>
                     </div>
-                    <div class="user-icon-role" *ngIf="user.role === 'User'">
+                    <div class="user-icon-role" *ngIf="user.role === 'Normal'">
                         <div class="role">
-                            <div><i *ngIf="user.role === 'User'" class="fa-solid fa-shield-halved"></i></div>
+                            <div><i *ngIf="user.role === 'Normal'" class="fa-solid fa-shield-halved"></i></div>
                             {{user.role}}
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                 </div>
                 <div class="role-status">
                     <div class="details-role-admin" *ngIf="selectedUser?.role === 'Admin'">{{selectedUser?.role}}</div>
-                    <div class="details-role-user" *ngIf="selectedUser?.role === 'User'">{{selectedUser?.role}}</div>
+                    <div class="details-role-user" *ngIf="selectedUser?.role === 'Normal'">{{selectedUser?.role}}</div>
                     @if(selectedUser?.isDeleted){
                     <div class="status-disabled details"> <span>INACT </span></div>
                     }
