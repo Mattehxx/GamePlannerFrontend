@@ -4,14 +4,20 @@
     <div class="player-profile-cont">
       <!-- <div class="subtitle">Player Profile</div> -->
       <div class="img-btns">
+        @if (userToEdit?.imgUrl) {
+        <div class="img">
+          <img class="img" src="{{userToEdit?.imgUrl}}" alt="User profile image">
+        </div>
+        }@else {
         <div class="img">
           <i class="fa-regular fa-user"></i>
         </div>
+        }
         <div class="buttons">
           <button class="btn-upload">
             <i class="fa-solid fa-upload"></i> Upload new image
           </button>
-          <button class="btn-remove">
+          <button class="btn-remove" (click)="removeImg()">
             <i class="fa-solid fa-xmark"></i> Remove image
           </button>
         </div>
@@ -97,33 +103,28 @@
 
     <div class="wrapper-radio">
       <div class="radio-title">
-        <i class="fa-solid fa-shield"></i> Game Master Status
+        <i class="fa-solid fa-shield"></i> Preferences
       </div>
-      <div class="radio-context">
-        Would you like to be available as a Game Master?
-      </div>
-      <div>
-      <form [formGroup]="preferenceForm!">
-        <div class="radio-input-group">
-          <div class="display-radios">
-            <div class="radio-input-label">
-              <input type="radio" id="masterYes" formControlName="canBeMaster" name="canBeMaster" [value]="true" />
-              <label for="masterYes" class="radio-label">Yes</label>
-            </div>
-            <div class="radio-input-label">
-              <input type="radio" id="masterNo" formControlName="canBeMaster" name="canBeMaster" [value]="false" />
-              <label for="masterNo" class="radio-label">No</label>
-            </div>
+      <div class="preference-form" *ngFor="let preference of userToEdit?.preferences">
+        <div class="game-name">{{preference.game.name}}</div>
+        <div class="display-radios">
+          <div class="radio-input-label">
+            <input type="radio" id="masterYes" name="canBeMaster{{preference.preferenceId}}" [value]="true"
+              [ngModel]="preference.canBeMaster" />
+            <label for="masterYes" class="radio-label">Yes</label>
           </div>
-          <div class="game-name">Gioco</div>
+          <div class="radio-input-label">
+            <input type="radio" id="masterNo" name="canBeMaster{{preference.preferenceId}}" [value]="false"
+              [ngModel]="preference.canBeMaster" />
+            <label for="masterNo" class="radio-label">No</label>
+          </div>
         </div>
-        </form>
+        <div class="knowledge-name">{{preference.knowledge.name}}</div>
       </div>
       <div class="bottom-buttons">
-        <button class="btn-cancel">Cancel</button>
+        <button (click)="resetUserInfo()" class="btn-cancel">Cancel</button>
         <button class="btn-save">Save Changes</button>
       </div>
     </div>
-
   </div>
 </div>

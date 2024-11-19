@@ -50,7 +50,7 @@ export class AuthLayoutComponent implements OnInit,OnDestroy{
 
 
   get isOverlayVisible(): boolean {
-    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay || this.as.isGameDetail;;
+    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay || this.as.showGameDetail;
   }
 
   

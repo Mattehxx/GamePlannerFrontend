@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DashboardService } from '../../../services/dashboard.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -16,6 +16,10 @@ import { GameModel } from '../../../models/game.model';
 import { NavigationEnd, Router } from '@angular/router';
 import { AdminService } from '../../../services/admin.service';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { GameService } from '../../../services/game.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ModalCreateGameComponent } from "./modal-create-game/modal-create-game.component";
+import { createPatch } from 'rfc6902';
 
 
 
@@ -36,12 +40,14 @@ interface EditState {
     MatPaginator,
     ModalCreateUserComponent,
     ReactiveFormsModule,
-    FormsModule],
+    FormsModule, ModalCreateGameComponent],
   templateUrl: './games-admin.component.html',
   styleUrl: './games-admin.component.scss'
 })
 
-export class GamesAdminComponent {
+export class GamesAdminComponent implements OnInit, OnDestroy {
+
+
 
   editStates: { [key: string]: EditState } = {
     name: { isEditMode: false, editToggle: false },
@@ -54,101 +60,108 @@ export class GamesAdminComponent {
   editToggle: boolean = false;
   isEditMode: boolean = false;
 
+  death$ = new Subject<void>();
+
   imgHover: boolean = false;
 
   form: FormGroup;
 
   selectedImage: string | null = null;
 
-  // hoveredNameProperty: { element: GameModel; key: string } | null = null;
 
-  // isEditingProperty: { element: any; key: string } | null = null;
+  selectedImagePreview: string | null = null;
+  selectedImageFile: File | null = null;
 
 
-  constructor(public ds: DashboardService, public headerService: HeaderService, public as: AdminService, private router: Router, private fb: FormBuilder) {
+  constructor(public ds: DashboardService, public headerService: HeaderService, public as: AdminService, private router: Router, private fb: FormBuilder, public gs: GameService, private gn: GeneralService) {
     this.form = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      imgUrl: [null] 
+      imgUrl: [null]
     });
   }
 
   selectedGame: GameModel | undefined;
 
   displayedColumns: string[] = ['imgUrl', 'name', 'isDisabled'];
-  dataSource = new MatTableDataSource<GameModel>([
-    {
-      name: "Dungeons & Dragons",
-      description: "Un gioco di ruolo fantasy dove i giocatori creano personaggi e affrontano avventure in un mondo immaginario.",
-      imgUrl: 'assets/images/mockup-img/games/DnD.jpg',
-      isDisabled: false,
-      isDeleted: false,
-    },
-    {
-      name: "Gloomhaven",
-      description: "Un gioco di ruolo tattico dove i giocatori affrontano dungeon e sviluppano i loro personaggi in una campagna persistente.",
-      imgUrl: 'assets/images/mockup-img/games/gloomhaven.jpeg',
-      isDisabled: false,
-      isDeleted: false,
-    },
-    {
-      name: "Descent: Journeys in the Dark",
-      description: "Un gioco di avventura dungeon crawler, dove un giocatore controlla i nemici e gli altri collaborano per completare missioni.",
-      imgUrl: 'assets/images/mockup-img/games/Descent.jpeg',
-      isDisabled: false,
-      isDeleted: false,
-    },
-    {
-      name: "Mice and Mystics",
-      description: "Un gioco narrativo cooperativo dove i giocatori interpretano topi guerrieri in un castello infestato.",
-      imgUrl: 'assets/images/mockup-img/games/grail.jpg',
-      isDisabled: true,
-      isDeleted: false,
-    },
-    {
-      name: "The Witcher: Old World",
-      description: "Un gioco di avventura e ruolo ambientato nel mondo di The Witcher, dove i giocatori esplorano e affrontano mostri.",
-      imgUrl: 'assets/images/mockup-img/games/miceMystic.jpg',
-      isDisabled: false,
-      isDeleted: false,
-    },
-    {
-      name: "Tainted Grail: The Fall of Avalon",
-      description: "Un gioco narrativo e di esplorazione ambientato in un mondo oscuro ispirato alla leggenda di Re Artù.",
-      imgUrl: 'assets/images/mockup-img/games/theWitcher.jpeg',
-      isDisabled: false,
-      isDeleted: false,
-    },
-  ]
+  dataSource = new MatTableDataSource<GameModel>([])
 
-
-  );
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  ngOnInit(): void {
+    this.gs.Games$.pipe(takeUntil(this.death$)).subscribe({
+      next: (games) => {
+        this.dataSource.data = games;
+        console.log(games);
+      }
+    })
+    this.gs.getGames();
+
+  }
+
+  ngOnDestroy(): void {
+    this.death$.next();
+    this.death$.complete();
+  }
 
 
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
+
+  openCreateGameModal() {
+    this.as.isCreateGameModal = true;
+    this.gn.isOverlayOn$.next(true);
+  }
+
   applyFilter(event: KeyboardEvent) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
   }
 
-  openCreateOrUpdateGamesModal(game: GameModel | undefined) {
-    this.as.isGameDetail = true;
-    this.selectedGame = game;
+  openGameDetailsModal(game: GameModel) {
+    this.as.showGameDetail = true;
+    this.gs.getDetails(game.gameId!);
+    this.gs.gameDetail = game!;
   }
 
   closeModal() {
-    this.as.isGameDetail = false;
+
     this.isEditMode = false;
+
+    if (this.editStates['imgUrl'].isEditMode && this.as.showGameDetail) {
+      this.editStates['imgUrl'].isEditMode = false
+    }
+    else {
+
+      this.as.showGameDetail = false;
+    }
   }
 
-  ableOrDisableGame() {
-    this.selectedGame!.isDisabled = !this.selectedGame?.isDisabled;
+  EnableOrDisableGame() {
+
+    if (this.gs.gameDetail) {
+
+
+      const modifiedObject: GameModel = { ...this.gs.gameDetail, isDisabled: !this.gs.gameDetail!.isDisabled };
+      let patch = createPatch(this.gs.gameDetail, modifiedObject);
+
+      console.log('Patch:', patch,);
+      this.gs.patch(this.gs.gameDetail!, patch).then((res) => {
+        this.gs.gameDetail!.isDisabled = !this.gs.gameDetail!.isDisabled;;
+      })
+        .catch((err) => {
+          console.error('Failed to Update Game Status:', err);
+        });
+
+    }
+
+
+
+
   }
+
   toggleDeleteGameModal() {
     this.as.isDeleteGameModal = !this.as.isDeleteGameModal;
   }
@@ -163,8 +176,7 @@ export class GamesAdminComponent {
 
 
   enableEdit(element: any, key: string): void {
-
-    // this.isEditingProperty = { element, key };
+    console.log('Value passed:', element);
 
     this.editStates[key].isEditMode = true;
     this.editStates[key].editToggle = false;
@@ -172,6 +184,9 @@ export class GamesAdminComponent {
     this.form.patchValue({
       [key]: element[key]
     });
+
+
+    console.log(this.form.value);
 
     if (!this.form.contains(key)) {
       this.form.addControl(key, this.fb.control(element[key]));
@@ -182,18 +197,25 @@ export class GamesAdminComponent {
     const control = this.form.get(key);
 
     if (control !== null && control instanceof FormControl) {
-      element[key] = control.value;
+      element = { ...element, name: control.value };
     }
-    this.disableEdit(key);
+    // console.log(this.gs.gameDetail, element);
+
+    let patch = createPatch(this.gs.gameDetail, element);
+    console.log(patch)
+
+    this.gs.patch(this.gs.gameDetail!, patch).then((res) => {
+      this.gs.gameDetail = { ...element, name: control!.value };
+    })
+      .finally(() => {
+        this.disableEdit(key);
+      })
+
   }
 
   disableEdit(key: string): void {
     this.editStates[key].isEditMode = false;
-    this.form.setValue({
-      name: this.selectedGame?.name,
-      description: this.selectedGame?.description,
-      imgUrl: this.selectedGame?.imgUrl
-    });
+
   }
 
   cancelEdit(key: string): void {
@@ -208,37 +230,66 @@ export class GamesAdminComponent {
     if (input.files && input.files[0]) {
       const file = input.files[0];
 
-      // Verifica che il file sia un'immagine
       if (!file.type.startsWith('image/')) {
-        console.error('Il file selezionato non è un\'immagine.');
+        console.error('The selected file is not an image.');
         return;
       }
-
+      this.selectedImageFile = file;
       const reader = new FileReader();
 
       reader.onload = () => {
-        this.selectedImage = reader.result as string; // Salva l'anteprima
-        this.form.patchValue({ image: file }); // Aggiungi il file al form
+        this.selectedImagePreview = reader.result as string;
       };
 
       reader.onerror = () => {
-        console.error('Errore durante la lettura del file.');
+        console.error('Error reading file.');
       };
 
-      reader.readAsDataURL(file); // Converte l'immagine in base64
+      reader.readAsDataURL(file);
     }
   }
 
   saveImage(): void {
-    if (this.selectedImage) {
-      console.log('Immagine salvata:', this.selectedImage);
-      // Implementa la logica per salvare l'immagine (esempio: invio al backend)
+    if (this.selectedImageFile) {
+
+      console.log('Image saved:', this.selectedImageFile);
+    } else {
+      console.warn('No image selected.');
     }
+
+    if (this.selectedImageFile && this.gs.gameDetail?.imgUrl) {
+
+      this.gs.put(this.gs.gameDetail, this.selectedImageFile).then((res) => {
+        console.log('Image updated successfully:', res);
+        this.form.patchValue({ imgUrl: this.selectedImageFile });
+        this.gs.getDetails(this.gs.gameDetail!.gameId!);
+        this.cancelImage();
+        this.cancelEdit('imgUrl');
+        // this.selectedGame = this.gs.gameDetail;
+      })
+        .catch((err) => {
+          console.error('Error updating image:', err);
+        });
+
+    } else {
+      console.error('Image file not selected.');
+    }
+
+
+
   }
 
   cancelImage(): void {
-    this.selectedImage = null; // Resetta l'anteprima
-    this.form.reset(); // Resetta il form
+    this.selectedImagePreview = null;
+    this.form.reset();
+  }
+
+  delete() {
+   this.gs.delete(this.gs.gameDetail!.gameId!).then((res) => {
+    this.toggleDeleteGameModal();
+     this.as.showGameDetail = false;
+     this.gs.getGames();
+   });
   }
 
 }
