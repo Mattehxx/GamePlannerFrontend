@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Operation } from 'rfc6902';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../environment/environment';
 import { User } from '../models/user.model';
@@ -11,12 +12,12 @@ import { GeneralService } from './general.service';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router,private gn: GeneralService) {
+  constructor(private http: HttpClient, private router: Router, private gn: GeneralService) {
   }
 
   isAdmin: boolean = true;
   isLogged: boolean = false;
-  user: BehaviorSubject<User> = new BehaviorSubject<User>({ name: '', surname: '', role: '' });
+  user: BehaviorSubject<User> = new BehaviorSubject<User>({ name: '', surname: '', role: '', id: '' });
 
   register(user: User): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -135,5 +136,20 @@ export class AuthService {
           return throwError(() => error);
         })
       );
+  }
+  patchUser(userDetail: User, patch: Operation[]): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.patch<User>(`${environment.apiUrl}api/ApplicationUser/${userDetail.id}`, patch).subscribe({
+        next: (res) => {
+          this.user.next(res);
+          resolve(res);
+          console.log(res);
+        },
+        error: (err) => {
+          console.error(err);
+          reject(err);
+        }
+      });
+    });
   }
 }

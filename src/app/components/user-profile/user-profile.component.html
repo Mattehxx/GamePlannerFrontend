@@ -4,9 +4,9 @@
     <div class="player-profile-cont">
       <!-- <div class="subtitle">Player Profile</div> -->
       <div class="img-btns">
-        @if (userToEdit?.imgUrl) {
+        @if (copyModel?.imgUrl) {
         <div class="img">
-          <img class="img" src="{{userToEdit?.imgUrl}}" alt="User profile image">
+          <img class="img" src="{{copyModel?.imgUrl}}" alt="User profile image">
         </div>
         }@else {
         <div class="img">
@@ -114,7 +114,7 @@
       </div>
       <!--default view-->
       <div *ngIf="viewMode === 'default'">
-        <div class="preference-form" *ngFor="let preference of userToEdit?.preferences">
+        <div class="preference-form" *ngFor="let preference of copyModel?.preferences">
           <div class="game-name">{{preference.game.name}}</div>
           <div class="display-radios">
             <div class="radio-input-label">
@@ -133,9 +133,9 @@
       </div>
       <!--edit view-->
       <div *ngIf="viewMode === 'edit'">
-        <div class="preference-form" *ngFor="let preference of userToEdit?.preferences">
+        <div class="preference-form" *ngFor="let preference of copyModel?.preferences">
           <div class="game-name">
-            <select name="game" id="{{this.originalUser?.userId}}GamePreference">
+            <select name="game" id="{{this.originalModel?.id}}GamePreference">
               <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
             </select>
           </div>
@@ -151,7 +151,7 @@
               <label for="masterNo" class="radio-label">No</label>
             </div>
           </div>
-          <select name="knowledge" id="{{this.originalUser?.userId}}knowledgePreference">
+          <select name="knowledge" id="{{this.originalModel!.id}}knowledgePreference">
             <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
           </select>
         </div>
@@ -160,7 +160,7 @@
       <div *ngIf="viewMode === 'add'">
         <div class="preference-form">
           <div class="game-name">
-            <select name="game" id="{{this.originalUser?.userId}}GamePreference">
+            <select name="game" id="{{this.originalModel?.id}}GamePreference">
               <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
             </select>
           </div>
@@ -175,7 +175,7 @@
             </div>
           </div>
           <div class="knowledge-name">
-            <select name="knowledge" id="{{this.originalUser?.userId}}knowledgePreference">
+            <select name="knowledge" id="{{this.originalModel?.id}}knowledgePreference">
               <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
             </select>
           </div>
@@ -187,7 +187,7 @@
         <button (click)="PostPreference()" class="btn-save">Add Preference</button>
         }
         @else {
-        <button class="btn-save">Save Changes</button>
+        <button (click)="SaveChanges()" class="btn-save">Save Changes</button>
         }
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { createPatch } from 'rfc6902';
 import { GameModel } from '../../models/game.model';
 import { knowledgeModel } from '../../models/knowledge.model';
 import { preferenceModel } from '../../models/preference.model';
@@ -27,8 +28,8 @@ export class UserProfileComponent implements OnInit {
   selectedImagePreview: string | undefined;
   games: GameModel[] = [];
   knowledges: knowledgeModel[] = [];
-  userToEdit: User | null = null;
-  originalUser: User | null = null;
+  originalModel: User | null = null;
+  copyModel: User | null = null;
   userForm: FormGroup;
   viewMode: string = 'default';
 
@@ -48,8 +49,8 @@ export class UserProfileComponent implements OnInit {
       this.as.user?.subscribe({
         next: (user) => {
           if (user) {
-            this.originalUser = { ...user };
-            this.userToEdit = { ...user };
+            this.originalModel = { ...user };
+            this.copyModel = { ...user };
             this.userForm.controls['email'].setValue(user.email ?? null);
             this.userForm.controls['name'].setValue(user.name);
             this.userForm.controls['surname'].setValue(user.surname);
@@ -85,38 +86,41 @@ export class UserProfileComponent implements OnInit {
     this.userForm.setControl('preferences', preferenceFormArray);
   }
 
-  // addPreference(): void {
-  //   this.preferences.push(this.fb.control('', Validators.required));
-  // }
-
-  // removePreference(index: number): void {
-  //   this.preferences.removeAt(index);
-  // }
-
   removeImg() {
-    if (this.userToEdit) {
-      this.userToEdit.imgUrl = "";
+    if (this.copyModel) {
+      this.copyModel.imgUrl = "";
     }
   }
 
   resetUserInfo() {
-    if (this.originalUser) {
-      this.userToEdit = { ...this.originalUser };
-      this.userForm.controls['email'].setValue(this.originalUser.email ?? null);
-      this.userForm.controls['name'].setValue(this.originalUser.name);
-      this.userForm.controls['surname'].setValue(this.originalUser.surname);
-      this.userForm.controls['phone'].setValue(this.originalUser.phoneNumber ?? null);
-      this.userForm.controls['birthdate'].setValue(this.originalUser.birthDate ? new Date(this.originalUser.birthDate).toISOString().split('T')[0] : null);
+    if (this.originalModel) {
+      this.copyModel = { ...this.originalModel };
+      this.userForm.controls['email'].setValue(this.originalModel.email ?? null);
+      this.userForm.controls['name'].setValue(this.originalModel.name);
+      this.userForm.controls['surname'].setValue(this.originalModel.surname);
+      this.userForm.controls['phone'].setValue(this.originalModel.phoneNumber ?? null);
+      this.userForm.controls['birthdate'].setValue(this.originalModel.birthDate ? new Date(this.originalModel.birthDate).toISOString().split('T')[0] : null);
+      this.viewMode = 'default';
     }
-    this.viewMode = 'default';
   }
-
+  SaveChanges() {
+    this.onSubmit();
+  }
   onSubmit(): void {
+    console.log("original", this.originalModel)
+    console.log(this.originalModel?.id)
+    const newValues = this.userForm.value;
+    console.log("edit", newValues)
     if (this.userForm.valid) {
-      const updatedUser = { ...this.userToEdit, ...this.userForm.value };
+      let patch = createPatch(this.originalModel, newValues)
+      console.log("dopo",this.originalModel?.id)
+      this.as.patchUser(this.originalModel!, patch).then((response) => {
+        console.log('User updated successfully:', response);
+      }).catch((error) => {
+        console.error('Error updating user:', error);
+      });
     }
   }
-
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
@@ -141,7 +145,6 @@ export class UserProfileComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-  get preferences(): FormArray {
-    return this.userForm.get('preferences') as FormArray;
-  }
-}
+};
+
+
