@@ -28,7 +28,7 @@
             </div>
         </ng-template>
     </div>
-    <div class="bars-container" (click)="this.headerService.isMobileMenuOpen=true">
+    <div class="bars-container" (click)="mobileMenu(true)">
         <i class="fa-solid fa-bars"></i>
     </div>
     @if (this.as.isLogged)
@@ -48,8 +48,8 @@
         </div>
         <div class="divisor"></div>
         <div class="options-container" #modalElement>
-            <div class="settings-cont" *ngIf="this.as.isAdmin" (click)="this.router.navigate(['dashboard-admin/users'])"
-                (click)="this.headerService.isModalOpen=false">
+            <div class="settings-cont" *ngIf="this.as.isAdmin" (click)="navigateDashboardAdmin()">
+                
                 <div><i class="fa-solid fa-user-tie"></i></div>
                 <div class="settings">Dashboard Admin</div>
             </div>
@@ -74,19 +74,19 @@
             </div>
         </div>-->
 
-        <div class="close-header" (click)="this.headerService.isMobileMenuOpen=false">
+        <div class="close-header" (click)="mobileMenu(false)">
             <i class="fa-solid fa-xmark"></i>
         </div>
 
         <div>
             <div class="menu-item" routerLink="home" routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }" (click)="this.headerService.isMobileMenuOpen=false"><i
+                [routerLinkActiveOptions]="{ exact: true }" (click)="mobileMenu(false)"><i
                     class="fa-solid fa-house"></i> Home</div>
             <div class="menu-item" routerLink="events" routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }" (click)="this.headerService.isMobileMenuOpen=false"><i
+                [routerLinkActiveOptions]="{ exact: true }" (click)="mobileMenu(false)"><i
                     class="fa-solid fa-calendar"></i> Events</div>
             <div class="menu-item" routerLink="mobile" routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }" (click)="this.headerService.isMobileMenuOpen=false"><i
+                [routerLinkActiveOptions]="{ exact: true }" (click)="mobileMenu(false)"><i
                     class="fa-solid fa-mobile-screen-button"></i> Mobile</div>
         </div>
 
@@ -98,7 +98,7 @@
 
             <div class="user" *ngIf="this.as.isLogged && this.user">
                 <div class="img-name-mobile">
-                    @if(this.user.imgUrl){
+                    @if(this.user.imgUrl==undefined){
                     <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
                     }
                     @else {
@@ -114,7 +114,7 @@
                 <div class="options-container cont-mobile" #modalElement>
 
                     <div class="settings-cont mobile-font" *ngIf="this.as.isAdmin"
-                        (click)="this.router.navigate(['dashboard-admin/users'])">
+                        (click)="navigateDashboardAdmin()">
 
                         <div><i class="fa-solid fa-user-tie"></i></div>
                         <div class="settings">Dashboard Admin</div>
@@ -126,7 +126,7 @@
                     </div>
                     <div class="settings-cont red mobile-font">
                         <div><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
-                        <div>logout</div>
+                        <div (click)="logOut()">logout</div>
                     </div>
                 </div>
             </div>

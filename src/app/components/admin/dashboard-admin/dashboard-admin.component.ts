@@ -34,7 +34,7 @@ export class DashboardAdminComponent implements OnInit {
   }
 
   closeOverlay() {
-    this.as.isGameDetail = false;
+    this.as.showGameDetail = false;
     this.as.isCreateUserModal = false;
   }
 

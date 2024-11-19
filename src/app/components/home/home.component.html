@@ -52,20 +52,22 @@
                     <div class="event-game">Dungeons And Dragons</div>
                     <div class="info" *ngIf="event">
                         <div class="event-date"><i class="fa-regular fa-clock"></i>  {{event.startDate | date:'MMM dd, h:mm a'}}</div>
-                        <div class="event-duration"><i class="fa-solid fa-hourglass-end"></i>     {{ event.startDate | duration: event.endDate }}
-                        </div>
+                        <!-- <div class="event-duration"><i class="fa-solid fa-hourglass-end"></i>     {{ event.startDate | duration: event.endDate }}
+                        </div> -->
                     </div>
                     @if (event.master){
                         <div class="display-admin">
-                            <img src="assets/images/pfp.jpg">
-                             <span *ngIf="event">{{event.master.name}}</span> 
+                            @if(event.master.imgUrl){
+                                <img [src]="event.master.imgUrl">
+                            }
+                            @else {
+                                <div class="user-icon" >
+                                    <i class="fa-regular fa-user"></i>
+                                </div>   
+                            }
+                             <span *ngIf="event">{{event.master!.name}}</span> 
                         </div>
                     }@else {
-                        <div class="display-admin">
-                            <div class="user-icon" >
-                                <i class="fa-regular fa-user"></i>
-                            </div>   
-                        </div>
                    }
                 </div>
             </div>
