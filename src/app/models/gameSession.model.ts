@@ -5,8 +5,8 @@ import { User } from "./user.model";
 
 export interface gameSessionModel{
     sessionId: number,
-    startDate: Date,
-    endDate: Date,
+    startDate: Date ,
+    endDate: Date ,
     seats: number,
     isDeleted: boolean,
     masterId: string,

@@ -26,13 +26,18 @@
 
                     <div class="cont-user-cell">
 
-                        @if(user.imgUrl=== null){
-                        <img alt="Profile" class="profile-image">{{user.imgUrl}}
+                        @if(user.imgUrl === null){
+                            <div class="profile-image"> <i class="fa-regular fa-user"></i></div>
+                        }
+                        @else {
+
+                            <img alt="Profile" class="profile-image" [src]="user.imgUrl">
                         }
 
-                        <div class="profile-image"> <i class="fa-regular fa-user"></i></div>
-                        <div>{{user.name}}</div>
-                        <div>{{user.surname}}</div>
+                    <div class="name-cont">
+                        <div>{{user.name}} {{user.surname}}</div>
+                    </div>     
+
                         @if(user.isDeleted){
                         <div class="status-disabled"> <span>INACT </span></div>
                         }
@@ -48,9 +53,17 @@
                 <mat-cell *matCellDef="let user"> {{user.email}} </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="phone">
+            <ng-container matColumnDef="phoneNumber">
                 <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
-                <mat-cell *matCellDef="let user"> {{user.phone}} </mat-cell>
+                <mat-cell *matCellDef="let user"> 
+                    @if(user.phoneNumber === null){
+                         Number missing
+                    }
+                    @else {
+                        {{user.phoneNumber}} 
+                    }
+                   
+                </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="role">
@@ -62,9 +75,9 @@
                             {{ user.role }}
                         </div>
                     </div>
-                    <div class="user-icon-role" *ngIf="user.role === 'User'">
+                    <div class="user-icon-role" *ngIf="user.role === 'Normal'">
                         <div class="role">
-                            <div><i *ngIf="user.role === 'User'" class="fa-solid fa-shield-halved"></i></div>
+                            <div><i *ngIf="user.role === 'Normal'" class="fa-solid fa-shield-halved"></i></div>
                             {{user.role}}
                         </div>
                     </div>
@@ -92,17 +105,19 @@
             </div>
             <div class="details-container">
                 <div class="details-image">
-                    @if(selectedUser?.imgUrl === undefined){
-                    <i class="fa-regular fa-user"></i>
+                    @if(selectedUser?.imgUrl === null){
+                        <div class="background-image"><i class="fa-regular fa-user"></i></div>   
                     }
-                    <img alt="Profile" class="profile-image-details" [src]="selectedUser?.imgUrl">
+                    @else {
+                        <div [ngStyle]="{ 'background-image': 'url(' + this.selectedUser?.imgUrl + ')'}" class="background-image" ></div>
+                    }
                 </div>
                 <div class="details-name">
                     <div class="details-name">{{selectedUser?.name}} {{selectedUser?.surname}}</div>
                 </div>
                 <div class="role-status">
                     <div class="details-role-admin" *ngIf="selectedUser?.role === 'Admin'">{{selectedUser?.role}}</div>
-                    <div class="details-role-user" *ngIf="selectedUser?.role === 'User'">{{selectedUser?.role}}</div>
+                    <div class="details-role-user" *ngIf="selectedUser?.role === 'Normal'">{{selectedUser?.role}}</div>
                     @if(selectedUser?.isDeleted){
                     <div class="status-disabled details"> <span>INACT </span></div>
                     }
@@ -124,7 +139,13 @@
                         </div>
                         <div class="phone-cont">
                             <div><i class="fa-solid fa-phone"></i></div>
-                            <div>{{selectedUser?.phoneNumber}}</div>
+                            <div> @if(this.selectedUser?.phoneNumber === null){
+                                Number missing
+                           }
+                           @else {
+                               {{this.selectedUser?.phoneNumber}} 
+                           }
+                          </div>
                         </div>
 
                         <!-- <div class="canBeMaster-cont">

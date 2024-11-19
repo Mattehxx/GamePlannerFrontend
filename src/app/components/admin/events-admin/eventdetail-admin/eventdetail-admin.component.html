@@ -1,4 +1,4 @@
-<div class="container"  [class.dashboarsIsOpen]="this.ds.isOpen">
+<div class="container"  [class.dashboarsIsOpen]="this.ds.isOpen" *ngIf="!isLoading">
     <div class="detail-header">
         <div class="event-context"><span class="event-title">{{event?.name}}</span> 
             <span class="page-info">Manage event details and sessions</span>
@@ -16,12 +16,16 @@
 
             <div class="event-image" [class.image-background]="!event.imgUrl">
                 <div class="image-container">
-                    <img *ngIf="event?.imgUrl && event?.imgUrl !== ''" [src]="event.imgUrl" alt="Event Image">
-                    <div *ngIf="!event?.imgUrl || event?.imgUrl === ''" class="no-image">No Image Available</div>
-                </div>
+                    <img *ngIf="event.imgUrl && !imageUrl" [src]="event.imgUrl" alt="Event Image">
+                    <img *ngIf="imageUrl; else noImage" [src]="imageUrl" alt="Event Image">
+                    <ng-template #noImage>
+                      <div *ngIf="!event?.imgUrl || event?.imgUrl === ''" class="no-image">No Image Available</div>
+                    </ng-template>
+                  </div>
                 <div class="image-actions">
-                    <div class="btn upload"><i class="fa-solid fa-upload"></i> Upload Image</div>
                     <!-- <div class="btn delete delete-image"><i class="fa-regular fa-trash-can"></i> Delete Image</div> -->
+                <div class="btn upload" (click)="fileInput.click()"><i class="fa-solid fa-upload"></i> Upload Image</div>
+                <input type="file" #fileInput (change)="uploadImage($event)" style="display: none;">
                 </div>
             </div>
             
@@ -51,8 +55,7 @@
         <div class="session-details">
             <div class="details-title">Sessions</div>
             <div class="details-subtitle">Manage event sessions</div>
-
-           <div class="sessions-container">
+            <div class="sessions-container">
             <div class="session-scrollbar">
                 <div class="session-container" *ngFor="let session of event.sessions; let i = index">
                     <div class="session-header">
@@ -113,10 +116,10 @@
                     <div class="form-group">
                         <label for="gameMaster">Game Master</label>
                         <div #dropdownElementMaster class="custom-dropdown">
-                            <input type="text" [(ngModel)]="gameMasterSearch" name="gameMasterSearch" placeholder="Search game master" (focus)="showOptions()" (input)="filterGameMasters()" />
+                            <input type="text" [(ngModel)]="gameMasterSearch" name="gameMasterSearch" placeholder="Search game master" (focus)="showOptions()" (input)="filterGameMasters()" [disabled]="!selectedGame" />
                             <i *ngIf="gameMasterSearch" (click)="clearMasterSearch()" class="fa-solid fa-xmark"></i>
                             <ul class="options" *ngIf="isShowingMasterOptions">
-                                <li *ngFor="let master of filteredGameMasters" (click)="selectGameMaster(master)" [class.highlight]="master.userId === newSession.masterId">
+                                <li *ngFor="let master of filteredGameMasters" (click)="selectGameMaster(master)" [class.highlight]="master.id === newSession.masterId">
                                     {{ master.name }} {{ master.surname }}
                                 </li>
                             </ul>
@@ -138,7 +141,7 @@
                             </span>
                         </div>
                         <input id="game" type="text" [(ngModel)]="reservationSearch" name="reservationSearch" placeholder="Search players" (focus)="showOptionsReservation()" (input)="filterUsers()" />
-                        <i *ngIf="reservationSearch" (click)="clearReservationSearch()" class="fa-solid fa-xmark"></i>
+                        <!-- <i *ngIf="reservationSearch" (click)="clearReservationSearch()" class="fa-solid fa-xmark"></i> -->
                         <ul class="options" *ngIf="isShowingReservationOptions">
                             <li *ngFor="let user of filteredUsers" (click)="toggleReservation(user)" [class.highlight]="isUserSelected(user)">
                                 {{ user.name }} {{ user.surname }}
@@ -147,7 +150,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn save">Add Session</button>
+                    <button type="submit" class="btn save" (click)="addSession()">Add Session</button>
                 </div>
             </form>
         </div>
@@ -166,9 +169,9 @@
                     <label for="game">Game</label>
                     <div #dropdownElementGame class="custom-dropdown">
                         <input type="text" id="game" [(ngModel)]="gameSearch" name="gameSearch" placeholder="Search game" (focus)="showOptionsGame()" (input)="filterGames()" />
-                        <i *ngIf="gameSearch" (click)="clearGameSearch()" class="fa-solid fa-xmark"></i>
+                        <i *ngIf="gameSearch" (click)="clearGameEditSearch()" class="fa-solid fa-xmark"></i>
                         <ul class="options" *ngIf="isShowingGameOptions">
-                            <li *ngFor="let game of filteredGames" (click)="selectGame(game)" [class.highlight]="game.gameId === newSession.gameId">
+                            <li *ngFor="let game of filteredGames" (click)="selectEditGame(game)" [class.highlight]="game.gameId === newSession.gameId">
                                 {{ game.name }} 
                             </li>
                         </ul>
@@ -188,10 +191,10 @@
                     <div class="form-group">
                         <label for="gameMaster">Game Master</label>
                         <div #dropdownElementMaster class="custom-dropdown">
-                            <input type="text" [(ngModel)]="gameMasterSearch" name="gameMasterSearch" placeholder="Search game master" (focus)="showOptions()" (input)="filterGameMasters()" />
+                            <input type="text" [(ngModel)]="gameMasterSearch" name="gameMasterSearch" placeholder="Search game master" (focus)="showOptionsEdit()" (input)="filterGameMasters()" [disabled]="!this.sessionEdit!.game" />
                             <i *ngIf="gameMasterSearch" (click)="clearMasterSearch()" class="fa-solid fa-xmark"></i>
                             <ul class="options" *ngIf="isShowingMasterOptions">
-                                <li *ngFor="let master of filteredGameMasters" (click)="selectGameMaster(master)" [class.highlight]="master.userId === newSession.masterId">
+                                <li *ngFor="let master of filteredGameMasters" (click)="selectGameMaster(master)" [class.highlight]="master.id === newSession.masterId">
                                     {{ master.name }} {{ master.surname }}
                                 </li>
                             </ul>
@@ -247,4 +250,3 @@
         </div>
     </div>
 </div>
-

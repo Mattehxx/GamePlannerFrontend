@@ -32,7 +32,7 @@ export class EventDetailComponent implements OnInit{
       this.router.navigate(['events']);
     } else {
       this.gn.eventDetail.sessions = this.gn.eventDetail.sessions?.sort((a, b) => {
-      return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+      return new Date(a.startDate!).getTime() - new Date(b.startDate!).getTime();
       });
     }
     this.event= this.gn.eventDetail;

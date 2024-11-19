@@ -45,7 +45,7 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['Event', 'Admin', 'Sessions', 'Visibility', 'Actions'];
 
   admin: User = {
-    userId: 'sfasf',
+    id: 'sfasf',
     name: 'Yassine',
     surname: 'Char',
     email: '',

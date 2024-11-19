@@ -11,7 +11,7 @@ export interface EventModel{
     isDeleted: boolean,
     sessions?: Array<gameSessionModel>,
     adminId: number,
-    admin?: User,
+    adminUser?: User,
 }
 export interface EventSessionsModel{
     sessionId : number,

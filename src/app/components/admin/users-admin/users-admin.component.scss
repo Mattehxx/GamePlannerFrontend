@@ -147,6 +147,13 @@ mat-paginator {
     min-height: var(--mat-paginator-container-size);
 }
 
+.name-cont div{
+    width: 16vh; 
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
 .cont-user-cell {
     display: flex;
     gap: 1vh;
@@ -352,6 +359,23 @@ mat-paginator {
 
 .details-image {
     padding: 3vh 0 2vh;
+}
+
+.background-image{
+    display: flex;
+    width: 18vh;
+    height: 18vh;
+    background-color: rgba(128, 128, 128, 0.252);
+    border-radius: 50%;
+    background-color: rgba(128, 128, 128, 0.252);
+    background-size: cover;
+    align-items: center;
+    justify-content: center;
+
+    i{
+        font-size: 6vh;
+        color: var(--dark-purple);
+    }
 }
 
 .profile-image-details{
