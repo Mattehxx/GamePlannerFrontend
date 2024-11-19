@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Operation } from 'rfc6902';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../environment/environment';
-import { User } from '../models/user.model';
+import { User, UserForm } from '../models/user.model';
 import { GeneralService } from './general.service';
 
 @Injectable({
@@ -87,7 +87,7 @@ export class AuthService {
   }
 
   setRefreshToken(refreshToken: string): void {
-    console.log("setting "+refreshToken)
+    console.log("setting " + refreshToken)
     localStorage.setItem('refreshToken', refreshToken);
   }
 
@@ -113,7 +113,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-     const token = this.getToken()
+    const token = this.getToken()
     return token !== null;
   }
 
@@ -125,7 +125,7 @@ export class AuthService {
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return this.http.post<any>(`${environment.apiUrl}api/refresh-token`, { accessToken,refreshToken })
+    return this.http.post<any>(`${environment.apiUrl}api/refresh-token`, { accessToken, refreshToken })
       .pipe(
         tap(response => {
           this.setToken(response.token);
@@ -137,7 +137,7 @@ export class AuthService {
         })
       );
   }
-  patchUser(userDetail: User, patch: Operation[]): Promise<any> {
+  patchUser(userDetail: UserForm, patch: Operation[]): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http.patch<User>(`${environment.apiUrl}api/ApplicationUser/${userDetail.id}`, patch).subscribe({
         next: (res) => {

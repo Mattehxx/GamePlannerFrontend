@@ -24,6 +24,10 @@ export class UserProfileComponent implements OnInit {
     //Post di reference
   }
 
+  ImgUrlPut() {
+    //put di img, poi fare patch con url che ritorna
+  }
+
   selectedImageFile: File | undefined;
   selectedImagePreview: string | undefined;
   games: GameModel[] = [];
@@ -36,11 +40,19 @@ export class UserProfileComponent implements OnInit {
   constructor(public as: AuthService, private fb: FormBuilder, public gs: GameService, public ks: KnowledgeService) {
     this.games = this.gs.Games$.value;
     this.userForm = this.fb.group({
-      email: [null, [Validators.required, Validators.email]],
+      id: [null, Validators.required],
       name: [null, Validators.required],
       surname: [null, Validators.required],
-      phone: [null],
-      birthdate: [null],
+      email: [null, [Validators.required, Validators.email]],
+      phoneNumber: [null],
+      birthDate: [null],
+      imgUrl: [null, Validators.required],
+      level: [null, Validators.required],
+      isDeleted: [null, Validators.required],
+      role: [null, Validators.required],
+      adminEvent: this.fb.array([]),
+      sessions: this.fb.array([]),
+      reservations: this.fb.array([]),
       preferences: this.fb.array([])
     });
   }
@@ -48,15 +60,24 @@ export class UserProfileComponent implements OnInit {
     if (this.as.isLogged) {
       this.as.user?.subscribe({
         next: (user) => {
+          //Trasformare l'oggetto ridotto in un oggetto completo
           if (user) {
             this.originalModel = { ...user };
             this.copyModel = { ...user };
             this.userForm.controls['email'].setValue(user.email ?? null);
             this.userForm.controls['name'].setValue(user.name);
             this.userForm.controls['surname'].setValue(user.surname);
-            this.userForm.controls['phone'].setValue(user.phoneNumber ?? null);
-            this.userForm.controls['birthdate'].setValue(user.birthDate ? new Date(user.birthDate).toISOString().split('T')[0] : null);
-            this.setPreferences(user.preferences ?? []);
+            this.userForm.controls['phoneNumber'].setValue(user.phoneNumber ?? null);
+            this.userForm.controls['birthDate'].setValue(user.birthDate ? new Date(user.birthDate).toISOString()[0] : null);
+            this.userForm.controls['imgUrl'].setValue(user.imgUrl ?? null);
+            this.userForm.controls['level'].setValue(user.level ?? null);
+            this.userForm.controls['isDeleted'].setValue(user.isDeleted ?? null);
+            this.userForm.controls['role'].setValue(user.role ?? null);
+            this.userForm.controls['adminEvent'].setValue(user.adminEvents ?? []);
+            this.userForm.controls['sessions'].setValue(user.sessions ?? []);
+            this.userForm.controls['reservations'].setValue(user.reservations ?? []);
+            this.userForm.controls['id'].setValue(user.reservations ?? []);
+            this.userForm.controls['preferences'].setValue(user.preferences ?? []);
           } else {
             console.error('User is undefined');
           }
@@ -93,27 +114,19 @@ export class UserProfileComponent implements OnInit {
   }
 
   resetUserInfo() {
-    if (this.originalModel) {
-      this.copyModel = { ...this.originalModel };
-      this.userForm.controls['email'].setValue(this.originalModel.email ?? null);
-      this.userForm.controls['name'].setValue(this.originalModel.name);
-      this.userForm.controls['surname'].setValue(this.originalModel.surname);
-      this.userForm.controls['phone'].setValue(this.originalModel.phoneNumber ?? null);
-      this.userForm.controls['birthdate'].setValue(this.originalModel.birthDate ? new Date(this.originalModel.birthDate).toISOString().split('T')[0] : null);
-      this.viewMode = 'default';
-    }
+    this.ngOnInit();
   }
   SaveChanges() {
     this.onSubmit();
   }
   onSubmit(): void {
+    //Trasformare l'oggetto ridotto in un oggetto completo
     console.log("original", this.originalModel)
-    console.log(this.originalModel?.id)
     const newValues = this.userForm.value;
+
     console.log("edit", newValues)
     if (this.userForm.valid) {
       let patch = createPatch(this.originalModel, newValues)
-      console.log("dopo",this.originalModel?.id)
       this.as.patchUser(this.originalModel!, patch).then((response) => {
         console.log('User updated successfully:', response);
       }).catch((error) => {

@@ -78,26 +78,26 @@
       </div>
       <!--Phone-->
       <div class="wrapper">
-        <label for="phone"><i class="fa-solid fa-phone"></i>Phone</label>
+        <label for="phoneNumer"><i class="fa-solid fa-phoneNumer"></i>Phone</label>
         <div class="input-group">
-          <input id="phone" type="text" formControlName="phone" placeholder="Phone" required [class.input-error]="
-              userForm!.get('phone')?.invalid &&
-              (userForm!.get('phone')?.touched || userForm!.get('phone')?.dirty)
+          <input id="phoneNumer" type="text" formControlName="phoneNumer" placeholder="Phone" required [class.input-error]="
+              userForm!.get('phoneNumer')?.invalid &&
+              (userForm!.get('phoneNumer')?.touched || userForm!.get('phoneNumer')?.dirty)
             " />
         </div>
         <div *ngIf="
-            userForm!.get('phone')?.invalid &&
-            (userForm!.get('phone')?.touched || userForm!.get('phone')?.dirty)
+            userForm!.get('phoneNumer')?.invalid &&
+            (userForm!.get('phoneNumer')?.touched || userForm!.get('phoneNumer')?.dirty)
           " class="display-errors">
-          <small class="error" *ngIf="userForm!.get('phone')?.errors?.['required']">Phone is required</small>
-          <small class="error" *ngIf="userForm!.get('phone')?.errors?.['phone']">The Phone format is incorrect.</small>
+          <small class="error" *ngIf="userForm!.get('phoneNumer')?.errors?.['required']">Phone is required</small>
+          <small class="error" *ngIf="userForm!.get('phoneNumer')?.errors?.['phoneNumer']">The Phone format is incorrect.</small>
         </div>
       </div>
       <!--birthDate-->
       <div class="wrapper">
-        <label for="birthdate"><i class="fa-regular fa-calendar"></i>Birthdate</label>
+        <label for="birthDate"><i class="fa-regular fa-calendar"></i>Birthdate</label>
         <div class="input-group">
-          <input id="birthdate" type="date" formControlName="birthdate" placeholder="birthdate" />
+          <input id="birthDate" type="date" formControlName="birthDate" placeholder="birthDate" />
         </div>
       </div>
     </form>
