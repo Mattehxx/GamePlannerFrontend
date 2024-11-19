@@ -127,7 +127,7 @@ export class AuthService {
     return this.http.post<any>(`${environment.apiUrl}api/refresh-token`, { accessToken,refreshToken })
       .pipe(
         tap(response => {
-          this.setToken(response.token);
+          this.setToken(response.accessToken);
           this.setRefreshToken(response.refreshToken);
         }),
         catchError(error => {
