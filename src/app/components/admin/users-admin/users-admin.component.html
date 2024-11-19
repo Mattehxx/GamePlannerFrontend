@@ -75,9 +75,9 @@
                             {{ user.role }}
                         </div>
                     </div>
-                    <div class="user-icon-role" *ngIf="user.role === 'Normal'">
+                    <div class="user-icon-role" *ngIf="user.role === 'User'">
                         <div class="role">
-                            <div><i *ngIf="user.role === 'Normal'" class="fa-solid fa-shield-halved"></i></div>
+                            <div><i *ngIf="user.role === 'User'" class="fa-solid fa-shield-halved"></i></div>
                             {{user.role}}
                         </div>
                     </div>
@@ -89,7 +89,7 @@
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-            <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row" [class.userDisabled]="row.isDeleted"
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row" [class.userDisabled]="row.isDisabled"
                 (click)="$event.stopPropagation(); toggleUserDetails(row)">
 
             </mat-row>
@@ -117,7 +117,7 @@
                 </div>
                 <div class="role-status">
                     <div class="details-role-admin" *ngIf="selectedUser?.role === 'Admin'">{{selectedUser?.role}}</div>
-                    <div class="details-role-user" *ngIf="selectedUser?.role === 'Normal'">{{selectedUser?.role}}</div>
+                    <div class="details-role-user" *ngIf="selectedUser?.role === 'User'">{{selectedUser?.role}}</div>
                     @if(selectedUser?.isDeleted){
                     <div class="status-disabled details"> <span>INACT </span></div>
                     }
@@ -160,7 +160,7 @@
                 <div class="divisor"></div>
 
                 <div class="btns-cont">
-                    @if(this.selectedUser?.isDeleted){
+                    @if(this.selectedUser?.isDisabled){
                     <div class="disable" (click)="ableOrDisableUser()">Restore User</div>
                     }
                     @else {
@@ -182,7 +182,7 @@
             Do you really want to delete this user?
         </div>
         <div class="modal-btns">
-            <button  class="delete">Delete</button>
+            <button  class="delete" (click)="delete(this.selectedUser!.id!)">Delete</button>
             <button (click)="closeModal()" class="close">Close</button>
 
         </div>

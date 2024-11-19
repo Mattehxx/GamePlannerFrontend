@@ -12,6 +12,7 @@ export interface User {
     birthDate?: Date,
     imgUrl?: string,
     level?: number,
+    isDisabled?:boolean,
     isDeleted?:boolean,
     role:string;
     adminEvents?: Array<EventModel>;
