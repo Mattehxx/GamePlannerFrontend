@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,6 +14,8 @@ import { DashboardService } from '../../../services/dashboard.service';
 import { GeneralService } from '../../../services/general.service';
 import { HeaderService } from '../../../services/header.service';
 import { ModalCreateUserComponent } from "./modal-create-user/modal-create-user.component";
+import { UserAdminService } from '../../../services/user-admin.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-users-admin',
@@ -30,13 +32,14 @@ import { ModalCreateUserComponent } from "./modal-create-user/modal-create-user.
   templateUrl: './users-admin.component.html',
   styleUrl: './users-admin.component.scss'
 })
-export class UsersAdminComponent implements AfterViewInit {
-
-
-
-  constructor(public ds: DashboardService, public headerService: HeaderService, public as: AdminService, private router : Router,private gn:GeneralService) { }
+export class UsersAdminComponent implements OnInit, AfterViewInit {
 
   selectedUser: User | undefined;
+  death$ = new Subject<void>();
+
+
+  constructor(public ds: DashboardService, public headerService: HeaderService, public as: AdminService, private router : Router,private gn:GeneralService, public aus: UserAdminService) { }
+
 
   displayedColumns: string[] = ['user', 'email', 'phoneNumber', 'role'];
   dataSource = new MatTableDataSource<User>([
@@ -63,7 +66,16 @@ export class UsersAdminComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
 
+  ngOnInit(){
+    this.aus.User$.pipe(takeUntil(this.death$)).subscribe({
+      next: (games) => {
+        this.dataSource.data = games;
+        console.log(games);
+      }
+    })
+    this.aus.getUsers();
 
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

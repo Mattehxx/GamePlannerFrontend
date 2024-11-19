@@ -27,6 +27,7 @@ export class ModalCreateUserComponent{
       password: ['', [Validators.required]],
       phone: ['', [Validators.required]],
       birthdate: ["", [Validators.required]],
+      canBeMaster: ["", [Validators.required]],
     });
   }
 

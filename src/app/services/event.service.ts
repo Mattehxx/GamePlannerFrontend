@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EventModel, EventSessionsModel } from '../models/event.model';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../environment/environment';
 import { ODataResponse } from '../models/odataResponse.model';
@@ -26,15 +26,21 @@ export class EventService {
 
   //#region CRUD
   get() {
-    this.http.get<ODataResponse<EventModel>>(`${environment.apiUrl}odata/Event
-      ${this.odataQuery && this.odataQuery.trim() != ""
-        ? `/${this.odataQuery}` : ""}`).subscribe({
-          next: (res) => {
-            this.eventSubject.next(res.value);
-          }, error: (msg) => {
-            console.error(msg);
-          }
-        });
+    return new Promise((resolve,reject) => {
+      /* const x = `${this.odataQuery && this.odataQuery.trim() != ""
+          ? `${this.odataQuery}` : ""}?$expand=AdminUser,Sessions`; */
+      const params: HttpParams = new HttpParams()
+      .append('expand', 'AdminUser').append('expand','Sessions');
+      this.http.get<ODataResponse<EventModel>>(`${environment.apiUrl}odata/Event`, {params}).subscribe({
+            next: (res) => {
+              this.eventSubject.next(res.value);
+              resolve(res);
+            }, error: (msg) => {
+              console.error(msg);
+              reject(msg);
+            }
+          });
+    });
   }
   post(model: EventInputModel) {
     this.http.post<EventModel>(`${environment.apiUrl}api/Event`, model).subscribe({
@@ -102,5 +108,20 @@ export class EventService {
         console.error(msg);
       }
     })
+  }
+
+  getEventsId(id: number) : Promise<EventModel>{
+    return new Promise((resolve, reject) => {
+      this.http.get<EventModel>(`${environment.apiUrl}odata/Event?$filter=eventId eq ${id}&$expand=Sessions($expand=Master,Game,Reservations)`).subscribe({
+        next: (res) => {
+          this.eventDetail = res;
+          resolve(res);
+        }, error: (msg) => {
+          console.error(msg);
+          reject(msg);
+        }
+      });
+    });
+  
   }
 }

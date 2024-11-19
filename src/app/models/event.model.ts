@@ -7,7 +7,7 @@ export interface EventModel{
     name: string,
     description: string,
     isPublic: boolean,
-    imgUrl: string,
+    imgUrl: string | undefined,
     isDeleted: boolean,
     sessions?: Array<gameSessionModel>,
     adminId: number,
