@@ -91,6 +91,9 @@ export class AuthService {
   setUserId(id: string): void {
     localStorage.setItem('userId', id);
   }
+  getUserId() : string | null {
+    return localStorage.getItem('userId');
+  }
 
   getToken(): string | null {
     return localStorage.getItem('token');

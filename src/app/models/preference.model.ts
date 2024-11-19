@@ -6,10 +6,16 @@ export interface preferenceModel {
     preferenceId: number;
     canBeMaster: boolean;
     userId: string;
-    knowledgeId : number;
-    gameId : number;
+    knowledgeId: number;
+    gameId: number;
     isDeleted: boolean;
     user: User;
     knowledge: knowledgeModel;
-    game: GameModel  
+    game: GameModel
 };
+export interface preferenceInputModel {
+    canBeMaster: boolean;
+    userId: string;
+    knowledgeId: number;
+    gameId: number;
+}
