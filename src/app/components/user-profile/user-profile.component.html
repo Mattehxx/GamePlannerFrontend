@@ -135,7 +135,7 @@
       <div *ngIf="viewMode === 'edit'">
         <div class="preference-form" *ngFor="let preference of copyModel?.preferences">
           <div class="game-name">
-            <select name="game" id="{{this.originalUser?.id}}GamePreference">
+            <select name="game" id="{{this.originalModel?.id}}GamePreference">
               <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
             </select>
           </div>
@@ -151,7 +151,7 @@
               <label for="masterNo" class="radio-label">No</label>
             </div>
           </div>
-          <select name="knowledge" id="{{this.originalUser?.userId}}knowledgePreference">
+          <select name="knowledge" id="{{this.originalModel?.id}}knowledgePreference">
             <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
           </select>
         </div>
@@ -160,7 +160,7 @@
       <div *ngIf="viewMode === 'add'">
         <div class="preference-form">
           <div class="game-name">
-            <select name="game" id="{{this.originalUser?.userId}}GamePreference">
+            <select name="game" id="{{this.originalModel?.id}}GamePreference">
               <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
             </select>
           </div>
@@ -175,7 +175,7 @@
             </div>
           </div>
           <div class="knowledge-name">
-            <select name="knowledge" id="{{this.originalUser?.userId}}knowledgePreference">
+            <select name="knowledge" id="{{this.originalModel?.id}}knowledgePreference">
               <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
             </select>
           </div>
