@@ -15,10 +15,10 @@ export class UserAdminService {
   UserDetail: User | undefined;
   constructor(private http: HttpClient) { }
 
-  getUsers(){
-    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser`).subscribe({
+  getUsers() {
+    return this.http.get<any>(`${environment.apiUrl}api/ApplicationUser/GetAll`).subscribe({
       next: (res) => {
-        this.User$.next(res.value);
+        this.User$.next(res);
       },
       error: (err) => {
         console.error(err);
@@ -30,8 +30,8 @@ export class UserAdminService {
     
   }
 
-  createAdminUser(){
-
+  createAdminUser(user: any) {
+    return this.http.post<any>(`${environment.apiUrl}api/register-admin`, user);
   }
 
   deleteUser(id: string){
