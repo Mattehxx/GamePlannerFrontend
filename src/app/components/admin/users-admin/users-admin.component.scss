@@ -148,7 +148,7 @@ mat-paginator {
 }
 
 .name-cont div{
-    width: 10vh; 
+    width: 16vh; 
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
@@ -350,6 +350,7 @@ mat-paginator {
 .details-container{
     display: flex;
     padding-left: 2vh;
+    // box-shadow: -7px 2px 10px 2px rgb(0 0 0 / 10%);
     flex-direction: column;
     align-items: center;
     border-left: solid 1px #dedbdb;
@@ -363,12 +364,19 @@ mat-paginator {
 
 .background-image{
     display: flex;
-    width: 18vh;
-    height: 18vh;
+    width: 13vh;
+    height: 13vh;
+    background-color: rgba(128, 128, 128, 0.252);
     border-radius: 50%;
+    background-color: rgba(128, 128, 128, 0.252);
     background-size: cover;
     align-items: center;
     justify-content: center;
+
+    i{
+        font-size: 6vh;
+        color: var(--dark-purple);
+    }
 }
 
 .profile-image-details{
@@ -555,6 +563,7 @@ mat-paginator {
     border: 1px solid #7e2bf9;
     border-radius: 1vh;
     align-items: center;
+    cursor: pointer;
 }
 
 .modal-btns .delete{
@@ -569,6 +578,7 @@ mat-paginator {
     border: 1px solid red;
     border-radius: 1vh;
     align-items: center;
+    cursor: pointer;
 }
 
 

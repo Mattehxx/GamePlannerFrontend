@@ -15,10 +15,10 @@ export class UserAdminService {
   UserDetail: User | undefined;
   constructor(private http: HttpClient) { }
 
-  getUsers(){
-    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser`).subscribe({
+  getUsers() {
+    return this.http.get<any>(`${environment.apiUrl}api/ApplicationUser/GetAll`).subscribe({
       next: (res) => {
-        this.User$.next(res.value);
+        this.User$.next(res);
       },
       error: (err) => {
         console.error(err);
@@ -30,15 +30,46 @@ export class UserAdminService {
     
   }
 
-  createAdminUser(){
-
+  createAdminUser(user: any) {
+    return this.http.post<any>(`${environment.apiUrl}api/register-admin`, user);
   }
 
-  deleteUser(id: string){
+  deleteUser(id: string): Promise<void>{
 
-  }
+    return new Promise((resolve, reject) => {
+      
+      this.http.delete(`${environment.apiUrl}api/ApplicationUser/${id}`).subscribe({
+        next: () => {
+          const users = this.User$.value;
+          this.User$.next(users.filter((user) => user.id !== id));
+          resolve();
+        },
+        error: (err) => {
+          reject(err);
+        },
+      })
+    })
+   }
 
-  changeUserStatus(user: User,patch: Operation){
+  changeUserStatus(user: User,patch: Operation[]): Promise<void>{
 
+    return new Promise((resolve, reject) => {
+      
+      this.http.patch(`${environment.apiUrl}api/ApplicationUser/${user.id}`, patch).subscribe({
+        next: () => {
+          const users = this.User$.value;
+          const index = users.findIndex(user => user.id === user.id);
+          if (index !== -1) {
+            users[index] = user;
+            this.User$.next(users);
+          }
+          resolve();
+        },
+        error: (err) => {
+          console.error(err);
+          reject(err);
+        }
+      })
+    })
   }
 }

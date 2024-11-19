@@ -16,6 +16,7 @@ import { HeaderService } from '../../../services/header.service';
 import { ModalCreateUserComponent } from "./modal-create-user/modal-create-user.component";
 import { UserAdminService } from '../../../services/user-admin.service';
 import { Subject, takeUntil } from 'rxjs';
+import { createPatch } from 'rfc6902';
 
 @Component({
   selector: 'app-users-admin',
@@ -38,7 +39,7 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
   death$ = new Subject<void>();
 
 
-  constructor(public ds: DashboardService, public headerService: HeaderService, public as: AdminService, private router: Router, private gn: GeneralService, public aus: UserAdminService) { }
+  constructor(public ds: DashboardService, public headerService: HeaderService, public as: AdminService, private router: Router, private gn: GeneralService, public uas: UserAdminService) { }
 
 
   displayedColumns: string[] = ['user', 'email', 'phoneNumber', 'role'];
@@ -48,12 +49,12 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
-    this.aus.User$.pipe(takeUntil(this.death$)).subscribe({
+    this.uas.User$.pipe(takeUntil(this.death$)).subscribe({
       next: (games) => {
         this.dataSource.data = games;
       }
     })
-    this.aus.getUsers();
+    this.uas.getUsers();
 
   }
 
@@ -70,34 +71,70 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
 
   toggleUserDetails(user: User | undefined) {
 
+
+
     if (this.ds.userDetailPanel === false) {
       this.ds.userDetailPanel = true;
       this.selectedUser = user;
     }
-    else if(this.ds.userDetailPanel === true && this.selectedUser === user) {
+    else if (this.ds.userDetailPanel === true && this.selectedUser === user) {
       this.ds.userDetailPanel = false;
     }
-    else{
+    else if (user === undefined) {
+      this.ds.userDetailPanel = false
+    }
+    else {
       this.selectedUser = user
       this.ds.userDetailPanel = true
     }
   }
 
   ableOrDisableUser() {
-    this.selectedUser!.isDeleted = !this.selectedUser?.isDeleted
+
+    if (this.selectedUser) {
+      let modifiedObject: User = { ...this.selectedUser, isDisabled: !this.selectedUser?.isDisabled };
+
+      let patch = createPatch(this.selectedUser, modifiedObject);
+
+      this.uas.changeUserStatus(this.selectedUser!, patch).then((res) => {
+        this.selectedUser!.isDisabled = !this.selectedUser?.isDisabled;
+        this.uas.getUsers();
+        this.gn.confirmMessage = "User disabled successfully";
+        this.gn.setConfirm();
+      })
+      .catch((err) => {
+        this.gn.defErrMessage = "User could not be disabled";
+        this.gn.setError();
+      });
+    }
   }
 
   openDeleteModal() {
+    this.gn.isOverlayOn$.next(true);
     this.as.isDeleteUserModal = true;
   }
 
   closeModal() {
+    this.gn.isOverlayOn$.next(false);
     this.as.isDeleteUserModal = false;
   }
 
   openCreateUserModal() {
     this.gn.isOverlayOn$.next(true);
     this.as.isCreateUserModal = true
+  }
+
+  delete(id: string) {
+    this.uas.deleteUser(id!).then((res) => {
+      this.closeModal();
+      this.ds.userDetailPanel = false;
+      this.uas.getUsers();
+      this.gn.confirmMessage = "User deleted successfully";
+      this.gn.setConfirm();
+    }).catch((err) => {
+      this.gn.defErrMessage = "User could not be deleted";
+      this.gn.setError();
+    });
   }
 
 }

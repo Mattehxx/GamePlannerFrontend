@@ -12,6 +12,7 @@ export interface User {
     birthDate?: Date,
     imgUrl?: string,
     level?: number,
+    isDisabled?:boolean,
     isDeleted?:boolean,
     role:string;
     adminEvents?: Array<EventModel>;
@@ -19,4 +20,5 @@ export interface User {
     reservations?: Array<reservationModel>;
     preferences?: Array<preferenceModel>;
 }
+
  

@@ -141,7 +141,6 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
 
     if (this.gs.gameDetail) {
 
-
       const modifiedObject: GameModel = { ...this.gs.gameDetail, isDisabled: !this.gs.gameDetail!.isDisabled };
       let patch = createPatch(this.gs.gameDetail, modifiedObject);
 
@@ -153,10 +152,6 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
         });
 
     }
-
-
-
-
   }
 
   toggleDeleteGameModal() {

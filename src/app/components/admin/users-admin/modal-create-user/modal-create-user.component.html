@@ -6,13 +6,13 @@
 
         <div class="form-cont">
             <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form-container">
-    
+
                 <div class="wrapper">
                     <label for="email"><i class="fa-regular fa-user"></i>Name</label>
                     <div class="input-group">
                         <input type="text" formControlName="name" placeholder="Name" required
                             [class.input-error]="userForm.get('name')?.invalid && (userForm.get('name')?.touched || userForm.get('name')?.dirty)">
-        
+
                     </div>
                     <div *ngIf="userForm.get('name')?.invalid && (userForm.get('name')?.touched || userForm.get('name')?.dirty)"
                         class="display-errors">
@@ -24,15 +24,16 @@
                     <div class="input-group">
                         <input type="text" formControlName="surname" placeholder="Surname" required
                             [class.input-error]="userForm.get('surname')?.invalid && (userForm.get('surname')?.touched || userForm.get('surname')?.dirty)">
-        
+
                     </div>
                     <div *ngIf="userForm.get('surname')?.invalid && (userForm.get('surname')?.touched || userForm.get('surname')?.dirty)"
                         class="display-errors">
-                        <small class="error" *ngIf="userForm.get('surname')?.errors?.['required']">Surname is required</small>
+                        <small class="error" *ngIf="userForm.get('surname')?.errors?.['required']">Surname is
+                            required</small>
                     </div>
                 </div>
-        
-        
+
+
                 <div class="wrapper">
                     <label for="email"><i class="fa-regular fa-envelope"></i>Email</label>
                     <div class="input-group">
@@ -41,7 +42,8 @@
                     </div>
                     <div *ngIf="userForm.get('email')?.invalid && (userForm.get('email')?.touched || userForm.get('email')?.dirty)"
                         class="display-errors">
-                        <small class="error" *ngIf="userForm.get('email')?.errors?.['required']">Email is required</small>
+                        <small class="error" *ngIf="userForm.get('email')?.errors?.['required']">Email is
+                            required</small>
                         <small class="error" *ngIf="userForm.get('email')?.errors?.['email']">The email format is
                             incorrect.</small>
                     </div>
@@ -50,12 +52,17 @@
 
                     <label for="password"><i class="fa-solid fa-key"></i>Password</label>
                     <div class="input-group">
-                        <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Password" required [class.input-error]="userForm.get('password')?.invalid && (userForm.get('password')?.touched || userForm.get('password')?.dirty)">
-                        <i class="fa-solid" [class.fa-eye]="hidePassword" [class.fa-eye-slash]="!hidePassword" (click)="togglePasswordVisibility()" style="cursor: pointer;"></i>
-                      </div>
-                      <div *ngIf="userForm.get('password')?.invalid && (userForm.get('password')?.touched || userForm.get('password')?.dirty)" class="display-errors">
-                        <small class="error" *ngIf="userForm.get('password')?.errors?.['required']">Password is required</small>
-                      </div>
+                        <input [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+                            placeholder="Password" required
+                            [class.input-error]="userForm.get('password')?.invalid && (userForm.get('password')?.touched || userForm.get('password')?.dirty)">
+                        <i class="fa-solid" [class.fa-eye]="hidePassword" [class.fa-eye-slash]="!hidePassword"
+                            (click)="togglePasswordVisibility()" style="cursor: pointer;"></i>
+                    </div>
+                    <div *ngIf="userForm.get('password')?.invalid && (userForm.get('password')?.touched || userForm.get('password')?.dirty)"
+                        class="display-errors">
+                        <small class="error" *ngIf="userForm.get('password')?.errors?.['required']">Password is
+                            required</small>
+                    </div>
                 </div>
 
                 <div class="wrapper">
@@ -63,11 +70,12 @@
                     <div class="input-group">
                         <input type="text" formControlName="phone" placeholder="Phone" required
                             [class.input-error]="userForm.get('phone')?.invalid && (userForm.get('phone')?.touched || userForm.get('phone')?.dirty)">
-                       
+
                     </div>
                     <div *ngIf="userForm.get('phone')?.invalid && (userForm.get('phone')?.touched || userForm.get('phone')?.dirty)"
                         class="display-errors">
-                        <small class="error" *ngIf="userForm.get('phone')?.errors?.['required']">Phone is required</small>
+                        <small class="error" *ngIf="userForm.get('phone')?.errors?.['required']">Phone is
+                            required</small>
                         <small class="error" *ngIf="userForm.get('phone')?.errors?.['phone']">The Phone format is
                             incorrect.</small>
                     </div>
@@ -75,39 +83,16 @@
                 <div class="wrapper">
                     <label for="birthdate"><i class="fa-regular fa-calendar"></i>Birthdate</label>
                     <div class="input-group">
-                        <input type="date" formControlName="birthdate" placeholder="birthdate" >
-                     
+                        <input type="date" formControlName="birthdate" placeholder="birthdate">
                     </div>
-                  
                 </div>
-       
-                <div class="wrapper-radio">
-                    <!-- <label for="canBeMaster">Available as Game Master</label> -->
-                     <div class="radio-title"><i class="fa-solid fa-shield"></i> Game Master Status</div>
-                     <div class="radio-context">Would you like to be available as a Game Master?</div>
-                    <div class="radio-input-group">
-                        <div class="radio-input-label">
-                            <input type="radio" id="masterYes" formControlName="canBeMaster" name="canBeMaster" [value]="true">
-                            <label for="masterYes" class="radio-label">Yes</label>
-                          </div>
-                          <div class="radio-input-label">
-                            <input type="radio" id="masterNo" formControlName="canBeMaster"  name="canBeMaster"  [value]="false">
-                            <label for="masterNo" class="radio-label">No</label>
-                          </div>
-                    </div>
-                  
-                </div>
-        
             </form>
-        
-            
         </div>
-       
+
         <div class="modal-create-btns">
             <div class="btn-create"><button (click)="createUser()" class="create">Create</button></div>
             <div class="btn-close"><button (click)="closeModal()" class="close">Close</button></div>
-            
         </div>
-       
+
     </div>
 </div>

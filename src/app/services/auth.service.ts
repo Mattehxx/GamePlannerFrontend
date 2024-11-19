@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Operation } from 'rfc6902';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../environment/environment';
 import { User } from '../models/user.model';
@@ -11,12 +12,12 @@ import { GeneralService } from './general.service';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router,private gn: GeneralService) {
+  constructor(private http: HttpClient, private router: Router, private gn: GeneralService) {
   }
 
   isAdmin: boolean = true;
   isLogged: boolean = false;
-  user: BehaviorSubject<User> = new BehaviorSubject<User>({ name: '', surname: '', role: '' });
+  user: BehaviorSubject<User> = new BehaviorSubject<User>({ name: '', surname: '', role: '', id: '' });
 
   register(user: User): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -86,12 +87,15 @@ export class AuthService {
   }
 
   setRefreshToken(refreshToken: string): void {
-    console.log("setting "+refreshToken)
+    console.log("setting " + refreshToken)
     localStorage.setItem('refreshToken', refreshToken);
   }
 
   setUserId(id: string): void {
     localStorage.setItem('userId', id);
+  }
+  getUserId() : string | null {
+    return localStorage.getItem('userId');
   }
 
   getToken(): string | null {
@@ -112,7 +116,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-     const token = this.getToken()
+    const token = this.getToken()
     return token !== null;
   }
 
@@ -124,10 +128,10 @@ export class AuthService {
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return this.http.post<any>(`${environment.apiUrl}api/refresh-token`, { accessToken,refreshToken })
+    return this.http.post<any>(`${environment.apiUrl}api/refresh-token`, { accessToken, refreshToken })
       .pipe(
         tap(response => {
-          this.setToken(response.token);
+          this.setToken(response.accessToken);
           this.setRefreshToken(response.refreshToken);
         }),
         catchError(error => {
@@ -135,5 +139,20 @@ export class AuthService {
           return throwError(() => error);
         })
       );
+  }
+  patchUser(userDetail: User, patch: Operation[]): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.patch<User>(`${environment.apiUrl}api/ApplicationUser/${userDetail.id}`, patch).subscribe({
+        next: (res) => {
+          this.user.next(res);
+          resolve(res);
+          console.log(res);
+        },
+        error: (err) => {
+          console.error(err);
+          reject(err);
+        }
+      });
+    });
   }
 }
