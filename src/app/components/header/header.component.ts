@@ -115,10 +115,7 @@ export class HeaderComponent implements OnInit {
   navigateDashboardAdmin() {
     this.headerService.isMobileMenuOpen = false;
     this.gn.isOverlayOn$.next(false);
-    this.router.navigate(['dashboard-admin']);
+    this.router.navigate(['dashboard-admin/users']);
   }
-
-
-
 
 }
