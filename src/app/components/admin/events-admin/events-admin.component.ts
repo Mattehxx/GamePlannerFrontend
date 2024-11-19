@@ -42,7 +42,7 @@ export class EventsAdminComponent implements AfterViewInit {
     name: 'Yassine',
     surname: 'Char',
     email: '',
-    phone: '',
+    phoneNumber: '',
     birthDate: new Date('1995-01-01'),
     imgUrl: '/assets/images/pfp.jpg',
     level: 1,

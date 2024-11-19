@@ -22,7 +22,7 @@ export class HomeComponent{
     name: 'Yassine',
     surname: 'admin',
     email: '',
-    phone: '',
+    phoneNumber: '',
     birthDate: new Date('1995-01-01'),
     imgUrl: '',
     level: 1,
