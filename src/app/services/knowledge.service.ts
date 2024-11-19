@@ -19,7 +19,6 @@ export class KnowledgeService {
         return this.http.get<any>(`${environment.apiUrl}odata/Knowledge`).subscribe(
             {
                 next: (res) => {
-                    console.log("knoeledge "+res.value);
                     this.Knowledges$.next(res.value);
                 },
                 error: (err) => {
@@ -33,8 +32,6 @@ export class KnowledgeService {
         this.http.get<any>(`${environment.apiUrl}odata/Knowledge/?$filter=knowledgeId eq ${id}`).subscribe(
             {
                 next: (res) => {
-                    console.log(res);
-                    console.log(res.value[0]);
                     this.knowledgeDetail = res.value[0];
                 },
                 error: (err) => {
@@ -47,7 +44,6 @@ export class KnowledgeService {
     create(knowledgeModel: any): Observable<knowledgeModel> {
         return this.http.post<any>(`${environment.apiUrl}api/Knowledge`, knowledgeModel).pipe(
             tap((res) => {
-                console.log('Knowledge created successfully:', res);
                 this.getKnowledges(); 
             }),
             catchError((err) => {
@@ -61,7 +57,6 @@ export class KnowledgeService {
         return new Promise((resolve, reject) => {
             this.http.patch<knowledgeModel>(`${environment.apiUrl}api/Knowledge/${knowledgeDetail?.knowledgeId}`, patch).subscribe({
                 next: (res) => {
-                    console.log(res);
                     const knowledges = this.Knowledges$.value;
                     const index = knowledges.findIndex(knowledge => knowledge.knowledgeId === res.knowledgeId);
                     if (index !== -1) {
@@ -82,7 +77,6 @@ export class KnowledgeService {
         return new Promise((resolve, reject) => {
             this.http.delete(`${environment.apiUrl}api/Knowledge/${id}`).subscribe({
                 next: () => {
-                    console.log(`Knowledge with ID ${id} deleted successfully.`);
                     const knowledges = this.Knowledges$.value;
                     this.Knowledges$.next(knowledges.filter((knowledge) => knowledge.knowledgeId !== id));
                     resolve();

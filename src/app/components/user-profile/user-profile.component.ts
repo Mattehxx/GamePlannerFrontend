@@ -34,7 +34,6 @@ export class UserProfileComponent implements OnInit {
 
   constructor(public as: AuthService, private fb: FormBuilder, public gs: GameService, public ks: KnowledgeService) {
     this.games = this.gs.Games$.value;
-    console.log('Games:', this.games);
     this.userForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
       name: [null, Validators.required],
