@@ -209,18 +209,12 @@ small {
   justify-content: center;
 }
 
-.display-radios{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .radio-input-label {
   display: flex;
   padding-right: 4vh;
 }
 
-.radio-input-label input{
+.radio-input-label input {
   margin: 0 auto;
   margin-right: 1vh;
 }
@@ -307,5 +301,30 @@ label i {
     padding: 1vh;
     border-radius: 1vh;
   }
+}
 
+.preference-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 4vw;
+}
+
+.display-radios {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-name{
+ width: 5vw;
+ text-align: center;
+}
+
+.knowledge-name{
+  width: 2vw;
+  text-align: center;
 }

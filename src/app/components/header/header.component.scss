@@ -393,7 +393,31 @@
     .login-registration-cont {
         margin-right: 2vh;
     }
+}
+.img-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 2vh;
+}
 
+.img {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  width: 10vh;
+  height: 10vh;
+  border: 1px solid rgba(128, 128, 128, 0.1803921569);
+  border-radius: 20vh;
+  align-items: center;
+  background: #eeeeee;
+  box-shadow: 0 0 3vh 0.3vh rgba(145, 71, 255, 0.5);
+  ;
+}
 
-
+.img i {
+  font-size: 5vh;
+  color: var(--purple);
 }

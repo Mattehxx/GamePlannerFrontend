@@ -36,10 +36,10 @@
     <div *ngIf="this.headerService.isModalOpen" #overlayElement class="overlay" (click)="closeModal()"></div>
     <div class="menu-container" *ngIf="this.headerService.isModalOpen" (click)="$event.stopPropagation()">
         <div *ngIf="this.user" class="img-name">
-            @if(this.user.imgUrl=== undefined){
+            @if(this.user.imgUrl === undefined){
             <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
             }@else {
-            <div>{{this.user.imgUrl}}</div>
+            <img class="img" src="{{this.user.imgUrl}}" alt="User profile img">
             }
             <div class="username-email">
                 <div class="username">{{this.user.name}} {{this.user.surname}}</div>
