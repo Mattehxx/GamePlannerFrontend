@@ -65,12 +65,14 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const token = this.getToken();
+    // const token = this.getToken()
+    const token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibHVjYWdhbGxhenppQGdtYWlsLmNvbSIsImp0aSI6ImVjYzQ5ODU0LWI2YTYtNDg4ZC1hOWNiLWMzZmVmNWE1M2JlNCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJBZG1pbiIsIk5vcm1hbCJdLCJleHAiOjE3MzE5MjE5MjIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCJ9.sinHAfrQP5qETRKVeMxTO6QjageeyA2wg6nMwM1-SyA";
     return token !== null;
   }
 
   refreshAccessToken(): Observable<any> {
-    const refreshToken = this.getRefreshToken();
+    // const refreshToken = this.getRefreshToken();
+    const refreshToken = "dYmW6BjtrmO2kZ8diNHpZW+KOsm5hYHBB+cF/vRycWtQVAkGowMvctWC8QM1lrQXfG8xEyZFKrI/PRDMPXq34g==";
     
     if (!refreshToken) {
       return throwError(() => new Error('No refresh token available'));

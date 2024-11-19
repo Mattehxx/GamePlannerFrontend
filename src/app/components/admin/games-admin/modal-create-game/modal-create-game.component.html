@@ -1,0 +1,84 @@
+<div class="modal-create">
+    <div class="modal-create-content">
+        <div class="modal-create-title">
+            Create Game
+        </div>
+
+        <div class="form-cont">
+            <form [formGroup]="gameForm" (ngSubmit)="onSubmit()" class="form-container">
+
+                <div class="wrapper">
+                    <label for="email"><i class="fa-solid fa-dice-d20"></i>Game Title</label>
+                    <div class="input-group">
+                        <input type="text" formControlName="name" placeholder="Name" required
+                            [class.input-error]="gameForm.get('name')?.invalid && (gameForm.get('name')?.touched || gameForm.get('name')?.dirty)">
+
+                    </div>
+                    <div *ngIf="gameForm.get('name')?.invalid && (gameForm.get('name')?.touched || gameForm.get('name')?.dirty)"
+                        class="display-errors">
+                        <small class="error" *ngIf="gameForm.get('name')?.errors?.['required']">Game's title is
+                            required</small>
+                    </div>
+                </div>
+
+
+                <div class="wrapper">
+
+
+                    <label for="description"><i class="fa-solid fa-scroll"></i>Game Description</label>
+                    <div class="input-group description">
+                        <textarea type="text" formControlName="description" placeholder="Description" required
+                            [class.input-error]="gameForm.get('description')?.invalid && (gameForm.get('description')?.touched || gameForm.get('description')?.dirty)">
+                                </textarea>
+                    </div>
+                    <div *ngIf="gameForm.get('description')?.invalid && (gameForm.get('description')?.touched || gameForm.get('description')?.dirty)"
+                        class="display-errors">
+                        <small class="error" *ngIf="gameForm.get('description')?.errors?.['required']">
+                            The description of the game is required</small>
+                    </div>
+
+
+                </div>
+
+                <div class="image-upload-container">
+                    <div class="image-preview" *ngIf="this.selectedImagePreview">
+                        <img [src]="this.selectedImagePreview" alt="Preview" />
+                    </div>
+                    <label for="imgUrl"><i class="fa-solid fa-image"></i>Game Cover</label>
+                        <div class="wrapper image">
+                            <div class="input-group">
+                                <label for="fileInput" class="file-label">
+                                    Choose an image
+                                    <input id="fileInput" type="file" accept="image/*" (change)="onFileSelected($event)"
+                                        class="file-input" />
+                                </label>
+                            </div>
+                            <div class="button-group">
+                                <!-- <button type="button" (click)="saveImage()" [disabled]="!this.selectedImagePreview"
+                                    class="save-btn img">
+                                    <i class="fa-solid fa-check"></i> Save
+                                </button> -->
+                                <button type="button" (click)="cancelImage()" class="cancel-btn img">
+                                    <i class="fa-solid fa-x"></i> Cancel
+                                </button>
+                            </div>
+                        </div>
+                   
+                </div>
+
+
+
+
+            </form>
+
+
+        </div>
+
+        <div class="modal-create-btns">
+            <div class="btn-create"><button (click)="createGame()" class="create">Create</button></div>
+            <div class="btn-close"><button (click)="closeModal()" class="close">Close</button></div>
+
+        </div>
+
+    </div>
+</div>

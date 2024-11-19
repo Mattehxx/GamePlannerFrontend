@@ -16,7 +16,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class AuthLayoutComponent implements OnInit,OnDestroy{
 
-  constructor(public gn: GeneralService,private as: AdminService, private router: Router) {}
+  constructor(public gn: GeneralService,public as: AdminService, private router: Router) {}
 
   death$ = new Subject<void>();
 
@@ -51,7 +51,7 @@ export class AuthLayoutComponent implements OnInit,OnDestroy{
 
 
   get isOverlayVisible(): boolean {
-    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay || this.as.isGameDetail;;
+    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay || this.as.showGameDetail;
   }
 
   

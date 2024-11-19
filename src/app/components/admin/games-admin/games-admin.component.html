@@ -12,8 +12,10 @@
         </div>
 
         <div class="btn-create">
-            <button (click)="openCreateOrUpdateGamesModal(undefined)">Create Game</button>
+            <button (click)="openCreateGameModal()">Create Game</button>
         </div>
+        <app-modal-create-game *ngIf="this.as.isCreateGameModal"></app-modal-create-game>
+
 
 
         <table mat-table [dataSource]="dataSource" [class.userDetailOpen]="this.ds.userDetailPanel"
@@ -61,60 +63,48 @@
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
             <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"
-                [class.gameDisabled]="row.isDeleted"
-                (click)="$event.stopPropagation(); openCreateOrUpdateGamesModal(row)">
+                [class.gameDisabled]="row.isDisabled"
+                (click)="$event.stopPropagation(); openGameDetailsModal(row)"
+                >
             </mat-row>
 
         </table>
 
-        <div class="modal-cont" [class.details-visible]="this.as.isGameDetail">
+        <div class="modal-cont" [class.details-visible]="this.as.showGameDetail">
 
 
-            <div class="game-details-cont" [class.details-visible]="this.as.isGameDetail" >
+            <div class="game-details-cont" [class.details-visible]="this.as.showGameDetail">
 
-                <div class="close-modal" [class.btn-visible]="this.as.isGameDetail" (click)="closeModal()">
+                <div class="close-modal" [class.btn-visible]="this.as.showGameDetail" (click)="closeModal()">
                     <button><i class="fa-solid fa-x"></i></button>
                 </div>
 
                 <div class="image-upload-container" *ngIf="this.editStates['imgUrl'].isEditMode">
-                    <div class="image-preview" *ngIf="selectedImage">
-                      <img [src]="selectedImage" alt="Preview" />
+                    <div class="image-preview" *ngIf="this.selectedImagePreview">
+                        <img [src]="this.selectedImagePreview" alt="Preview" />
                     </div>
-                  
+
                     <form [formGroup]="form" class="input-cont img">
-                      <div class="wrapper">
-                        <div class="input-group">
-                          <label for="fileInput" class="file-label">
-                            Scegli un'immagine
-                            <input
-                              id="fileInput"
-                              type="file"
-                              accept="image/*"
-                              (change)="onFileSelected($event)"
-                              class="file-input"
-                            />
-                          </label>
+                        <div class="wrapper changeImg">
+                            <div class="input-group">
+                                <label for="fileInput" class="file-label">
+                                    Choose an image
+                                    <input id="fileInput" type="file" accept="image/*" (change)="onFileSelected($event)"
+                                        class="file-input" />
+                                </label>
+                            </div>
+                            <div class="button-group">
+                                <button type="button" (click)="saveImage()" [disabled]="!this.selectedImagePreview"
+                                    class="save-btn img">
+                                    <i class="fa-solid fa-check"></i> Save
+                                </button>
+                                <button type="button" (click)="cancelImage()" class="cancel-btn img">
+                                    <i class="fa-solid fa-x"></i> Cancel
+                                </button>
+                            </div>
                         </div>
-                        <div class="button-group">
-                          <button 
-                            type="button" 
-                            (click)="saveImage()" 
-                            [disabled]="!selectedImage" 
-                            class="save-btn img"
-                          >
-                            <i class="fa-solid fa-check"></i> Salva
-                          </button>
-                          <button 
-                            type="button" 
-                            (click)="cancelImage()" 
-                            class="cancel-btn img"
-                          >
-                            <i class="fa-solid fa-x"></i> Annulla
-                          </button>
-                        </div>
-                      </div>
                     </form>
-                  </div>
+                </div>
 
 
                 <div class="game-img-name-cont" *ngIf="!this.editStates['imgUrl'].isEditMode">
@@ -123,31 +113,31 @@
                     <div class="game-img-cont" *ngIf="!editStates['imgUrl'].isEditMode"
                         (mouseenter)="onMouseEnter('imgUrl') ; this.imgHover=true"
                         (mouseleave)="onMouseLeave('imgUrl') ; this.imgHover=false">
-                        @if(this.selectedGame?.imgUrl === undefined){
+                        @if(this.gs.gameDetail?.imgUrl === undefined){
                         <div class="game-img"> <i class="fa-regular fa-user"></i></div>
                         }
                         @else if (this.imgHover) {
-                        <div class="imgHover" [ngStyle]="{ 'background-image': 'url(' + selectedGame?.imgUrl + ')' }"
-                            *ngIf="editStates['imgUrl'].editToggle" (click)="enableEdit(this.selectedGame, 'imgUrl')">
-
-                            <i class="fa-regular fa-pen-to-square"></i>
+                        <div class="imgHover" [ngStyle]="{ 'background-image': 'url(' + this.gs.gameDetail?.imgUrl + ')', 'opacity':'50%' }"
+                            *ngIf="editStates['imgUrl'].editToggle" (click)="enableEdit(this.gs.gameDetail, 'imgUrl')">
                         </div>
+                        <div class="img-icon"><i class="fa-solid fa-image"></i></div> 
                         }
                         @else{
-                            <div class="imgHover"  [ngStyle]="{ 'background-image': 'url(' + selectedGame?.imgUrl + ')' }">                  </div>
+                        <div class="imgHover" [ngStyle]="{ 'background-image': 'url(' + this.gs.gameDetail?.imgUrl + ')' }">
+                        </div>
                         }
                     </div>
 
-                   
+
 
 
                     <div class="game-name" *ngIf="!editStates['name'].isEditMode" (mouseenter)="onMouseEnter('name')"
                         (mouseleave)="onMouseLeave('name')">
                         <span>
-                            {{this.selectedGame?.name}}
+                            {{this.gs.gameDetail?.name}}
                         </span>
 
-                        <div *ngIf="editStates['name'].editToggle" (click)="enableEdit(this.selectedGame, 'name')"
+                        <div *ngIf="editStates['name'].editToggle" (click)="enableEdit(this.gs.gameDetail, 'name')"
                             class="edit-btn">
                             <i class="fa-regular fa-pen-to-square"></i>
                         </div>
@@ -165,7 +155,7 @@
                             </div>
                         </div>
 
-                        <div (click)="saveProperty(this.selectedGame, 'name')" class="save-btn">
+                        <div (click)="saveProperty(this.gs.gameDetail!, 'name')" class="save-btn">
                             <button [disabled]="form.get('name')?.pristine"
                                 [class.disabled]="form.get('name')?.pristine">
                                 <i class="fa-solid fa-check"></i>
@@ -179,18 +169,21 @@
                 </div>
 
 
-                <div class="description-cont" *ngIf="!editStates['description'].isEditMode &&!this.editStates['imgUrl'].isEditMode "
+                <div class="description-cont"
+                    *ngIf="!editStates['description'].isEditMode &&!this.editStates['imgUrl'].isEditMode "
                     (mouseenter)="onMouseEnter('description')" (mouseleave)="onMouseLeave('description')">
                     <span>
-                        {{this.selectedGame?.description}}
+                        {{this.gs.gameDetail?.description}}
                     </span>
 
                     <div *ngIf="editStates['description'].editToggle"
-                        (click)="enableEdit(this.selectedGame, 'description')" class="edit-btn">
+                        (click)="enableEdit(this.gs.gameDetail, 'description')" class="edit-btn">
                         <i class="fa-regular fa-pen-to-square"></i>
                     </div>
                 </div>
-                <form class="input-cont description" *ngIf="editStates['description'].isEditMode && !this.editStates['imgUrl'].isEditMode" [formGroup]="form">
+                <form class="input-cont description"
+                    *ngIf="editStates['description'].isEditMode && !this.editStates['imgUrl'].isEditMode"
+                    [formGroup]="form">
                     <div class="wrapper description">
                         <div class="input-group description">
                             <textarea type="text" formControlName="description" placeholder="Description" required
@@ -205,7 +198,7 @@
                         </div>
                     </div>
 
-                    <div (click)="saveProperty(this.selectedGame, 'description')" class="save-btn">
+                    <div (click)="saveProperty(this.gs.gameDetail!, 'description')" class="save-btn">
                         <button [disabled]="form.get('description')?.pristine"
                             [class.disabled]="form.get('description')?.pristine">
                             <i class="fa-solid fa-check"></i>
@@ -219,7 +212,7 @@
                 <div class="status-cont" *ngIf="!this.editStates['imgUrl'].isEditMode">
                     <span>Status</span>
 
-                    @if(selectedGame?.isDisabled){
+                    @if(this.gs.gameDetail?.isDisabled){
                     <div class="circle-status">
                         <div class="circle-disable"></div>
                         <div class="status-disabled"> <span>DISABLED</span></div>
@@ -234,11 +227,11 @@
                 </div>
 
                 <div class="btns-cont" *ngIf="!this.editStates['imgUrl'].isEditMode">
-                    @if(this.selectedGame?.isDisabled){
-                    <div class="disable" (click)="ableOrDisableGame()">Restore Game</div>
+                    @if(this.gs.gameDetail?.isDisabled){
+                    <div class="disable" (click)="EnableOrDisableGame()">Restore Game</div>
                     }
                     @else {
-                    <div class="disable" (click)="ableOrDisableGame()">Disable Game</div>
+                    <div class="disable" (click)="EnableOrDisableGame()">Disable Game</div>
                     }
                     <div class="delete" (click)="toggleDeleteGameModal()">Delete Game</div>
                 </div>
@@ -254,7 +247,7 @@
                     Do you really want to delete this game?
                 </div>
                 <div class="modal-btns">
-                    <button class="delete">Delete</button>
+                    <button class="delete" (click)="delete()">Delete</button>
                     <button (click)="toggleDeleteGameModal()" class="close">Close</button>
 
                 </div>
