@@ -231,7 +231,6 @@ export class EventDetailAdminComponent implements OnInit {
     else{
       this.gameSearch = '';
     }
-    console.log(this.sessionEdit.reservations);
     this.gameMasterSearch = this.sessionEdit!.master!.name ? `${this.sessionEdit!.master!.name} ${this.sessionEdit!.master!.surname}` : '';
     this.sessionEditStartDate = this.formatDate(this.sessionEdit.startDate);
     this.sessionEditEndDate = this.formatDate(this.sessionEdit.endDate);
@@ -254,7 +253,6 @@ export class EventDetailAdminComponent implements OnInit {
       this.event.sessions[index] = this.sessionEdit!;
     }
 
-    console.log(this.event)
     this.isEditSessionModal = false;
     this.gn.isOverlayOn$.next(false);
   }
@@ -365,8 +363,6 @@ export class EventDetailAdminComponent implements OnInit {
     if (this.sessionEdit) {
       this.sessionEdit.startDate = this.parseDate(this.sessionEditStartDate);
       this.sessionEdit.endDate = this.parseDate(this.sessionEditEndDate);
-      console.log('Formatted Start Date:', this.sessionEdit.startDate);
-      console.log('Formatted End Date:', this.sessionEdit.endDate);
     }
   }
 }

@@ -145,7 +145,6 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
       const modifiedObject: GameModel = { ...this.gs.gameDetail, isDisabled: !this.gs.gameDetail!.isDisabled };
       let patch = createPatch(this.gs.gameDetail, modifiedObject);
 
-      console.log('Patch:', patch,);
       this.gs.patch(this.gs.gameDetail!, patch).then((res) => {
         this.gs.gameDetail!.isDisabled = !this.gs.gameDetail!.isDisabled;;
       })
@@ -174,17 +173,12 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
 
 
   enableEdit(element: any, key: string): void {
-    console.log('Value passed:', element);
-
     this.editStates[key].isEditMode = true;
     this.editStates[key].editToggle = false;
 
     this.form.patchValue({
       [key]: element[key]
     });
-
-
-    console.log(this.form.value);
 
     if (!this.form.contains(key)) {
       this.form.addControl(key, this.fb.control(element[key]));
@@ -197,10 +191,8 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     if (control !== null && control instanceof FormControl) {
       element = { ...element, name: control.value };
     }
-    // console.log(this.gs.gameDetail, element);
 
     let patch = createPatch(this.gs.gameDetail, element);
-    console.log(patch)
 
     this.gs.patch(this.gs.gameDetail!, patch).then((res) => {
       this.gs.gameDetail = { ...element, name: control!.value };
@@ -248,17 +240,9 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
   }
 
   saveImage(): void {
-    if (this.selectedImageFile) {
-
-      console.log('Image saved:', this.selectedImageFile);
-    } else {
-      console.warn('No image selected.');
-    }
-
     if (this.selectedImageFile && this.gs.gameDetail?.imgUrl) {
 
       this.gs.put(this.gs.gameDetail, this.selectedImageFile).then((res) => {
-        console.log('Image updated successfully:', res);
         this.form.patchValue({ imgUrl: this.selectedImageFile });
         this.gs.getDetails(this.gs.gameDetail!.gameId!);
         this.cancelImage();

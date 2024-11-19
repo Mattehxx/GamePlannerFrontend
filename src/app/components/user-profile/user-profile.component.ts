@@ -114,8 +114,6 @@ export class UserProfileComponent implements OnInit {
   onSubmit(): void {
     if (this.userForm.valid) {
       const updatedUser = { ...this.userToEdit, ...this.userForm.value };
-      // Esegui la patch con updatedUser
-      console.log('Updated user:', updatedUser);
     }
   }
 

@@ -31,12 +31,9 @@ export class RemoveRegistrationComponent {
       this.router.navigate(['home']);
     }
 
-    console.log(this.reservationId, this.token);
-
     if (this.reservationId !== null) {
       await this.sessionService.getReservationById(Number(this.reservationId)).then((session) => {
         this.reservationDetail = session;
-        console.log(this.reservationDetail)
         this.gn.isLoadingScreen$.next(false);
       })
       .catch((error) => {
