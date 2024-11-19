@@ -36,7 +36,7 @@
             </div>
             
             <div class="form-group" >
-                <label for="publicEvent">Public Event</label>
+                <label for="publicEvent">Public     Event</label>
                 <div class="switch-container">
                     <label class="switch">
                         <input id="publicEvent" type="checkbox" [(ngModel)]="event.isPublic">
@@ -161,7 +161,7 @@
             <div class="modal-close" (click)="closeEditModal()"><i class="fa-solid fa-xmark"></i></div>
         </div>
         <div class="modal-body">
-            <form (ngSubmit)="addSession()">
+            <form (ngSubmit)="editSession()">
                 <div class="form-group">
                     <label for="game">Game</label>
                     <div #dropdownElementGame class="custom-dropdown">
@@ -207,8 +207,8 @@
                     <label for="reservations">Add Players</label>
                     <div #dropdownElementReservation class="custom-dropdown-double ">
                         <div class="selected-users" *ngIf="sessionEdit!.reservations!.length > 0">
-                            <span *ngFor="let reservations of sessionEdit?.reservations" class="selected-user">
-                                {{ reservation.user!.name }} {{ reservations.user!.surname }}
+                            <span *ngFor="let reservation of sessionEdit?.reservations" class="selected-user">
+                                {{ reservation.user!.name }} {{ reservation.user!.surname }}
                                 <i class="fa-solid fa-xmark" (click)="removeReservationEdit(reservation)"></i>
                             </span>
                         </div>
@@ -222,7 +222,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn save">Add Session</button>
+                    <button type="submit" class="btn save" (click)="editSession()">Edit Session</button>
                 </div>
             </form>
         </div>
