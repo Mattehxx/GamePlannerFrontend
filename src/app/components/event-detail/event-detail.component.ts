@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EventModel } from '../../models/event.model';
 import { gameSessionModel } from '../../models/gameSession.model';
-import { reservationModel } from '../../models/reservation.model';
-import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { GeneralService } from '../../services/general.service';
 import { ReservationService } from '../../services/reservation.service';

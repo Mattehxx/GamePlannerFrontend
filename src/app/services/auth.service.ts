@@ -65,15 +65,19 @@ export class AuthService {
   }
 
   getUser(id: string) {
-    return this.http.get<User[]>(`${environment.apiUrl}api/ApplicationUser?$filter=id eq '${id}'`).subscribe({
+    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=Id eq '${id}'&$expand=Preferences($expand=Game&$expand=Knowledge),AdminEvents,Reservations`).subscribe({
       next: (response) => {
-        this.user?.next(response[0]);
-        this.isLogged = true
+        if (response) {
+          this.user.next(response.value[0]);
+          this.isLogged = true;
+        } else {
+          console.error('User not found');
+        }
       },
       error: (error) => {
         console.error(error);
       }
-    })
+    });
   }
 
   setToken(token: string): void {

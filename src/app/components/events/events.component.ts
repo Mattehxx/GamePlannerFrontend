@@ -2,15 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { EventModel } from '../../models/event.model';
-import { gameSessionModel } from '../../models/gameSession.model';
-import { reservationModel } from '../../models/reservation.model';
-import { User } from '../../models/user.model';
 import { DurationPipe } from "../../pipes/duration.pipe";
+import { EventService } from '../../services/event.service';
 import { GeneralService } from '../../services/general.service';
 import { HeaderService } from '../../services/header.service';
-import { EventService } from '../../services/event.service';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-events',
