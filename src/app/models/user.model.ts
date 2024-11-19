@@ -4,7 +4,7 @@ import { preferenceModel } from "./preference.model";
 import { reservationModel } from "./reservation.model";
 
 export interface User {
-    userId?: string,
+    id?: string,
     name: string,
     surname: string,
     email?: string,

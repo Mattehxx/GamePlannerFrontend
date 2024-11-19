@@ -65,12 +65,30 @@ export class SessionService {
         });
     }
 
-    removeRegistration(reservationId: number, token: string) {
+    removeRegistration(reservationId: number) {
         return new Promise((resolve, reject) => {
-            this.http.delete<any>(`${environment.apiUrl}api/Reservation?id=${reservationId}&token=${token}`).subscribe({
+            this.http.delete<any>(`${environment.apiUrl}api/Reservation?id=${reservationId}`).subscribe({
                 next: (res) => {
-                    this.gn.confirmMessage='Registration confirmed';
+                    this.gn.confirmMessage='Registration removed';
                     this.gn.setConfirm();
+                    resolve(res);
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.gn.errorMessage='Error, please try again later';
+                    this.gn.setError();
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    newConfirm(sessionId: number,userId: string) : Promise<any>{
+        return new Promise((resolve, reject) => {
+            this.http.post<any>(`${environment.apiUrl}api/Reservation/confirm?sessionId=${sessionId}&userId=${userId}`, '').subscribe({
+                next: (res) => {
+                    this.gn.errorMessage='Error, a new confirmation email has been sent';
+                    this.gn.setError();
                     resolve(res);
                 },
                 error: (err) => {

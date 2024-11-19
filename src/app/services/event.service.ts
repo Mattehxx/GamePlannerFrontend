@@ -112,16 +112,27 @@ export class EventService {
 
   getEventsId(id: number) : Promise<EventModel>{
     return new Promise((resolve, reject) => {
-      this.http.get<EventModel>(`${environment.apiUrl}odata/Event?$filter=eventId eq ${id}&$expand=Sessions($expand=Master,Game,Reservations)`).subscribe({
+      this.http.get<any>(`${environment.apiUrl}odata/Event?$filter=eventId eq ${id}&$expand=Sessions($expand=Master,Game,Reservations($expand=User))`).subscribe({
         next: (res) => {
-          this.eventDetail = res;
-          resolve(res);
+          this.eventDetail = res.value[0];
+          resolve(res.value[0]);
         }, error: (msg) => {
           console.error(msg);
           reject(msg);
         }
       });
     });
+  }
+
+  getUsersContainsString(name: string) {
+    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=contains(tolower(name),'${name.toLowerCase()}')&$top=5`);
+  }
   
+  getGames(){
+    return this.http.get<any>(`${environment.apiUrl}odata/Game`);
+  }
+
+  getGameMasters(gameId: number){
+    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=Preferences/any(p: p/gameId eq ${gameId} and p/CanBeMaster eq true)&$expand=Preferences`);
   }
 }

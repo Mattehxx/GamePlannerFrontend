@@ -21,7 +21,7 @@ import { SessionService } from '../../../../services/session.service';
 })
 export class EventDetailAdminComponent implements OnInit {
 
-  constructor(private eventService: EventService, public ds: DashboardService, public gn: GeneralService, private router: Router,private sessionService: SessionService) { }
+  constructor(private eventService: EventService, public ds: DashboardService, public gn: GeneralService, private router: Router, private sessionService: SessionService) { }
 
   event: EventModel | undefined;
   @ViewChild('dropdownElementMaster') dropdownElementMaster: ElementRef | undefined;
@@ -33,7 +33,7 @@ export class EventDetailAdminComponent implements OnInit {
     gameId: 0,
     startDate: new Date(),
     endDate: new Date(),
-    masterId: '0',
+    masterId: '',
     seats: 6,
     eventId: 0,
     isDeleted: false,
@@ -56,58 +56,55 @@ export class EventDetailAdminComponent implements OnInit {
 
   gameMasterSearch = '';
   gameSearch = '';
+  selectedGame: GameModel | undefined;
   reservationSearch = '';
 
   arrayAddedSessions: gameSessionModel[] = [];
 
+  formData: FormData | undefined;
+  imageUrl: string | ArrayBuffer | null = null;
+
   gameMasters: User[] = [
-    { userId: '1', name: 'John', surname: 'Doe', role: 'Game Master' },
-    { userId: '2', name: 'Jane', surname: 'Smith', role: 'Game Master' },
-    { userId: '3', name: 'Alice', surname: 'Johnson', role: 'Game Master' }
+    { id: '1', name: 'John', surname: 'Doe', role: 'Game Master' },
+    { id: '2', name: 'Jane', surname: 'Smith', role: 'Game Master' },
+    { id: '3', name: 'Alice', surname: 'Johnson', role: 'Game Master' }
   ];
 
-  games: GameModel[] = [
-    {
-      gameId: 101,
-      name: 'D&D',
-      description: 'Description for D&D',
-      isDeleted: false,
-      imgUrl: '/assets/images/wallpaper2.jpg',
-      isDisabled: false
-    },
-    {
-      gameId: 102,
-      name: 'Bho',
-      description: 'Description for D&D',
-      isDeleted: false,
-      imgUrl: '/assets/images/wallpaper2.jpg',
-      isDisabled: false
-    }
-  ];
+  games: GameModel[] = [];
 
-  users: User[] = [
-    { userId: '1', name: 'John', surname: 'Doe', role: 'Player' },
-    { userId: '2', name: 'Jane', surname: 'Smith', role: 'Player' },
-    { userId: '3', name: 'Alice', surname: 'Johnson', role: 'Player' }
-  ];
+  users: User[] = [];
 
   filteredGameMasters: User[] = [...this.gameMasters];
   filteredGames: GameModel[] = [...this.games];
   filteredUsers: User[] = [...this.users];
 
+  isLoading: boolean = false;
+
   ngOnInit(): void {
     if (this.eventService.eventDetail === undefined) {
       this.router.navigate(['/dashboard-admin/events']);
     } else {
+      this.gn.isLoadingScreen$.next(true);
+      this.isLoading = true;
       this.eventService.getEventsId(this.eventService.eventDetail.eventId).then((event) => {
-        this.event=event;
+        this.event = event;
         this.newSession.eventId = this.event.eventId;
+        this.gn.isLoadingScreen$.next(false);
+        this.isLoading = false;
+        console.log(this.event);
       });
     }
-
+    this.eventService.getGames().subscribe({
+      next: (res) => {
+        this.games = res.value;
+        this.filteredGames = res.value;
+      }
+    });
   }
 
   openAddModal() {
+    this.gameMasterSearch = '';
+    this.gameSearch = '';
     this.isAddSessionModal = true;
     this.gn.isOverlayOn$.next(true);
   }
@@ -120,7 +117,7 @@ export class EventDetailAdminComponent implements OnInit {
       gameId: 0,
       startDate: new Date(),
       endDate: new Date(),
-      masterId: '0',
+      masterId: '',
       seats: 6,
       eventId: 0,
       isDeleted: false,
@@ -135,24 +132,34 @@ export class EventDetailAdminComponent implements OnInit {
   }
 
   addSession() {
+    console.log(this.newSession);
+    const isValidDateFormat = (date: string) => {
+      const isoFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/;
+      return isoFormat.test(date);
+    };
+    console.log(isValidDateFormat(this.newSession.startDate.toString()))
+    if(!isValidDateFormat(this.newSession.startDate.toString()) || !isValidDateFormat(this.newSession.endDate.toString()) || this.newSession.gameId === 0 ) {
+      this.gn.errorMessage='Please fill all the fields';
+      this.gn.setError();
+      return;
+    }
+
+    this.newSession.eventId = this.event?.eventId!;
     this.arrayAddedSessions.push(this.newSession);
     this.event?.sessions?.push(this.newSession);
     this.newSession = {
-      sessionId: 0,
+      sessionId: this.arrayAddedSessions.length + 1,
       gameId: 0,
       startDate: new Date(),
       endDate: new Date(),
-      masterId: '0',
+      masterId: '',
       seats: 6,
-      eventId: 0,
+      eventId: this.event?.eventId!,
       isDeleted: false,
       reservations: []
     };
-    //  this.sessionService.addSession(this.newSession).then((session) => {
-    //   this.event?.sessions?.push(session);
-    //  });
-
-     this.closeAddModal();
+    console.log(this.event, this.arrayAddedSessions);
+    this.closeAddModal();
   }
 
   filterGameMasters() {
@@ -171,13 +178,36 @@ export class EventDetailAdminComponent implements OnInit {
 
   filterUsers() {
     const search = this.reservationSearch.toLowerCase();
-    this.filteredUsers = this.users.filter(user =>
-      `${user.name} ${user.surname}`.toLowerCase().includes(search)
-    );
+    this.eventService.getUsersContainsString(search).subscribe({
+      next: (odata) => {
+        this.users = odata.value;
+        this.filteredUsers = this.users;
+      }
+    });
   }
 
   showOptions() {
-    this.isShowingMasterOptions = true;
+    if (this.selectedGame) {
+      this.eventService.getGameMasters(this.selectedGame!.gameId!).subscribe({
+        next: (res) => {
+          this.gameMasters = res.value;
+          this.filteredGameMasters = res.value;
+        }
+      });
+      this.isShowingMasterOptions = true;
+    }
+  }
+
+  showOptionsEdit() {
+    if (this.sessionEdit!.game) {
+      this.eventService.getGameMasters(this.sessionEdit!.gameId).subscribe({
+        next: (res) => {
+          this.gameMasters = res.value;
+          this.filteredGameMasters = res.value;
+        }
+      });
+      this.isShowingMasterOptions = true;
+    }
   }
 
   showOptionsGame() {
@@ -193,14 +223,23 @@ export class EventDetailAdminComponent implements OnInit {
   }
 
   clearMasterSearch() {
-    this.gameMasterSearch = '';
-    this.newSession.masterId = '0';
-    this.filterGameMasters();
+    if (this.selectedGame) {
+      this.gameMasterSearch = '';
+      this.newSession.masterId = '0';
+      this.filterGameMasters();
+    }
   }
 
   clearGameSearch() {
     this.gameSearch = '';
     this.newSession.gameId = 0;
+    this.filterGames();
+  }
+
+  clearGameEditSearch() {
+    this.gameSearch = '';
+    this.sessionEdit!.gameId = 0;
+    this.sessionEdit!.game = undefined;
     this.filterGames();
   }
 
@@ -210,7 +249,7 @@ export class EventDetailAdminComponent implements OnInit {
   }
 
   selectGameMaster(master: User) {
-    this.newSession.masterId = master.userId ? master.userId : '';
+    this.newSession.masterId = master.id ? master.id : '';
     this.newSession.master = master;
     this.gameMasterSearch = `${master.name} ${master.surname}`;
     this.isShowingMasterOptions = false;
@@ -220,15 +259,22 @@ export class EventDetailAdminComponent implements OnInit {
     this.newSession.gameId = game.gameId ? game.gameId : 0;
     this.newSession.game = game;
     this.gameSearch = `${game.name}`;
+    this.selectedGame = game;
+    this.isShowingGameOptions = false;
+  }
+
+  selectEditGame(game: GameModel) {
+    this.sessionEdit!.gameId = game.gameId ? game.gameId : 0;
+    this.sessionEdit!.game = game;
+    this.gameSearch = `${game.name}`;
     this.isShowingGameOptions = false;
   }
 
   openEditSession(session: gameSessionModel) {
     this.sessionEdit = { ...session };
-    if(this.sessionEdit.game){
+    if (this.sessionEdit.game) {
       this.gameSearch = this.sessionEdit.game.name;
-    }
-    else{
+    } else {
       this.gameSearch = '';
     }
     console.log(this.sessionEdit.reservations);
@@ -244,17 +290,18 @@ export class EventDetailAdminComponent implements OnInit {
       this.sessionEdit.startDate = this.parseDate(this.sessionEditStartDate);
       this.sessionEdit.endDate = this.parseDate(this.sessionEditEndDate);
     }
-    if(this.arrayAddedSessions.some(session => session.sessionId === this.sessionEdit!.sessionId)){
+
+    if (this.arrayAddedSessions.some(session => session.sessionId === this.sessionEdit!.sessionId)) {
       const index = this.arrayAddedSessions.findIndex(session => session.sessionId === this.sessionEdit!.sessionId);
       this.arrayAddedSessions[index] = this.sessionEdit!;
     }
 
-    if(this.event?.sessions?.some(session => session.sessionId === this.sessionEdit!.sessionId)){
+    if (this.event?.sessions?.some(session => session.sessionId === this.sessionEdit!.sessionId)) {
       const index = this.event.sessions.findIndex(session => session.sessionId === this.sessionEdit!.sessionId);
       this.event.sessions[index] = this.sessionEdit!;
     }
 
-    console.log(this.event)
+    console.log(this.event);
     this.isEditSessionModal = false;
     this.gn.isOverlayOn$.next(false);
   }
@@ -266,34 +313,53 @@ export class EventDetailAdminComponent implements OnInit {
   }
 
   toggleReservation(user: User) {
-    const index = this.newSession.reservations.findIndex(reservation => reservation.userId === user.userId);
+    console.log(user);
+    const index = this.newSession.reservations.findIndex(reservation => reservation.userId === user.id);
+    console.log(index);
     if (index === -1) {
-      this.newSession.reservations.push({ reservationId: 0, token: '', isConfirmed: false, isDeleted: false, sessionId: this.newSession.sessionId, userId: user.userId! });
+      this.newSession.reservations.push({ reservationId: 0, token: '', isConfirmed: false, isDeleted: false, sessionId: this.newSession.sessionId, userId: user.id! });
     } else {
       this.newSession.reservations.splice(index, 1);
     }
   }
 
+  toggleReservationEdit(user: User) {
+    const index = this.sessionEdit!.reservations.findIndex(reservation => reservation.userId === user.id);
+    if (index === -1) {
+      this.sessionEdit!.reservations.push({ reservationId: 0, token: '', isConfirmed: false, isDeleted: false, sessionId: this.sessionEdit!.sessionId, userId: user.id! });
+    } else {
+      this.sessionEdit!.reservations.splice(index, 1);
+    }
+  }
+
   removeReservation(user: User) {
-    const index = this.newSession.reservations.findIndex(reservation => reservation.userId === user.userId);
+    const index = this.newSession.reservations.findIndex(reservation => reservation.userId === user.id);
     if (index !== -1) {
       this.newSession.reservations.splice(index, 1);
     }
   }
 
   removeReservationEdit(reservation: reservationModel) {
-    const index = this.newSession.reservations.findIndex(reservation => reservation.reservationId === reservation.reservationId);
+    const index = this.sessionEdit!.reservations.findIndex(r => r.reservationId === reservation.reservationId);
     if (index !== -1) {
       this.sessionEdit!.reservations.splice(index, 1);
     }
   }
 
   isUserSelected(user: User): boolean {
-    return this.newSession.reservations.some(reservation => reservation.userId === user.userId);
+    return this.newSession.reservations.some(reservation => reservation.userId === user.id);
+  }
+
+  isUserSelectedEdit(user: User): boolean {
+    return this.sessionEdit!.reservations.some(reservation => reservation.userId === user.id);
   }
 
   get selectedUsers(): User[] {
     return this.users.filter(user => this.isUserSelected(user));
+  }
+
+  get selectedUsersEdit(): User[] {
+    return this.users.filter(user => this.isUserSelectedEdit(user));
   }
 
   @HostListener('document:click', ['$event'])
@@ -323,6 +389,7 @@ export class EventDetailAdminComponent implements OnInit {
   }
 
   deleteSession() {
+    this.arrayAddedSessions = this.arrayAddedSessions.filter(session => session.sessionId !== this.sessionId);
     this.event!.sessions = this.event!.sessions!.filter(session => session.sessionId !== this.sessionId);
     this.isDeleteModalSession = false;
     this.sessionId = 0;
@@ -367,6 +434,30 @@ export class EventDetailAdminComponent implements OnInit {
       this.sessionEdit.endDate = this.parseDate(this.sessionEditEndDate);
       console.log('Formatted Start Date:', this.sessionEdit.startDate);
       console.log('Formatted End Date:', this.sessionEdit.endDate);
+    }
+  }
+
+  uploadImage(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      this.formData = formData;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageUrl = reader.result;
+      };
+      reader.readAsDataURL(file);
+
+      // this.http.post(`${environment.apiUrl}/upload`, formData).subscribe({
+      //   next: (response) => {
+      //     console.log('Upload successful:', response);
+      //   },
+      //   error: (error) => {
+      //     console.error('Upload error:', error);
+      //   }
+      // });
     }
   }
 }

@@ -44,12 +44,18 @@ export class ConfirmRegistrationComponent implements OnInit{
       });;
     }
 
-    if (userId !== null && token !== null) {
+    if (userId !== null && token !== null && sessionId !== null) {
       await this.sessionService.confirmRegistration(Number(sessionId), userId, token).then(() => {
         this.gn.isLoadingScreen$.next(false);
         this.isLoading=false;
       })
       .catch((error) => {
+        if (error.status === 500 && error.message.includes("Invalid token")) {
+          this.sessionService.newConfirm(Number(sessionId),userId).then(() => {
+            this.isLoading=false;
+            this.gn.isLoadingScreen$.next(false);
+          });
+        }
         this.isLoading=false;
         this.gn.isLoadingScreen$.next(false);
         this.router.navigate(['home']);
@@ -61,5 +67,7 @@ export class ConfirmRegistrationComponent implements OnInit{
   }
 
 }
+
+
 
 }
