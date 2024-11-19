@@ -34,9 +34,7 @@ export class RegisterComponent {
   }
 
   onSubmit(){
-    console.log(this.registerForm.value);
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
       this.auth.register(this.registerForm.value).then(() => {
         this.router.navigate(['/login']);
       });

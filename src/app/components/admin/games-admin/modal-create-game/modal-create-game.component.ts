@@ -69,13 +69,6 @@ export class ModalCreateGameComponent {
   cancelImage() {
     throw new Error('Method not implemented.');
   }
-  // saveImage() {
-  //   this.newGame = {...this.gameForm.value, imgUrl: this.selectedImagePreview};
-  //   console.log('Image saved:', this.selectedImagePreview);
-  //   console.log('model saved:', this.newGame);
-  // }
-
-
 
   onSubmit() {
     this.createGame();
@@ -85,14 +78,10 @@ export class ModalCreateGameComponent {
     const formData = new FormData();
     formData.append('imgUrl', this.selectedImageFile!);
     formData.append('name', this.gameForm.value.name!);
-    formData.append('description', this.gameForm.value.description!);         
+    formData.append('description', this.gameForm.value.description!);
 
-    // this.newGame = {...this.gameForm.value, ImgUrl: formData};
-    console.log(this.newGame);
     this.gs.create(formData).subscribe({
       next: (res) => {
-        console.log(res);
-        
         this.closeModal();
       },
       error: (err) => {

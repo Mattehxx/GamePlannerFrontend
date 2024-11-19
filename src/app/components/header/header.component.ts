@@ -36,10 +36,8 @@ export class HeaderComponent implements OnInit {
 
     this.as.user?.subscribe({
       next: (response) => {
-        console.log(response);
         if(response){
           this.user = response;
-          console.log(this.user)
         }
         
       }

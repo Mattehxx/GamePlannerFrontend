@@ -147,6 +147,13 @@ mat-paginator {
     min-height: var(--mat-paginator-container-size);
 }
 
+.name-cont div{
+    width: 10vh; 
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
 .cont-user-cell {
     display: flex;
     gap: 1vh;
@@ -352,6 +359,16 @@ mat-paginator {
 
 .details-image {
     padding: 3vh 0 2vh;
+}
+
+.background-image{
+    display: flex;
+    width: 18vh;
+    height: 18vh;
+    border-radius: 50%;
+    background-size: cover;
+    align-items: center;
+    justify-content: center;
 }
 
 .profile-image-details{

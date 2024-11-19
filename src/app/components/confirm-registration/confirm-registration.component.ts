@@ -32,12 +32,9 @@ export class ConfirmRegistrationComponent implements OnInit{
       this.router.navigate(['home']);
     }
 
-    console.log(sessionId, userId, token);
-
     if (sessionId !== null) {
       await this.sessionService.getSessionById(Number(sessionId)).then((session) => {
         this.sessionDetail = session;
-        console.log(this.sessionDetail)
       })
       .catch((error) => {
         console.error('Error loading session:', error);

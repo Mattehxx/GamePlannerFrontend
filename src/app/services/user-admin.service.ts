@@ -18,7 +18,7 @@ export class UserAdminService {
   getUsers(){
     return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser`).subscribe({
       next: (res) => {
-        console.log(res.value);
+        this.User$.next(res.value);
       },
       error: (err) => {
         console.error(err);

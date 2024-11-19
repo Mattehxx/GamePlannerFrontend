@@ -24,10 +24,7 @@ export class DashboardAdminComponent implements OnInit {
   }
 
   onMouseEnter() {
-    console.log(this.ds.isOpen)
     this.ds.isOpen = true;
-    console.log(this.ds.isOpen)
-
   }
   onMouseLeave() {
     this.ds.isOpen = false;

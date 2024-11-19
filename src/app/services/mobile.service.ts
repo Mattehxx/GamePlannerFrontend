@@ -16,7 +16,6 @@ export class MobileService {
     downloadFile() {
         return this.http.get<any>(`${environment.apiUrl}api/ApplicationUser/download-apk`).subscribe({
             next: (res) => {
-                console.log(res);
                 this.linkApk = res.message;
             },
             error: (err) => {

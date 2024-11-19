@@ -20,7 +20,6 @@ export class SessionService {
         return new Promise((resolve, reject) => {
             this.http.get<any>(`${environment.apiUrl}odata/Session?$expand=Game,Reservations&$filter=sessionId eq ${id}`).subscribe({
                 next: (res) => {
-                    console.log(res.value[0]);
                     this.sessionDetail = res.value[0];
                     resolve(res.value[0]);
                 },
@@ -36,7 +35,6 @@ export class SessionService {
         return new Promise((resolve, reject) => {
             this.http.get<any>(`${environment.apiUrl}odata/Reservation?$expand=Session($expand=Game)&$filter=reservationId eq ${id}`).subscribe({
                 next: (res) => {
-                    console.log(res.value[0]);
                     this.sessionDetail = res.value[0];
                     resolve(res.value[0]);
                 },
