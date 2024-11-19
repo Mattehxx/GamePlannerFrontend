@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { environment } from '../environment/environment';
 import { ODataResponse } from '../models/odataResponse.model';
 import { EventInputModel } from '../models/input-models/event.input.model';
+import { Operation } from 'rfc6902';
 
 @Injectable({
   providedIn: 'root'
@@ -63,9 +64,26 @@ export class EventService {
     });
   }
   
-  patch() {
+  patch(eventDetail:number, patch: Operation[]): Promise<any>{
+    return new Promise((resolve, reject) => {
+      this.http.patch<EventModel>(`${environment.apiUrl}api/Event/${eventDetail}`, patch).subscribe({
+        next: (res) => {
+          const events = this.eventSubject.value;
+          const index = events.findIndex((e) => e.eventId === eventDetail);
+          if (index !== -1) {
+            events[index] = res;
+            this.eventSubject.next(events);
+          }
+          resolve(res);
+        },
+        error: (err) => {
+          console.error(err);
+          reject(err);
+        }
+      })
+    })
+   }
 
-  }
 
   getEventCount(): Observable<number> {
     return this.http.get<any>(`${environment.apiUrl}odata/Event?$count=true`).pipe(
@@ -135,4 +153,35 @@ export class EventService {
   getGameMasters(gameId: number){
     return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=Preferences/any(p: p/gameId eq ${gameId} and p/CanBeMaster eq true)&$expand=Preferences`);
   }
+
+  updateEventImage(eventId: number, img: FormData): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.put<any>(`${environment.apiUrl}api/Event/image/${eventId}`, img).subscribe({
+        next: (res) => {
+          this.eventDetail = res;
+          resolve(res);
+        }, error: (msg) => {
+          console.error(msg);
+          reject(msg);
+        }
+      });
+    });
+  }
+
+  deleteEvent(eventId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http.delete(`${environment.apiUrl}api/Event/${eventId}`).subscribe({
+        next: () => {
+          const events = this.eventSubject.value.filter(event => event.eventId !== eventId);
+          this.eventSubject.next(events);
+          resolve();
+        },
+        error: (err) => {
+          console.error(err);
+          reject(err);
+        }
+      });
+    });
+  }
+
 }

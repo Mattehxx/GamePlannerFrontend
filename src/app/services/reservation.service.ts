@@ -13,8 +13,11 @@ export class ReservationService {
     constructor(private http: HttpClient,private as: AuthService,private gn: GeneralService) { }
 
     
-    createReservation(sessionId: number){
+    createReservation(sessionId: number,userIdExt?: string){
         let userId = localStorage.getItem('userId');
+        if(userIdExt){
+            userId = userIdExt;
+        }
         return new Promise((resolve, reject) => {
             this.http.post<any>(`${environment.apiUrl}api/Reservation`, {sessionId,userId}).subscribe({
                 next: (res) => {

@@ -5,6 +5,7 @@ import { environment } from '../environment/environment';
 import { gameSessionModel } from '../models/gameSession.model';
 import { reservationModel } from '../models/reservation.model';
 import { GeneralService } from './general.service';
+import { Operation } from 'rfc6902';
 
 @Injectable({
   providedIn: 'root'
@@ -117,5 +118,58 @@ export class SessionService {
         });
     }
 
+    addSessionNoNoti(session: any) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.post<any>(`${environment.apiUrl}api/Session`, session).subscribe({
+                next: (res) => {
+                    // this.gn.confirmMessage='Session created';
+                    // this.gn.setConfirm();
+                    resolve(res);
+                },
+                error: (err) => {
+                    console.error(err);
+                    // this.gn.errorMessage='Error, please try again later';
+                    // this.gn.setError();
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    updateSession(sessionId: number, patch: Operation[]) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.patch<any>(`${environment.apiUrl}api/Session/${sessionId}`, patch).subscribe({
+                next: (res) => {
+                    // this.gn.confirmMessage='Session updated';
+                    // this.gn.setConfirm();
+                    resolve(res);
+                },
+                error: (err) => {
+                    console.error(err);
+                    // this.gn.errorMessage='Error, please try again later';
+                    // this.gn.setError();
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    deleteSession(sessionId: number) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.delete<any>(`${environment.apiUrl}api/Session/${sessionId}`).subscribe({
+                next: (res) => {
+                    // this.gn.confirmMessage='Session deleted';
+                    // this.gn.setConfirm();
+                    resolve(res);
+                },
+                error: (err) => {
+                    console.error(err);
+                    // this.gn.errorMessage='Error, please try again later';
+                    // this.gn.setError();
+                    reject(err);
+                }
+            });
+        });
+    }
 
 }

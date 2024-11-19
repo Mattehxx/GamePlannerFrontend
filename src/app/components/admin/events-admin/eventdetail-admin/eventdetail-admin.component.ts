@@ -11,6 +11,8 @@ import { DashboardService } from '../../../../services/dashboard.service';
 import { EventService } from '../../../../services/event.service';
 import { GeneralService } from '../../../../services/general.service';
 import { SessionService } from '../../../../services/session.service';
+import { createPatch } from 'rfc6902';
+import { ReservationService } from '../../../../services/reservation.service';
 
 @Component({
   selector: 'app-eventdetail-admin',
@@ -21,7 +23,7 @@ import { SessionService } from '../../../../services/session.service';
 })
 export class EventDetailAdminComponent implements OnInit {
 
-  constructor(private eventService: EventService, public ds: DashboardService, public gn: GeneralService, private router: Router, private sessionService: SessionService) { }
+  constructor(private eventService: EventService, public ds: DashboardService, public gn: GeneralService, private router: Router, private sessionService: SessionService,private resService: ReservationService) { }
 
   event: EventModel | undefined;
   @ViewChild('dropdownElementMaster') dropdownElementMaster: ElementRef | undefined;
@@ -31,8 +33,8 @@ export class EventDetailAdminComponent implements OnInit {
   newSession: gameSessionModel = {
     sessionId: 0,
     gameId: 0,
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: '',
+    endDate: '',
     masterId: '',
     seats: 6,
     eventId: 0,
@@ -64,11 +66,7 @@ export class EventDetailAdminComponent implements OnInit {
   formData: FormData | undefined;
   imageUrl: string | ArrayBuffer | null = null;
 
-  gameMasters: User[] = [
-    { id: '1', name: 'John', surname: 'Doe', role: 'Game Master' },
-    { id: '2', name: 'Jane', surname: 'Smith', role: 'Game Master' },
-    { id: '3', name: 'Alice', surname: 'Johnson', role: 'Game Master' }
-  ];
+  gameMasters: User[] = [];
 
   games: GameModel[] = [];
 
@@ -79,8 +77,10 @@ export class EventDetailAdminComponent implements OnInit {
   filteredUsers: User[] = [...this.users];
 
   isLoading: boolean = false;
+  deepCopy: EventModel | undefined;
 
   ngOnInit(): void {
+
     if (this.eventService.eventDetail === undefined) {
       this.router.navigate(['/dashboard-admin/events']);
     } else {
@@ -88,6 +88,7 @@ export class EventDetailAdminComponent implements OnInit {
       this.isLoading = true;
       this.eventService.getEventsId(this.eventService.eventDetail.eventId).then((event) => {
         this.event = event;
+        this.deepCopy = JSON.parse(JSON.stringify(this.event));
         this.newSession.eventId = this.event.eventId;
         this.gn.isLoadingScreen$.next(false);
         this.isLoading = false;
@@ -133,15 +134,22 @@ export class EventDetailAdminComponent implements OnInit {
 
   addSession() {
     console.log(this.newSession);
-    const isValidDateFormat = (date: string) => {
-      const isoFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/;
-      return isoFormat.test(date);
-    };
-    console.log(isValidDateFormat(this.newSession.startDate.toString()))
-    if(!isValidDateFormat(this.newSession.startDate.toString()) || !isValidDateFormat(this.newSession.endDate.toString()) || this.newSession.gameId === 0 ) {
-      this.gn.errorMessage='Please fill all the fields';
+    
+    console.log(this.newSession.startDate );
+
+    if(this.newSession.startDate == '' || this.newSession.endDate == '' || this.newSession.gameId === 0) {
+      this.gn.errorMessage = 'Please fill all the fields';
       this.gn.setError();
       return;
+    } 
+    else if (!this.isDifferentDay(new Date(this.newSession.startDate), new Date(this.newSession.endDate))) {
+      this.gn.errorMessage = 'Start Date and End Date must be on the same day';
+      this.gn.setError();
+      return;
+    }
+    else{ 
+      this.gn.confirmMessage = 'Session added';
+      this.gn.setConfirm();
     }
 
     this.newSession.eventId = this.event?.eventId!;
@@ -160,6 +168,13 @@ export class EventDetailAdminComponent implements OnInit {
     };
     console.log(this.event, this.arrayAddedSessions);
     this.closeAddModal();
+  }
+
+  
+  isDifferentDay(startDate: Date, endDate: Date): boolean {
+    return startDate.getFullYear() == endDate.getFullYear() &&
+           startDate.getMonth() == endDate.getMonth() &&
+           startDate.getDate() == endDate.getDate();
   }
 
   filterGameMasters() {
@@ -277,11 +292,16 @@ export class EventDetailAdminComponent implements OnInit {
     } else {
       this.gameSearch = '';
     }
-    this.gameMasterSearch = this.sessionEdit!.master!.name ? `${this.sessionEdit!.master!.name} ${this.sessionEdit!.master!.surname}` : '';
-    this.sessionEditStartDate = this.formatDate(this.sessionEdit.startDate);
-    this.sessionEditEndDate = this.formatDate(this.sessionEdit.endDate);
-    this.isEditSessionModal = true;
-    this.gn.isOverlayOn$.next(true);
+    if(this.sessionEdit.master) {
+      this.gameMasterSearch = this.sessionEdit!.master!.name ? `${this.sessionEdit!.master!.name} ${this.sessionEdit!.master!.surname}` : '';
+    }
+    else {
+      this.gameMasterSearch = '';
+    }
+     this.sessionEditStartDate = this.formatDate(new Date(this.sessionEdit.startDate));
+     this.sessionEditEndDate = this.formatDate(new Date(this.sessionEdit.endDate));
+     this.isEditSessionModal = true;
+     this.gn.isOverlayOn$.next(true);
   }
 
   editSession() {
@@ -315,7 +335,7 @@ export class EventDetailAdminComponent implements OnInit {
     const index = this.newSession.reservations.findIndex(reservation => reservation.userId === user.id);
     console.log(index);
     if (index === -1) {
-      this.newSession.reservations.push({ reservationId: 0, token: '', isConfirmed: false, isDeleted: false, sessionId: this.newSession.sessionId, userId: user.id! });
+      this.newSession.reservations.push({ reservationId: 0, token: '', isConfirmed: false, isDeleted: false, sessionId: this.newSession.sessionId, userId: user.id!, user: user });
     } else {
       this.newSession.reservations.splice(index, 1);
     }
@@ -324,7 +344,7 @@ export class EventDetailAdminComponent implements OnInit {
   toggleReservationEdit(user: User) {
     const index = this.sessionEdit!.reservations.findIndex(reservation => reservation.userId === user.id);
     if (index === -1) {
-      this.sessionEdit!.reservations.push({ reservationId: 0, token: '', isConfirmed: false, isDeleted: false, sessionId: this.sessionEdit!.sessionId, userId: user.id! });
+      this.sessionEdit!.reservations.push({ reservationId: 0, token: '', isConfirmed: false, isDeleted: false, sessionId: this.sessionEdit!.sessionId, userId: user.id!, user: user });
     } else {
       this.sessionEdit!.reservations.splice(index, 1);
     }
@@ -382,8 +402,18 @@ export class EventDetailAdminComponent implements OnInit {
 
   deleteEvent() {
     //chiamata api per cancellare evento
-    this.isDeleteModalEvent = false;
-    this.gn.isOverlayOn$.next(false);
+    this.eventService.deleteEvent(this.event!.eventId).then(() => {
+      this.isDeleteModalEvent = false;
+      this.gn.isOverlayOn$.next(false);
+      this.gn.confirmMessage = 'Event deleted successfully';
+      this.gn.setConfirm();
+      this.router.navigate(['/dashboard-admin/events']);
+    }).catch((err) => {
+      console.error('Failed to delete event:', err);
+      this.gn.errorMessage = 'Failed to delete event';
+      this.gn.setError();
+    });
+
   }
 
   deleteSession() {
@@ -399,14 +429,111 @@ export class EventDetailAdminComponent implements OnInit {
     this.gn.isOverlayOn$.next(true);
   }
 
-  saveChanges() {
-    //chiamata api per salvare le modifiche
-    //loading screen da usare nella chiamata api del servizio mentre si aspetta la risposta
+  async saveChanges() {
     this.gn.isLoadingScreen$.next(true);
-    setTimeout(() => {
-      this.gn.isLoadingScreen$.next(false);
+    this.isLoading = true;
+
+    // Create new sessions
+    for (const session of this.arrayAddedSessions) {
+      if (session.sessionId === 0) {
+        const transformedSession = {
+          StartDate: new Date(session.startDate),
+          EndDate: new Date(session.endDate),
+          Seats: session.seats,
+          MasterId: session.masterId ? session.masterId :  null,
+          EventId: session.eventId,
+          GameId: session.gameId
+        };
+        await this.sessionService.addSessionNoNoti(transformedSession).then((res) => {
+          session.sessionId = res.sessionId;
+          if(session.reservations.length > 0) {
+            session.reservations.forEach(async reservation => {
+              await this.resService.createReservation(session.sessionId,reservation.userId);
+            });
+          }
+        }).catch((err) => {
+          console.error('Failed to create session:', err);
+          this.gn.errorMessage = 'Start date and end date must be in the same day';
+          this.gn.setError();
+          this.gn.isLoadingScreen$.next(false);
+          this.isLoading = false;
+          throw new Error('Start date and end date must be in the same day');
+        });
+      }
+    }
+
+    // Update modified sessions
+    for (const session of this.event!.sessions!) {
+      const originalSession = this.deepCopy!.sessions!.find(s => s.sessionId === session.sessionId);
+      if (originalSession && JSON.stringify(originalSession) !== JSON.stringify(session)) {
+        let patchSession = createPatch(originalSession, session);
+        await this.sessionService.updateSession(session.sessionId, patchSession).catch((err) => {
+          console.error('Failed to update session:', err);
+          this.gn.errorMessage = 'Failed to update session';
+          this.gn.setError();
+          this.gn.isLoadingScreen$.next(false);
+          this.isLoading = false;
+          throw new Error('failed to update session');
+        });
+      }
+    }
+
+    // Delete removed sessions
+    for (const originalSession of this.deepCopy!.sessions!) {
+      if (!this.event!.sessions!.some(s => s.sessionId === originalSession.sessionId) && !this.arrayAddedSessions.some(s => s.sessionId === originalSession.sessionId)) {
+        console.log('deleting session:', originalSession);
+        await this.sessionService.deleteSession(originalSession.sessionId).catch((err) => {
+          console.error('Failed to delete session:', err);
+          this.gn.errorMessage = 'Failed to delete session';
+          this.gn.setError();
+          this.gn.isLoadingScreen$.next(false);
+          this.isLoading = false;
+          throw new Error('Failed to delete session');
+        });
+      }
+    }
+
+    if (this.formData) {
+      await this.eventService.updateEventImage(this.event!.eventId!, this.formData).then((res) => {
+        this.event!.imgUrl = res.imgUrl;
+      }).catch((err) => {
+        console.error('Failed to update event image:', err);
+        this.gn.errorMessage = 'Failed to update event image';
+        this.gn.setError();
+        this.gn.isLoadingScreen$.next(false);
+        this.isLoading = false;
+        return;
+      });
+    }
+
+    const patch = createPatch(this.deepCopy, this.event);
+
+    const filteredPatch = patch.filter(op => !(op.op === 'add' && op.path.startsWith('/sessions/')) && !(op.op === 'remove' && op.path.startsWith('/sessions/')));
+
+    if(filteredPatch.length === 0) {
+      this.eventService.get();
       this.router.navigate(['/dashboard-admin/events']);
-    }, 1000);
+      this.gn.isLoadingScreen$.next(false);
+      this.isLoading = false;
+      this.gn.confirmMessage = 'Changes saved';
+      this.gn.setConfirm();
+    }
+    else{
+      this.eventService.patch(this.deepCopy!.eventId, filteredPatch).then((res) => {
+        this.eventService.get();
+        this.router.navigate(['/dashboard-admin/events']);
+        this.gn.isLoadingScreen$.next(false);
+        this.isLoading = false;
+        this.gn.confirmMessage = 'Changes saved';
+        this.gn.setConfirm();
+      }).catch((err) => {
+        console.error('Failed to save changes:', err);
+        this.gn.errorMessage = 'Failed to save changes';
+        this.gn.setError();
+        this.gn.isLoadingScreen$.next(false);
+        this.isLoading = false;
+      });
+    }
   }
 
   formatDate(date: Date): string {

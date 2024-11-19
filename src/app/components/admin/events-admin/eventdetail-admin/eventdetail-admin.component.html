@@ -89,7 +89,7 @@
             <div class="modal-close" (click)="closeAddModal()"><i class="fa-solid fa-xmark"></i></div>
         </div>
         <div class="modal-body">
-            <form (ngSubmit)="addSession()">
+            <form >
                 <div class="form-group">
                     <label for="game">Game</label>
                     <div #dropdownElementGame class="custom-dropdown">
@@ -117,7 +117,7 @@
                         <label for="gameMaster">Game Master</label>
                         <div #dropdownElementMaster class="custom-dropdown">
                             <input type="text" [(ngModel)]="gameMasterSearch" name="gameMasterSearch" placeholder="Search game master" (focus)="showOptions()" (input)="filterGameMasters()" [disabled]="!selectedGame" />
-                            <i *ngIf="gameMasterSearch" (click)="clearMasterSearch()" class="fa-solid fa-xmark"></i>
+                            <!-- <i *ngIf="gameMasterSearch" (click)="clearMasterSearch()" class="fa-solid fa-xmark"></i> -->
                             <ul class="options" *ngIf="isShowingMasterOptions">
                                 <li *ngFor="let master of filteredGameMasters" (click)="selectGameMaster(master)" [class.highlight]="master.id === newSession.masterId">
                                     {{ master.name }} {{ master.surname }}
@@ -216,9 +216,9 @@
                             </span>
                         </div>
                         <input id="game" type="text" [(ngModel)]="reservationSearch" name="reservationSearch" placeholder="Search players" (focus)="showOptionsReservation()" (input)="filterUsers()" />
-                        <i *ngIf="reservationSearch" (click)="clearReservationSearch()" class="fa-solid fa-xmark"></i>
+                        <!-- <i *ngIf="reservationSearch" (click)="clearReservationSearch()" class="fa-solid fa-xmark"></i> -->
                         <ul class="options" *ngIf="isShowingReservationOptions">
-                            <li *ngFor="let user of filteredUsers" (click)="toggleReservation(user)" [class.highlight]="isUserSelected(user)">
+                            <li *ngFor="let user of filteredUsers" (click)="toggleReservationEdit(user)" [class.highlight]="isUserSelectedEdit(user)">
                                 {{ user.name }} {{ user.surname }}
                             </li>
                         </ul>

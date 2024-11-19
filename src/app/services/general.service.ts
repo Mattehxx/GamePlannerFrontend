@@ -31,6 +31,9 @@ export class GeneralService {
   defErrMessage: string = 'Server Error, Please Try Again';
 
   setError(){
+    if(this.serverConfirm=true){
+      this.serverConfirm=false;
+    }
     this.serverError=true;
     setTimeout(() => {
       this.serverError=false;
@@ -38,6 +41,9 @@ export class GeneralService {
   }
 
   setConfirm(){
+    if(this.serverError=true){
+      this.serverError=false;
+    }
     this.serverConfirm=true;
     setTimeout(() => {
       this.serverConfirm=false;

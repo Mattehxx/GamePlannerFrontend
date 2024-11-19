@@ -1,4 +1,4 @@
-<div class="container" [class.dashboarsIsOpen]="this.ds.isOpen">
+<div class="container" [class.dashboarsIsOpen]="this.ds.isOpen" *ngIf="!this.isLoading">
     <div class="table-container">
         <div class="header-bar">
             <h1 class="page-title">Events Management</h1>

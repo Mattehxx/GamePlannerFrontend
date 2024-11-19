@@ -15,6 +15,7 @@ import { reservationModel } from '../../../models/reservation.model';
 import { User } from '../../../models/user.model';
 import { DashboardService } from '../../../services/dashboard.service';
 import { EventService } from '../../../services/event.service';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-events-admin',
@@ -33,16 +34,14 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
 
   dataSource = new MatTableDataSource<EventModel>();
   
-  constructor(public ds: DashboardService,public eventService: EventService,private router: Router){}
-  async ngOnInit() {
-    await this.eventService.get().then(()=>{
-      this.eventService.event$.subscribe(events => this.dataSource.data = events);
-    });
-  }
+  constructor(public ds: DashboardService,public eventService: EventService,private router: Router,private gn: GeneralService){}
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['Event', 'Admin', 'Sessions', 'Visibility', 'Actions'];
+
+  isLoading: boolean = false;
 
   admin: User = {
     id: 'sfasf',
@@ -79,9 +78,16 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
     gameId: 101,
     reservations: [this.reservation]
   }
-
-
   
+  async ngOnInit() {
+    this.isLoading=true;
+    this.gn.isLoadingScreen$.next(true);
+    await this.eventService.get().then(()=>{
+      this.eventService.event$.subscribe(events => this.dataSource.data = events);
+      this.isLoading=false;
+      this.gn.isLoadingScreen$.next(false);
+    });
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
