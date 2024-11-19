@@ -1,25 +1,24 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { DashboardService } from '../../../services/dashboard.service';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { User } from '../../../models/user.model';
-import { GeneralService } from '../../../services/general.service';
-import { HeaderService } from '../../../services/header.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { ModalCreateUserComponent } from '../users-admin/modal-create-user/modal-create-user.component';
-import { GameModel } from '../../../models/game.model';
-import { NavigationEnd, Router } from '@angular/router';
-import { AdminService } from '../../../services/admin.service';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GameService } from '../../../services/game.service';
-import { Subject, takeUntil } from 'rxjs';
-import { ModalCreateGameComponent } from "./modal-create-game/modal-create-game.component";
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { createPatch } from 'rfc6902';
+import { Subject, takeUntil } from 'rxjs';
+import { GameModel } from '../../../models/game.model';
+import { AdminService } from '../../../services/admin.service';
+import { DashboardService } from '../../../services/dashboard.service';
+import { GameService } from '../../../services/game.service';
+import { GeneralService } from '../../../services/general.service';
+import { HeaderService } from '../../../services/header.service';
+import { ModalCreateUserComponent } from '../users-admin/modal-create-user/modal-create-user.component';
+import { ModalCreateGameComponent } from "./modal-create-game/modal-create-game.component";
 
 
 
@@ -92,7 +91,6 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     this.gs.Games$.pipe(takeUntil(this.death$)).subscribe({
       next: (games) => {
         this.dataSource.data = games;
-        console.log(games);
       }
     })
     this.gs.getGames();

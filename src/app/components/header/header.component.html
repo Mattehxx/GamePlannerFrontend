@@ -24,7 +24,12 @@
         </ng-container>
         <ng-template #loggedIn>
             <div class="user-icon" (click)="toggleModal()">
+                @if (this.user?.imgUrl) {
+                <img class="img" src="{{this.user?.imgUrl}}" alt="User Profile image">
+                }
+                @else {
                 <i class="fa-regular fa-user"></i>
+                }
             </div>
         </ng-template>
     </div>
@@ -49,7 +54,7 @@
         <div class="divisor"></div>
         <div class="options-container" #modalElement>
             <div class="settings-cont" *ngIf="this.as.isAdmin" (click)="navigateDashboardAdmin()">
-                
+
                 <div><i class="fa-solid fa-user-tie"></i></div>
                 <div class="settings">Dashboard Admin</div>
             </div>
@@ -113,8 +118,7 @@
 
                 <div class="options-container cont-mobile" #modalElement>
 
-                    <div class="settings-cont mobile-font" *ngIf="this.as.isAdmin"
-                        (click)="navigateDashboardAdmin()">
+                    <div class="settings-cont mobile-font" *ngIf="this.as.isAdmin" (click)="navigateDashboardAdmin()">
 
                         <div><i class="fa-solid fa-user-tie"></i></div>
                         <div class="settings">Dashboard Admin</div>

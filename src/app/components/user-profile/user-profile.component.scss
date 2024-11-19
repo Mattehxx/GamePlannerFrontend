@@ -189,7 +189,6 @@ small {
 .radio-title {
   font-size: 2.5vh;
   font-family: 500;
-  margin-bottom: 1vh;
 
   & i {
     color: var(--purple);
@@ -319,12 +318,28 @@ label i {
   justify-content: center;
 }
 
-.game-name{
- width: 5vw;
- text-align: center;
+.game-name {
+  width: 5vw;
+  text-align: center;
 }
 
-.knowledge-name{
+.knowledge-name {
   width: 2vw;
   text-align: center;
+}
+
+.wrapper-option {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2vh;
+}
+
+.head-preference-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2vh;
 }

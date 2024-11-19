@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
-import { GameModel } from '../models/game.model';
-import { environment } from '../environment/environment';
 import { Operation } from 'rfc6902';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { environment } from '../environment/environment';
+import { GameModel } from '../models/game.model';
 
 
 @Injectable({
@@ -20,7 +20,6 @@ export class GameService {
     return this.http.get<any>(`${environment.apiUrl}odata/Game`).subscribe(
       {
         next: (res) => {
-          console.log(res.value);
           this.Games$.next(res.value);
         },
         error: (err) => {
@@ -34,8 +33,7 @@ export class GameService {
      this.http.get<any>(`${environment.apiUrl}odata/Game/?$filter=gameId eq ${id}`).subscribe(
       {
         next: (res) => {
-          console.log(res);
-          console.log(res.value[0]);
+
           this.gameDetail = res.value[0];
         },
         error: (err) => {
@@ -48,7 +46,6 @@ export class GameService {
   create(gameModel: any): Observable<GameModel> {
     return this.http.post<any>(`${environment.apiUrl}api/Game`, gameModel).pipe(
       tap((res) => {
-        console.log('Game created successfully:', res);
         this.getGames(); 
       }),
       catchError((err) => {
@@ -76,7 +73,6 @@ export class GameService {
             games[index] = res;
             this.Games$.next(games);
           }
-          console.log(res);
           resolve(res);
         },
         error: (err) => {
@@ -93,7 +89,6 @@ export class GameService {
       
       this.http.patch<GameModel>(`${environment.apiUrl}api/Game/${gameDetail?.gameId}`, patch).subscribe({
         next: (res) => {
-          console.log(res);
           const games = this.Games$.value;
           const index = games.findIndex(game => game.gameId === res.gameId);
           if (index !== -1) {
@@ -117,7 +112,6 @@ export class GameService {
       
       this.http.delete(`${environment.apiUrl}api/Game/${id}`).subscribe({
         next: () => {
-          console.log(`Game with ID ${id} deleted successfully.`);
           const games = this.Games$.value;
           this.Games$.next(games.filter((game) => game.gameId !== id));
           resolve();

@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { GameService } from '../../services/game.service';
+import { KnowledgeService } from '../../services/knowledge.service';
 import { NotificationsComponent } from "../notifications/notifications.component";
 
 @Component({
@@ -12,17 +14,18 @@ import { NotificationsComponent } from "../notifications/notifications.component
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent{
+export class AppComponent {
 
   userId: string | null = null;
-
-  constructor(private as: AuthService) {
+  games = [];
+  constructor(private as: AuthService, private gs: GameService,private ks: KnowledgeService) {
     this.userId = localStorage.getItem("userId");
-     console.log(this.userId);
     if (this.userId) {
       this.as.isLogged = true;
       this.as.getUser(this.userId)
     }
+    this.gs.getGames();
+    this.ks.getKnowledges();
   }
 
 }
