@@ -6,6 +6,7 @@ import { GeneralService } from './general.service';
 import { ODataResponse } from '../models/odataResponse.model';
 import { preferenceInputModel, preferenceModel } from '../models/preference.model';
 import { BehaviorSubject } from 'rxjs';
+import { Operation } from 'rfc6902';
 
 @Injectable({
     providedIn: 'root'
@@ -62,8 +63,21 @@ export class PreferenceService {
             });
         });
     }
-    patch() {
-
+    patch(op : Operation[]) {
+        return new Promise((resolve,reject) => {
+            this.http.patch<preferenceModel>(`${environment.apiUrl}api/Preference`,op).subscribe({
+                next:(res)=>{
+                    const pref = this.preferenceSubject.value;
+                    pref.map(p=>{
+                        p.preferenceId == res.preferenceId ? res : p;
+                    });
+                    this.preferenceSubject.next(pref);
+                    resolve(res);
+                },error:(msg)=> {
+                    reject(msg);
+                }
+            });
+        });
     }
     delete(id : number) {
         return new Promise((resolve,reject) => {
