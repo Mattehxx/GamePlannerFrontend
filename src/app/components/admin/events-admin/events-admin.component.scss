@@ -148,6 +148,7 @@ mat-paginator {
     align-items: center;
 }
 
+
 .event-table .mat-row:first-child .mat-cell,
 .event-table .mat-row:last-child .mat-cell {
     border-top-left-radius: 2vh;
@@ -278,6 +279,7 @@ mat-paginator {
     width: 100%;
     margin-bottom: 1vh;
     border-radius: 3vh;
+    overflow: hidden;
     border-collapse: collapse;
     box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
 }
