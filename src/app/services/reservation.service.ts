@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../environment/environment';
 import { AuthService } from './auth.service';
 import { GeneralService } from './general.service';
+import { ReservationInputDTO } from '../models/input-models/reservationInputDTO.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,24 @@ export class ReservationService {
                     console.error(err);
                     this.gn.errorMessage='Error, please try again later';
                     this.gn.setError();
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    createMultipleReservation(reservations: Array<ReservationInputDTO>){
+        return new Promise((resolve, reject) => {
+            this.http.post<any>(`${environment.apiUrl}api/Reservation/multiple`, reservations).subscribe({
+                next: (res) => {
+                    // this.gn.confirmMessage='Registration successful';
+                    // this.gn.setConfirm();
+                    resolve(res);
+                },
+                error: (err) => {
+                    console.error(err);
+                    // this.gn.errorMessage='Error, please try again later';
+                    // this.gn.setError();
                     reject(err);
                 }
             });

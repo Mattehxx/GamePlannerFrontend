@@ -15,20 +15,23 @@ export class UserAdminService {
   UserDetail: User | undefined;
   constructor(private http: HttpClient) { }
 
-  getUsers() {
-    return this.http.get<any>(`${environment.apiUrl}api/ApplicationUser/GetAll`).subscribe({
-      next: (res) => {
-        const sortedUsers = res.sort((a: User, b: User) => {
-          return Number(a.isDisabled) - Number(b.isDisabled);
-        });
-  
-        // Aggiorna l'osservabile con la lista ordinata
-        this.User$.next(sortedUsers);
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    })
+  getUsers() : Promise<any>{
+    return new Promise((resolve, reject) => {
+      this.http.get<any>(`${environment.apiUrl}api/ApplicationUser/GetAll`).subscribe({
+        next: (res) => {
+          const sortedUsers = res.sort((a: User, b: User) => {
+            return Number(a.isDisabled) - Number(b.isDisabled);
+          });
+    
+          this.User$.next(sortedUsers);
+          resolve(res);
+        },
+        error: (err) => {
+          console.error(err);
+          reject(err);
+        }
+      });
+    });
   }
 
   getUserDetails(id: string){

@@ -699,6 +699,17 @@ input#game{
 
 }
 
+.backEvents{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-size: 2vh;
+    margin-left: 5vh;
+    cursor: pointer;
+}
+
+
 @media (max-width:480px) {
     .content{
         flex-direction: column;

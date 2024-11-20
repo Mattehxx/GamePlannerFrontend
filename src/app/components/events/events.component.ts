@@ -38,6 +38,8 @@ export class EventsComponent implements OnInit, OnDestroy {
   userInput: string = '';
   destroy$ = new Subject<void>();
 
+  isLoading: boolean = false;
+
   async ngOnInit() {
     window.scrollTo({ top: 0 });
 
@@ -60,9 +62,12 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   loadEvents() {
     const skip = (this.currentPage - 1) * this.itemsPerPage;
+    this.isLoading = true;
     this.eventService.getPagination(skip, this.itemsPerPage).pipe(takeUntil(this.destroy$)).subscribe(res => {
+      this.isLoading = false;
       this.arrayEvent = res.value;
       this.filteredEvents = res.value;
+      console.log(this.arrayEvent,this.filteredEvents)
       this.updatePaginatedEvents();
     });
   }
@@ -119,9 +124,9 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   updatePaginatedEvents() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedEvents = this.filteredEvents.slice(startIndex, endIndex);
+    // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    // const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedEvents = this.filteredEvents;
   }
 
   goToPage(page: number) {

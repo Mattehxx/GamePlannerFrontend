@@ -466,15 +466,52 @@ export class EventDetailAdminComponent implements OnInit {
     for (const session of this.event!.sessions!) {
       const originalSession = this.deepCopy!.sessions!.find(s => s.sessionId === session.sessionId);
       if (originalSession && JSON.stringify(originalSession) !== JSON.stringify(session)) {
-        let patchSession = createPatch(originalSession, session);
+      let patchSession = createPatch(originalSession, session);
+
+      // Handle reservation removal separately
+      for (const op of patchSession) {
+        if (op.op === 'remove' && op.path.startsWith('/reservations/')) {
+          const reservationIndex = parseInt(op.path.split('/')[2], 10);
+          const reservationId = originalSession.reservations[reservationIndex].reservationId;
+          await this.sessionService.removeRegistration(reservationId).catch((err) => {
+        console.error('Failed to delete reservation:', err);
+        this.gn.errorMessage = 'Failed to delete reservation';
+        this.gn.setError();
+        this.gn.isLoadingScreen$.next(false);
+        this.isLoading = false;
+        throw new Error('Failed to delete reservation');
+          });
+        }
+      }
+
+      // Handle reservation addition separately
+      for (const op of patchSession) {
+        if (op.op === 'add' && op.path.startsWith('/reservations/')) {
+          const reservation = op.value;
+          await this.resService.createReservation(session.sessionId, reservation.userId).catch((err) => {
+        console.error('Failed to add reservation:', err);
+        this.gn.errorMessage = 'Failed to add reservation';
+        this.gn.setError();
+        this.gn.isLoadingScreen$.next(false);
+        this.isLoading = false;
+        throw new Error('Failed to add reservation');
+          });
+        }
+      }
+
+      // Filter out reservation removal operations from the patch
+      patchSession = patchSession.filter(op => !(op.op === 'remove' && op.path.startsWith('/reservations/')));
+
+      if (patchSession.length > 0) {
         await this.sessionService.updateSession(session.sessionId, patchSession).catch((err) => {
-          console.error('Failed to update session:', err);
-          this.gn.errorMessage = 'Failed to update session';
-          this.gn.setError();
-          this.gn.isLoadingScreen$.next(false);
-          this.isLoading = false;
-          throw new Error('failed to update session');
+        console.error('Failed to update session:', err);
+        this.gn.errorMessage = 'Failed to update session';
+        this.gn.setError();
+        this.gn.isLoadingScreen$.next(false);
+        this.isLoading = false;
+        throw new Error('Failed to update session');
         });
+      }
       }
     }
 
@@ -508,7 +545,11 @@ export class EventDetailAdminComponent implements OnInit {
 
     const patch = createPatch(this.deepCopy, this.event);
 
-    const filteredPatch = patch.filter(op => !(op.op === 'add' && op.path.startsWith('/sessions/')) && !(op.op === 'remove' && op.path.startsWith('/sessions/')));
+    const filteredPatch = patch.filter(op => 
+      !(op.op === 'add' && (op.path.startsWith('/sessions/') || op.path.startsWith('/reservations/'))) && 
+      !(op.op === 'remove' && (op.path.startsWith('/sessions/') || op.path.startsWith('/reservations/'))) && 
+      !(op.op === 'replace' && (op.path.startsWith('/sessions/') || op.path.startsWith('/reservations/')))
+    );
 
     if(filteredPatch.length === 0) {
       this.eventService.get();
@@ -582,6 +623,10 @@ export class EventDetailAdminComponent implements OnInit {
       //   }
       // });
     }
+  }
+
+  navigateEvents() {
+    this.router.navigate(['/dashboard-admin/events']);
   }
 
   

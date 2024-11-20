@@ -1,12 +1,12 @@
 <div class="display">
   <div class="container">
     <div class="title-page">Account Settings</div>
+    <!--Img-->
     <div class="player-profile-cont">
-      <!-- <div class="subtitle">Player Profile</div> -->
       <div class="img-btns">
-        @if (copyModel?.imgUrl) {
+        @if (modelToEdit.imgUrl) {
         <div class="img">
-          <img class="img" src="{{copyModel?.imgUrl}}" alt="User profile image">
+          <img class="img" src="{{modelToEdit.imgUrl}}" alt="User profile image">
         </div>
         }@else {
         <div class="img">
@@ -14,9 +14,12 @@
         </div>
         }
         <div class="buttons">
-          <div class="imgUpload">
-            <input class="btn-upload" type="file" (change)="onFileSelected($event)">
-            <i class="fa-solid fa-upload"></i> Upload new image
+          <div class="img-upload-container">
+            <button class="img-upload-button" (click)="fileInput.click()">
+              <i class="fa-solid fa-upload"></i> Upload new image
+            </button>
+            <input #fileInput class="btn-upload" type="file" accept="image/*" (change)="onFileSelected($event)"
+              hidden />
           </div>
           <button class="btn-remove" (click)="removeImg()">
             <i class="fa-solid fa-xmark"></i> Remove image
@@ -24,172 +27,150 @@
         </div>
       </div>
     </div>
-
-    <form [formGroup]="userForm!!" (ngSubmit)="onSubmit()" class="form-container">
+    <div class="input-container">
       <!--Name-->
       <div class="wrapper">
         <label for="name"><i class="fa-regular fa-user"></i>Name</label>
         <div class="input-group">
-          <input id="name" type="text" formControlName="name" placeholder="Name" required [class.input-error]="
-              userForm!.get('name')?.invalid &&
-              (userForm!.get('name')?.touched || userForm!.get('name')?.dirty)
-            " />
+          <input id="name" type="text" [(ngModel)]="modelToEdit.name" name="name" placeholder="Name" required
+            [class.input-error]="!modelToEdit.name" />
         </div>
-        <div *ngIf="
-            userForm!.get('name')?.invalid &&
-            (userForm!.get('name')?.touched || userForm!.get('name')?.dirty)
-          " class="display-errors">
-          <small class="error" *ngIf="userForm!.get('name')?.errors?.['required']">Name is required</small>
+        <div *ngIf="!modelToEdit.name" class="display-errors">
+          <small class="error">Name is required</small>
         </div>
       </div>
       <!--Surname-->
       <div class="wrapper">
         <label for="surname"><i class="fa-regular fa-user"> </i>Surname</label>
         <div class="input-group">
-          <input id="surname" type="text" formControlName="surname" placeholder="Surname" required [class.input-error]="
-              userForm!.get('surname')?.invalid &&
-              (userForm!.get('surname')?.touched ||
-                userForm!.get('surname')?.dirty)
-            " />
+          <input id="surname" type="text" [(ngModel)]="modelToEdit.surname" name="surname" placeholder="Surname"
+            required [class.input-error]="!modelToEdit.surname" />
         </div>
-        <div *ngIf="
-            userForm!.get('surname')?.invalid &&
-            (userForm!.get('surname')?.touched || userForm!.get('surname')?.dirty)
-          " class="display-errors">
-          <small class="error" *ngIf="userForm!.get('surname')?.errors?.['required']">Surname is required</small>
+        <div *ngIf="!modelToEdit.surname" class="display-errors">
+          <small class="error">Surname is required</small>
         </div>
       </div>
       <!--Email-->
       <div class="wrapper">
         <label for="email"><i class="fa-regular fa-envelope"></i>Email</label>
         <div class="input-group">
-          <input id="email" type="email" formControlName="email" placeholder="Email" required [class.input-error]="
-              userForm!.get('email')?.invalid &&
-              (userForm!.get('email')?.touched || userForm!.get('email')?.dirty)
-            " />
+          <input id="email" type="email" [(ngModel)]="modelToEdit.email" name="email" placeholder="Email" required
+            [class.input-error]="!modelToEdit.email " />
         </div>
-        <div *ngIf="
-            userForm!.get('email')?.invalid &&
-            (userForm!.get('email')?.touched || userForm!.get('email')?.dirty)
-          " class="display-errors">
-          <small class="error" *ngIf="userForm!.get('email')?.errors?.['required']">Email is required</small>
-          <small class="error" *ngIf="userForm!.get('email')?.errors?.['email']">The email format is incorrect.</small>
+        <div *ngIf="!modelToEdit.email" class="display-errors">
+          <small class="error">Email is required</small>
         </div>
       </div>
       <!--Phone-->
       <div class="wrapper">
-        <label for="phoneNumer"><i class="fa-solid fa-phoneNumer"></i>Phone</label>
+        <label for="phoneNumber"><i class="fa-regular fa-envelope"></i>Phone</label>
         <div class="input-group">
-          <input id="phoneNumer" type="text" formControlName="phoneNumer" placeholder="Phone" required [class.input-error]="
-              userForm!.get('phoneNumer')?.invalid &&
-              (userForm!.get('phoneNumer')?.touched || userForm!.get('phoneNumer')?.dirty)
-            " />
+          <input id="phoneNumber" type="text" [(ngModel)]="modelToEdit.phoneNumber" name="phoneNumber"
+            placeholder="Phone Number" required [class.input-error]="!modelToEdit.phoneNumber " />
         </div>
-        <div *ngIf="
-            userForm!.get('phoneNumer')?.invalid &&
-            (userForm!.get('phoneNumer')?.touched || userForm!.get('phoneNumer')?.dirty)
-          " class="display-errors">
-          <small class="error" *ngIf="userForm!.get('phoneNumer')?.errors?.['required']">Phone is required</small>
-          <small class="error" *ngIf="userForm!.get('phoneNumer')?.errors?.['phoneNumer']">The Phone format is incorrect.</small>
+        <div *ngIf="!modelToEdit.phoneNumber" class="display-errors">
+          <small class="error">Phone number is required</small>
         </div>
       </div>
       <!--birthDate-->
       <div class="wrapper">
         <label for="birthDate"><i class="fa-regular fa-calendar"></i>Birthdate</label>
         <div class="input-group">
-          <input id="birthDate" type="date" formControlName="birthDate" placeholder="birthDate" />
+          <input id="birthDate" type="date" [(ngModel)]="modelToEdit.birthDate" name="birthDate"
+            placeholder="birthDate" />
         </div>
       </div>
-    </form>
-
-    <div class="wrapper-radio">
+    </div>
+    <div class="preference-container">
       <div class="head-preference-wrapper">
         <div class="radio-title">
           <i class="fa-solid fa-shield"></i> Preferences
         </div>
         <div class="wrapper-option">
-          <div (click)="changeViewMode('add')"><i class="fa-solid fa-plus"></i> Add</div>
-          <div (click)="changeViewMode('edit')"><i class="fa-solid fa-pen-to-square"></i> Modify</div>
+          <button class="option-btn" (click)="changeViewMode('add')"><i class="fa-solid fa-plus"></i> Add</button>
+          <button class="option-btn" (click)="changeViewMode('edit')"><i class="fa-solid fa-pen-to-square"></i> Modify
+          </button>
         </div>
       </div>
       <!--default view-->
-      <div *ngIf="viewMode === 'default'">
-        <div class="preference-form" *ngFor="let preference of copyModel?.preferences">
-          <div class="game-name">{{preference.game.name}}</div>
+      <div *ngIf="viewMode === 'default'" class="input-preference ">
+        <div class  ="preference-form" *ngFor="let preference of modelToEdit?.preferences">
+          <div class="game-name" *ngIf="preference.game">{{preference.game!.name}}</div>
           <div class="display-radios">
-            <div class="radio-input-label">
-              <input type="radio" id="masterYes" name="canBeMaster{{preference.preferenceId}}" [value]="true"
-                [ngModel]="preference.canBeMaster" />
-              <label for="masterYes" class="radio-label">Yes</label>
-            </div>
-            <div class="radio-input-label">
-              <input type="radio" id="masterNo" name="canBeMaster{{preference.preferenceId}}" [value]="false"
-                [ngModel]="preference.canBeMaster" />
-              <label for="masterNo" class="radio-label">No</label>
-            </div>
+            @if (preference.canBeMaster) {
+            <p class="master-info">Yes</p>
+            }@else {
+            <p class="master-info">No</p>
+            }
           </div>
-          <div class="knowledge-name">{{preference.knowledge.name}}</div>
+          <div class="knowledge-name" *ngIf="preference.knowledge">{{preference.knowledge!.name}}</div>
         </div>
       </div>
       <!--edit view-->
-      <div *ngIf="viewMode === 'edit'">
-        <div class="preference-form" *ngFor="let preference of copyModel?.preferences">
+      <div *ngIf="viewMode === 'edit'" class="input-preference ">
+        <div class="preference-form" *ngFor="let preference of modelToEdit?.preferences">
           <div class="game-name">
-            <select name="game" id="{{this.originalModel?.id}}GamePreference">
+            <select name="game" id="{{this.modelToEdit.id}}GamePreference" [(ngModel)]="preference.gameId">
               <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
             </select>
           </div>
           <div class="display-radios">
             <div class="radio-input-label">
               <input type="radio" id="masterYes" name="canBeMaster{{preference.preferenceId}}" [value]="true"
-                [ngModel]="preference.canBeMaster" />
+                [(ngModel)]="preference.canBeMaster" />
               <label for="masterYes" class="radio-label">Yes</label>
             </div>
             <div class="radio-input-label">
               <input type="radio" id="masterNo" name="canBeMaster{{preference.preferenceId}}" [value]="false"
-                [ngModel]="preference.canBeMaster" />
+                [(ngModel)]="preference.canBeMaster" />
               <label for="masterNo" class="radio-label">No</label>
             </div>
           </div>
-          <select name="knowledge" id="{{this.originalModel?.id}}knowledgePreference">
-            <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
-          </select>
-        </div>
-      </div>
-      <!--add view-->
-      <div *ngIf="viewMode === 'add'">
-        <div class="preference-form">
-          <div class="game-name">
-            <select name="game" id="{{this.originalModel?.id}}GamePreference">
-              <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
-            </select>
-          </div>
-          <div class="display-radios">
-            <div class="radio-input-label">
-              <input type="radio" id="masterYes" name="canBeMasterAdd" [value]="true" />
-              <label for="masterYes" class="radio-label">Yes</label>
-            </div>
-            <div class="radio-input-label">
-              <input type="radio" id="masterNo" name="canBeMasterAdd" [value]="false" />
-              <label for="masterNo" class="radio-label">No</label>
-            </div>
-          </div>
-          <div class="knowledge-name">
-            <select name="knowledge" id="{{this.originalModel?.id}}knowledgePreference">
+          <div>
+            <select name="knowledge" id="{{this.modelToEdit.id}}knowledgePreference"
+              [(ngModel)]="preference.knowledgeId">
               <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
             </select>
           </div>
         </div>
       </div>
-      <div class="bottom-buttons">
-        <button (click)="resetUserInfo()" class="btn-cancel">Cancel</button>
-        @if (viewMode=== 'add') {
-        <button (click)="PostPreference()" class="btn-save">Add Preference</button>
-        }
-        @else {
-        <button (click)="SaveChanges()" class="btn-save">Save Changes</button>
-        }
+      <!--add view-->
+      <div *ngIf="viewMode === 'add'" class="input-preference">
+        <div class="preference-form">
+          <div class="game-name">
+            <select name="game" id="{{this.modelToEdit.id}}GamePreference" [(ngModel)]="newPreference.gameId">
+              <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
+            </select>
+          </div>
+          <div class="display-radios">
+            <div class="radio-input-label">
+              <input type="radio" id="masterYes" name="canBeMasterAdd" [value]="true"
+                [(ngModel)]="newPreference.canBeMaster" />
+              <label for="masterYes" class="radio-label">Yes</label>
+            </div>
+            <div class="radio-input-label">
+              <input type="radio" id="masterNo" name="canBeMasterAdd" [value]="false"
+                [(ngModel)]="newPreference.canBeMaster" />
+              <label for="masterNo" class="radio-label">No</label>
+            </div>
+          </div>
+          <div class="knowledge-name">
+            <select name="knowledge" id="{{this.modelToEdit.id}}knowledgePreference"
+              [(ngModel)]="newPreference.knowledgeId">
+              <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
+    <!--bottom buttons-->
+    <div class="bottom-buttons">
+      <button (click)="resetUserInfo()" class="btn-cancel">Cancel</button>
+      @if (viewMode=== 'add') {
+      <button (click)="PostPreference()" class="btn-save">Add Preference</button>
+      }
+      @else {
+      <button (click)="SaveChanges()" class="btn-save">Save Changes</button>
+      }
+    </div>
   </div>
-</div>

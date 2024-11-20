@@ -9,9 +9,9 @@ export interface preferenceModel {
     knowledgeId: number;
     gameId: number;
     isDeleted: boolean;
-    user: User;
-    knowledge: knowledgeModel;
-    game: GameModel
+    user?: User;
+    knowledge?: knowledgeModel;
+    game?: GameModel
 };
 export interface preferenceInputModel {
     canBeMaster: boolean;

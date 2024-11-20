@@ -34,7 +34,11 @@ export class EventDetailComponent implements OnInit{
       this.gn.eventDetail.sessions = this.gn.eventDetail.sessions?.sort((a, b) => {
       return new Date(a.startDate!).getTime() - new Date(b.startDate!).getTime();
       });
+      this.gn.eventDetail!.sessions!.forEach(session => {
+        session.reservations = session.reservations.filter(reservation => reservation.isConfirmed);
+      }); 
     }
+
     this.event= this.gn.eventDetail;
 
   }

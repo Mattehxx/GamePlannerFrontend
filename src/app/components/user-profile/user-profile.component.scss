@@ -89,10 +89,7 @@
   cursor: pointer;
 }
 
-.btn-upload i,
-.btn-remove i {
-  margin-right: 2vh;
-}
+
 
 .btn-remove {
   font-size: 2vh;
@@ -154,7 +151,6 @@ input {
   box-sizing: border-box;
   background: white;
   color: black;
-  font-family: montserrat;
   color: grey;
 }
 
@@ -210,7 +206,7 @@ small {
 
 .radio-input-label {
   display: flex;
-  padding-right: 4vh;
+  padding-right: 2vh;
 }
 
 .radio-input-label input {
@@ -305,10 +301,9 @@ label i {
 .preference-form {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  gap: 4vw;
 }
 
 .display-radios {
@@ -319,12 +314,12 @@ label i {
 }
 
 .game-name {
-  width: 5vw;
+  width: 40%;
   text-align: center;
 }
 
 .knowledge-name {
-  width: 2vw;
+  width: 40%;
   text-align: center;
 }
 
@@ -339,7 +334,88 @@ label i {
 .head-preference-wrapper {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2vh;
+}
+
+.preference-container {
+  width: 100%;
+  justify-content: space-around;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-preference {
+  width: 100%;
+  padding: 1.5vh;
+  border: 2px solid var(--light-gray);
+  border-radius: 1vh;
+  font-size: 2vh;
+  box-sizing: border-box;
+  background: white;
+  color: black;
+  color: grey;
+  margin-top: 1rem;
+}
+
+.master-info {
+  width: 100%;
+  text-align: center;
+}
+
+.img-upload-container {
+  display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2vh;
+  margin: 20px;
+  width: 20vw;
+}
+
+.img-upload-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--purple);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.img-upload-button i {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.img-upload-button:hover {
+  background-color: var(--dark-purple);
+}
+
+.btn-upload {
+  display: none;
+}
+
+.btn-remove i {
+  margin-right: 2vh;
+}
+
+.btn-remove {
+  width: auto;
+}
+
+.option-btn i {
+  color: var(--purple);
+}
+
+.option-btn {
+  background-color: transparent;
+  border: none;
 }

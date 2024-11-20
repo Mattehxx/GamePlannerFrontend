@@ -101,8 +101,8 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue;
   }
 
-  openCreateEventModal() {
-    
+  openCreateEvent() {
+    this.router.navigate(['dashboard-admin/events/create']);
   }
 
   toggleFilters( ) {
