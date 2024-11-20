@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Operation } from 'rfc6902';
@@ -52,6 +52,7 @@ export class AuthService {
         this.isLogged = true;
         this.router.navigate(['/home'])
         this.getUser(response.userId);
+        this.loginIsAdmin();
       },
       error: (error) => {
         if (error.status === 401) {
@@ -113,11 +114,36 @@ export class AuthService {
     this.gn.confirmMessage = 'Logged out successfully';
     this.gn.setConfirm();
     this.gn.isLoadingScreen$.next(false);
+    this.isAdmin = false;
   }
 
   isAuthenticated(): boolean {
     const token = this.getToken()
     return token !== null;
+  }
+  loginIsAdmin(): Promise<boolean> {
+    const refreshToken = this.getRefreshToken();
+    const accessToken = this.getToken();
+    return new Promise((resolve,reject) => {
+      if (!refreshToken) {
+        reject(false);
+        return;
+      }
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${accessToken}`,
+        'Refresh-Token': refreshToken
+      });
+      this.http.get<boolean>(`${environment.apiUrl}api/user/isAdmin`,{ headers}).subscribe({
+        next: (res)=> {
+          this.isAdmin = res;
+          resolve(res);
+        },error : (msg)=> {
+          console.error(msg);
+          reject(false);
+        }
+      });
+    })
+    
   }
 
   refreshAccessToken(): Observable<any> {
