@@ -193,6 +193,6 @@ export class AuthService {
         this.gn.errorMessage = 'failed to update profile image';
         this.gn.setError();
       }
-    })
+    });
   }
 }

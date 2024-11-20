@@ -35,6 +35,7 @@ export class UserProfileComponent implements OnInit {
   games: GameModel[] = [];
   knowledges: knowledgeModel[] = [];
   deepCopy: User | undefined;
+  formattedBirthdate: string = "";
   modelToEdit: User = {
     name: '',
     surname: '',
@@ -62,6 +63,8 @@ export class UserProfileComponent implements OnInit {
             this.originalModel = user;
             this.modelToEdit = { ...user };
             this.deepCopy = JSON.parse(JSON.stringify(user));
+            this.formattedBirthdate = this.formatDate(this.modelToEdit.birthDate?.toString() ?? '');
+            console.log(new Date(this.formattedBirthdate));
             console.log('UserEdit:', this.modelToEdit);
           }
         },
@@ -98,6 +101,14 @@ export class UserProfileComponent implements OnInit {
     this.onSubmit();
   }
   onSubmit(): void {
+    if (this.selectedImageFile) {
+      const data = new FormData();
+      data.append('file', this.selectedImageFile);
+      this.as.updateProfileImg(data);
+    }
+    //this.modelToEdit.birthDate = new Date(this.formattedBirthdate);
+    this.modelToEdit.birthDate = new Date(this.formattedBirthdate);
+    console.log(this.modelToEdit);
     let patch = createPatch(this.deepCopy, this.modelToEdit);
     this.as.patchUser(this.deepCopy!, patch).then((res) => {
       this.viewMode = 'default';
@@ -128,6 +139,21 @@ export class UserProfileComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+
+
+  //#region utility
+  formatDate(value: string): string {
+    if (!value) return '';
+
+    const date = new Date(value);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+  //#endregion
 };
 
 

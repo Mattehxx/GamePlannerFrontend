@@ -26,7 +26,7 @@
 
                     <div class="cont-user-cell">
 
-                        @if(user.imgUrl === null){
+                        @if(user.imgUrl === null || !user.imgUrl){
                             <div class="profile-image"> <i class="fa-regular fa-user"></i></div>
                         }
                         @else {

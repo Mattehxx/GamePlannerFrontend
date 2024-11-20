@@ -41,7 +41,7 @@
     <div *ngIf="this.headerService.isModalOpen" #overlayElement class="overlay" (click)="closeModal()"></div>
     <div class="menu-container" *ngIf="this.headerService.isModalOpen" (click)="$event.stopPropagation()">
         <div *ngIf="this.user" class="img-name">
-            @if(this.user.imgUrl === undefined){
+            @if(this.user.imgUrl === undefined || this.user.imgUrl === ""){
             <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
             }@else {
             <img class="img" src="{{this.user.imgUrl}}" alt="User profile img">
