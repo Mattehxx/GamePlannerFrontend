@@ -18,7 +18,12 @@ export class UserAdminService {
   getUsers() {
     return this.http.get<any>(`${environment.apiUrl}api/ApplicationUser/GetAll`).subscribe({
       next: (res) => {
-        this.User$.next(res);
+        const sortedUsers = res.sort((a: User, b: User) => {
+          return Number(a.isDisabled) - Number(b.isDisabled);
+        });
+  
+        // Aggiorna l'osservabile con la lista ordinata
+        this.User$.next(sortedUsers);
       },
       error: (err) => {
         console.error(err);

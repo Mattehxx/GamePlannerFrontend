@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit {
       next: (response) => {
         if(response){
           this.user = response;
+          console.log(this.user);
         }
         
       }
@@ -78,7 +79,7 @@ export class HeaderComponent implements OnInit {
           this.closeModal();
 
         }
-      }, 100);
+      }, 0);
     }
 
     if (this.headerService.isMobileMenuOpen) {
@@ -112,6 +113,7 @@ export class HeaderComponent implements OnInit {
 
   navigateDashboardAdmin() {
     this.headerService.isMobileMenuOpen = false;
+    this.headerService.isModalOpen = false;
     this.gn.isOverlayOn$.next(false);
     this.router.navigate(['dashboard-admin/users']);
   }

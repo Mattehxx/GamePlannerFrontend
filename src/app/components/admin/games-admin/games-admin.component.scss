@@ -1,8 +1,9 @@
 .container {
-    overflow-y: hidden;
+        overflow-y: hidden;
     height: 100vh;
     padding: 5vh 10vh;
-    padding-left: 20vh;
+    padding-left: 14vh;
+    padding-right: 14vh;
     transition: 0.3s ease;
     padding-top: 2vh;
 }
@@ -301,8 +302,11 @@ mat-paginator {
     position: fixed;
     z-index: 100;
     flex-direction: column;
-    height: 100vw;
-    width: 100%;
+    /* height: 100vw; */
+    width: 88%;
+    bottom: -100%;
+    align-items: center;
+    transition: 1s ease;
 }
 
 .close-modal {
@@ -310,12 +314,12 @@ mat-paginator {
     position: fixed;
     top: 0;
     z-index: 100;
-    transition: 0.5s ease;
+    // transition: 0.5s ease;
 }
 
 
 
-.btn-visible button {
+.btn-visible div {
     display: flex;
     width: 6vh;
     height: 7vh;
@@ -339,7 +343,7 @@ mat-paginator {
 .btn-visible {
     top: 0vh;
     right: 5vh;
-    transition: 0.5s ease;
+    // transition: 1s ease;
 }
 
 
@@ -347,14 +351,14 @@ mat-paginator {
 .game-details-cont {
     display: flex;
     flex-direction: column;
-    position: fixed;
+    /* position: fixed; */
     border: 1px solid white;
     border-top-left-radius: 3vh;
     border-top-right-radius: 3vh;
     bottom: -100%;
     padding-left: -7vh;
     box-shadow: 0 0px 5px 1px rgba(0, 0, 0, 0.24);
-    margin-left: -6vh;
+    /* margin-left: -6vh; */
     width: 88.1%;
     height: 75vh;
     -webkit-backdrop-filter: blur(10px);
@@ -363,13 +367,13 @@ mat-paginator {
     z-index: 100;
     justify-content: space-around;
     align-items: center;
-    transition: 0.5s ease;
+    transition: 1s ease;
 }
 
 
 .details-visible {
     bottom: 0;
-    right: 2vh;
+    /* right: 2vh; */
     transition: 0.5s ease;
 }
 

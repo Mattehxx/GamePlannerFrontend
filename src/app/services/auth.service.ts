@@ -66,19 +66,24 @@ export class AuthService {
     })
   }
 
-  getUser(id: string) {
-    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=Id eq '${id}'&$expand=Preferences($expand=Game&$expand=Knowledge),AdminEvents,Reservations`).subscribe({
-      next: (response) => {
-        if (response) {
-          this.user.next(response.value[0]);
-          this.isLogged = true;
-        } else {
-          console.error('User not found');
+  getUser(id: string) : Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=Id eq '${id}'&$expand=Preferences($expand=Game&$expand=Knowledge),AdminEvents,Reservations`).subscribe({
+        next: (response) => {
+          if (response) {
+            this.user.next(response.value[0]);
+            this.isLogged = true;
+            resolve(response.value[0]);
+          } else {
+            console.error('User not found');
+            reject('User not found');
+          }
+        },
+        error: (error) => {
+          console.error(error);
+          reject(error);
         }
-      },
-      error: (error) => {
-        console.error(error);
-      }
+      });
     });
   }
 
@@ -109,7 +114,7 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.isLogged = false;
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
     this.gn.confirmMessage = 'Logged out successfully';
     this.gn.setConfirm();
     this.gn.isLoadingScreen$.next(false);
