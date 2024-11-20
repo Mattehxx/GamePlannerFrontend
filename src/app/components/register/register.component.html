@@ -12,8 +12,7 @@
         <div class="login-content">
             <h2 class="title">Sign Up</h2>
             <div class="subtitle">Sign Up, Please enter Your Details</div>
-            <!-- register.component.html -->
-            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <form [formGroup]="registerForm" >
                 <div class="input-group double">
                     <input type="text" formControlName="name" placeholder="Name" required 
                         [class.input-error]="registerForm.get('name')?.invalid && (registerForm.get('name')?.touched || registerForm.get('name')?.dirty)">

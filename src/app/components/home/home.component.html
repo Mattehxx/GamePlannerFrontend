@@ -42,30 +42,30 @@
         </div>        
         <div class="event-list"  #eventList (touchstart)="handleTouchStart($event)"
         (touchend)="handleTouchEnd($event)">
-            <div class="event-card" *ngFor="let event of eventService.upcomingEvent$ | async">
+            <div class="event-card" *ngFor="let session of eventService.upcomingEvent$ | async" (click)="navigateToEventDetail(session.event.eventId)">
                 <div class="event-image">
                     <!-- <img [src]="event.imgUrl" alt="event image"> -->
                     <img src="/assets/images/wallpaper2.jpg" alt="event image">
                 </div>
                 <div class="event-details">
-                    <div class="event-title">{{event.event.name}}</div>
+                    <div class="event-title">{{session.event.name}}</div>
                     <div class="event-game">Dungeons And Dragons</div>
-                    <div class="info" *ngIf="event">
-                        <div class="event-date"><i class="fa-regular fa-clock"></i>  {{event.startDate | date:'MMM dd, h:mm a'}}</div>
+                    <div class="info" *ngIf="session">
+                        <div class="event-date"><i class="fa-regular fa-clock"></i>  {{session.startDate | date:'MMM dd, h:mm a'}}</div>
                         <!-- <div class="event-duration"><i class="fa-solid fa-hourglass-end"></i>     {{ event.startDate | duration: event.endDate }}
                         </div> -->
                     </div>
-                    @if (event.master){
+                    @if (session.master){
                         <div class="display-admin">
-                            @if(event.master.imgUrl){
-                                <img [src]="event.master.imgUrl">
+                            @if(session.master.imgUrl){
+                                <img [src]="session.master.imgUrl">
                             }
                             @else {
                                 <div class="user-icon" >
                                     <i class="fa-regular fa-user"></i>
                                 </div>   
                             }
-                             <span *ngIf="event">{{event.master!.name}}</span> 
+                             <span *ngIf="session">{{session.master!.name}}</span> 
                         </div>
                     }@else {
                    }

@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DurationPipe } from '../../pipes/duration.pipe';
 import { EventService } from '../../services/event.service';
+import { EventModel } from '../../models/event.model';
+import { GeneralService } from '../../services/general.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +18,7 @@ export class HomeComponent implements OnInit {
 
   //#region Models
   //#endregion
-  constructor(public router: Router, protected eventService: EventService) { }
+  constructor(public router: Router, protected eventService: EventService,private gn: GeneralService) { }
 
   ngOnInit(): void {
     this.eventService.getUpcomingEvents();
@@ -62,6 +64,14 @@ export class HomeComponent implements OnInit {
 
   navigateToEvent() {
     this.router.navigate(['/events']);
+  }
+
+  async navigateToEventDetail(eventId: number) {
+    await this.eventService.getEventsId(eventId).then(() => {
+      this.gn.eventDetail = this.eventService.eventDetail;
+      this.gn.isLoadingScreen$.next(false);
+      this.router.navigate(['/events/', eventId]);
+    });
   }
 
 }

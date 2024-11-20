@@ -15,15 +15,19 @@ export class UserAdminService {
   UserDetail: User | undefined;
   constructor(private http: HttpClient) { }
 
-  getUsers() {
-    return this.http.get<any>(`${environment.apiUrl}api/ApplicationUser/GetAll`).subscribe({
-      next: (res) => {
-        this.User$.next(res);
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    })
+  getUsers() : Promise<any>{
+    return new Promise((resolve, reject) => {
+      this.http.get<any>(`${environment.apiUrl}api/ApplicationUser/GetAll`).subscribe({
+        next: (res) => {
+          this.User$.next(res);
+          resolve(res);
+        },
+        error: (err) => {
+          console.error(err);
+          reject(err);
+        }
+      });
+    });
   }
 
   getUserDetails(id: string){
