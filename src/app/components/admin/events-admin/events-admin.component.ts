@@ -39,9 +39,13 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['Event', 'Admin', 'Sessions', 'Visibility', 'Actions'];
+  displayedColumns: string[] = ['Event', 'Admin', 'Sessions', 'Visibility', 'Actions', 'Recurrency'];
 
   isLoading: boolean = false;
+
+  isRecurrencyModal: boolean = false;
+
+  newDate: Date = new Date();
 
   admin: User = {
     id: 'sfasf',
@@ -114,4 +118,22 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
     this.router.navigate([`dashboard-admin/events/${event.eventId}`]);
   }
 
+  openModalRecurrency(event: EventModel){
+    this.isRecurrencyModal = true;
+    this.gn.isOverlayOn$.next(true);
+    this.eventService.eventDetail = event;
+  }
+
+  closeModalRecurrency(){
+    this.isRecurrencyModal = false;
+    this.gn.isOverlayOn$.next(false);
+  }
+
+  setRecurrency(){
+    
+    //CHIAMATA API
+    this.closeModalRecurrency();
+    this.gn.confirmMessage = 'Recurrency set successfully';
+    this.gn.setConfirm();
+  }
 }
