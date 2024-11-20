@@ -695,6 +695,19 @@ button:disabled {
     color: var(--light-gray2);
 }
 
+.loading{
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    width: 100vw;
+}
+
+.loading img{
+    width: 20vh;
+    margin: 0 auto;
+    display: block;
+}
+
 @media (max-width: 1200px) {
     .event-list {
         grid-template-columns: repeat(3, 1fr);

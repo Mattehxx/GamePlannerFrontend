@@ -64,36 +64,46 @@
     </div>
 
     <!-- <div class="events-title">Events</div> -->
+    <ng-container *ngIf="!this.isLoading; else loadingTemplate">
     <div class="event-list" [class.nogrid]="this.isEmpty" >
-        <div class="event-card" *ngFor="let event of paginatedEvents"  (click)="navigateToEvent(event.eventId,event)">
-            <div class="event-image">
-                <img [src]="event.imgUrl" alt="event image">
-                <div class="event-overlay">
-                    <div class="event-title">{{event.name}}</div>
-                    <!-- <div class="event-game">Dungeons And Dragons</div> -->
+       
+            <div class="event-card" *ngFor="let event of paginatedEvents"  (click)="navigateToEvent(event.eventId,event)" >
+                <div class="event-image">
+                    <img [src]="event.imgUrl" alt="event image">
+                    <div class="event-overlay">
+                        <div class="event-title">{{event.name}}</div>
+                        <!-- <div class="event-game">Dungeons And Dragons</div> -->
+                    </div>
+                </div>
+                <div class="event-details">
+                    <div class="info" >
+                        <div class="event-date" *ngIf="event && event.sessions && event.sessions.length > 0"><i class="fa-regular fa-clock"></i> {{event.sessions[0].startDate| date:'MMM d'}} - {{ event.sessions[event.sessions.length - 1].endDate| date:'MMM d' }} </div>
+                        <div class="event-date" *ngIf="event && event.sessions && event.sessions.length == 0"> No Dates Available  </div>
+                        <div class="spots" *ngIf="event && event.sessions" [ngClass]="{
+                            'spots-zero': event.sessions!.length == 0,
+                            'spots-low': event.sessions!.length == 1,
+                            'spots-medium': event.sessions!.length > 1 && event.sessions!.length <= 3,
+                            'spots-high': event.sessions!.length >= 4
+                        }">{{event.sessions!.length}} sessions </div>  
+                    </div>
+                </div>
+                <div class="bottom-card">
+                    <div class="view-details">View Details</div>
+                    <div class="arrow"><i class="fa-solid fa-arrow-right"></i></div>
                 </div>
             </div>
-            <div class="event-details">
-                <div class="info" >
-                    <div class="event-date" *ngIf="event && event.sessions && event.sessions.length > 0"><i class="fa-regular fa-clock"></i> {{event.sessions[0].startDate| date:'MMM d'}} - {{ event.sessions[event.sessions.length - 1].endDate| date:'MMM d' }} </div>
-                    <div class="event-date" *ngIf="event && event.sessions && event.sessions.length == 0"> No Dates Available  </div>
-                    <div class="spots" *ngIf="event && event.sessions" [ngClass]="{
-                        'spots-zero': event.sessions!.length == 0,
-                        'spots-low': event.sessions!.length == 1,
-                        'spots-medium': event.sessions!.length > 1 && event.sessions!.length <= 3,
-                        'spots-high': event.sessions!.length >= 4
-                    }">{{event.sessions!.length}} sessions </div>  
-                </div>
+            <div class="noresults" *ngIf="this.isEmpty">
+                <img src="/assets/images/no-results.png">
             </div>
-            <div class="bottom-card">
-                <div class="view-details">View Details</div>
-                <div class="arrow"><i class="fa-solid fa-arrow-right"></i></div>
-            </div>
-        </div>
-        <div class="noresults" *ngIf="this.isEmpty">
-            <img src="/assets/images/no-results.png">
-        </div>
+       
+
     </div>
+</ng-container>
+    <ng-template #loadingTemplate>
+        <div class="loading">
+            <img src="/assets/images/loading.gif">
+        </div>
+    </ng-template>
 
     <div class="paginator">
         <button class="nav-button" (click)="prevPage()" [disabled]="currentPage === 1">

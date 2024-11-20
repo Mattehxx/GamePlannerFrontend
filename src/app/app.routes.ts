@@ -15,38 +15,40 @@ import { MobileComponent } from './components/mobile/mobile.component';
 import { EventDetailAdminComponent } from './components/admin/events-admin/eventdetail-admin/eventdetail-admin.component';
 import { ConfirmRegistrationComponent } from './components/confirm-registration/confirm-registration.component';
 import { RemoveRegistrationComponent } from './components/remove-registration/remove-registration.component';
+import { CreateEventComponent } from './components/admin/events-admin/create-event/create-event.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'userSettings', component: UserProfileComponent},
+      { path: 'events',component: EventsComponent},
+      { path: 'events/:id', component: EventDetailComponent },
+      { path: 'mobile', component: MobileComponent }
+    ]
+    },
     {
-        path: '',
-        component: MainLayoutComponent,
-        children: [
-          { path: '', redirectTo: 'home', pathMatch: 'full' },
-          { path: 'home', component: HomeComponent },
-          { path: 'userSettings', component: UserProfileComponent},
-          { path: 'events',component: EventsComponent},
-          { path: 'events/:id', component: EventDetailComponent },
-          { path: 'mobile', component: MobileComponent }
-        ]
+    path: '',
+    component: AuthLayoutComponent,
+    children: [
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+      { path: 'dashboard-admin', component: DashboardAdminComponent,
+      children:[
+        {path:'users', component:UsersAdminComponent},
+        {path:'events', component:EventsAdminComponent},
+        {path: 'events/create', component: CreateEventComponent },
+        {path: 'events/:id', component: EventDetailAdminComponent },
+        {path:'games', component:GamesAdminComponent}
+      ]
       },
-      {
-        path: '',
-        component: AuthLayoutComponent,
-        children: [
-          { path: 'login', component: LoginComponent },
-          { path: 'register', component: RegisterComponent },
-          { path: 'dashboard-admin', component: DashboardAdminComponent,
-            children:[
-              {path:'users', component:UsersAdminComponent},
-              {path:'events', component:EventsAdminComponent},
-              {path: 'events/:id', component: EventDetailAdminComponent },
-              {path:'games', component:GamesAdminComponent}
-            ]
-          },
-          { path: 'confirm', component: ConfirmRegistrationComponent},
-          {path: 'delete', component: RemoveRegistrationComponent}
-        ]
-      },
-      { path: '**', redirectTo: 'home' }
+      { path: 'confirm', component: ConfirmRegistrationComponent},
+      {path: 'delete', component: RemoveRegistrationComponent}
+    ]
+    },
+    { path: '**', redirectTo: 'home' }
 
 ];
