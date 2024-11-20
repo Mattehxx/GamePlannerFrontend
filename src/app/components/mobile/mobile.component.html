@@ -1,12 +1,26 @@
 <div class="container">
-    <div class="left">
-        <div class="text-content">
-            <h1>Take the <span class="custom-text">Adventure</span> Anywhere</h1>
-            <p>Join games, connect with players, and bring your adventures to life right from your phone.</p>
+    <div class="above">
+        <div class="left">
+            <div class="text-content">
+                <h1>Take the <span class="custom-text">Adventure</span> Anywhere</h1>
+                <p>Join games, connect with players, and bring your adventures to life right from your phone.</p>
+            </div>
+            <a class="btn-download" [href]="this.mobileService.linkApk">Download App</a>
         </div>
-        <a class="btn-download" [href]="this.mobileService.linkApk">Download App</a>
+        <div class="right">
+            <img src="/assets/images/Group.png"> 
+        </div>
+    
     </div>
-    <div class="right">
-        <img src="/assets/images/Group.png">
+    <div class="below">
+        <div class="right">
+            <video #video src="/assets/images/video.mp4" autoplay loop></video>
+        </div>
+        <div class="left">
+            <div class="text-content text-below">
+                <h1 class="h1-p">A New Way to <span class="custom-text">Play</span> </h1>
+                <p class="below-p">Discover the future of role-playing games: real connections, intuitive tools, and endless fun always at your fingertips.</p>
+            </div>
+        </div>
     </div>
 </div>

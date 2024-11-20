@@ -1,5 +1,5 @@
 <div class="container" [class.dashboarsIsOpen]="this.ds.isOpen"
-    [class.userDetailPanelVisible]="this.ds.userDetailPanel">
+    [class.userDetailPanelVisible]="this.ds.userDetailPanel" *ngIf="!this.isLoading">
     <div class="table-container">
         <!-- Barra del titolo e della ricerca -->
         <div class="header-bar">

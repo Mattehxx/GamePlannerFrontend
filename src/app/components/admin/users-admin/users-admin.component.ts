@@ -44,17 +44,23 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['user', 'email', 'phoneNumber', 'role'];
   dataSource = new MatTableDataSource<User>([]);
+  isLoading: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
 
   ngOnInit(): void {
+    this.gn.isLoadingScreen$.next(true);
+    this.isLoading = true;
     this.uas.User$.pipe(takeUntil(this.death$)).subscribe({
       next: (games) => {
         this.dataSource.data = games;
       }
     })
-    this.uas.getUsers();
+    this.uas.getUsers().then(() => {
+      this.gn.isLoadingScreen$.next(false);
+      this.isLoading = false;
+    });;
 
   }
 

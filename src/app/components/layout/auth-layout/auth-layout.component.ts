@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -13,9 +13,9 @@ import { GeneralService } from '../../../services/general.service';
   templateUrl: './auth-layout.component.html',
   styleUrl: './auth-layout.component.scss'
 })
-export class AuthLayoutComponent implements OnInit,OnDestroy{
+export class AuthLayoutComponent implements OnInit,OnDestroy,AfterContentChecked{
 
-  constructor(public gn: GeneralService,public as: AdminService, private router: Router) {}
+  constructor(public gn: GeneralService,public as: AdminService, private router: Router,private changeDetector: ChangeDetectorRef) {}
 
   death$ = new Subject<void>();
 
@@ -46,8 +46,9 @@ export class AuthLayoutComponent implements OnInit,OnDestroy{
     this.death$.complete();
   }
 
-
-
+  ngAfterContentChecked() {
+    this.changeDetector.detectChanges();
+  }
 
   get isOverlayVisible(): boolean {
     return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay || this.as.showGameDetail;
