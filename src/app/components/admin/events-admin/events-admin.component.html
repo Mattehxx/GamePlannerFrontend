@@ -59,6 +59,13 @@
                 </mat-cell>
             </ng-container>
 
+            <ng-container matColumnDef="Recurrency">
+                <mat-header-cell *matHeaderCellDef> Recurrency </mat-header-cell>
+                <mat-cell *matCellDef="let event">
+                    <div class="btn-details purple" (click)="openModalRecurrency(event)">Recurrency</div>
+                </mat-cell>
+            </ng-container>
+
             <!-- Righe della tabella -->
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -73,5 +80,24 @@
         <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
 
 
+    </div>
+
+    <div class="modal-recurrency" *ngIf="this.isRecurrencyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Recurrency</h2>
+                <p>reschedule the last sessions</p>
+                <i class="fa-solid fa-times" (click)="closeModalRecurrency()"></i>
+            </div>
+            <div class="modal-body">
+                <label for="recdate">New Sessions Date</label>
+                <input type="date" id="recdate" [(ngModel)]="newDate">
+            </div>
+            <div class="modal-footer">
+                <div class="btn-cancel" (click)="closeModalRecurrency()">Cancel</div>
+                <div class="btn-confirm" (click)="setRecurrency()">Confirm</div>
+            </div>
+        </div>
+            
     </div>
 </div>

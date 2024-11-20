@@ -1,4 +1,4 @@
-<div class="container" [class.dashboarsIsOpen]="this.ds.isOpen">
+<div class="container" [class.dashboarsIsOpen]="this.ds.isOpen" >
     <div class="table-container">
         <div class="header-bar">
             <h1 class="page-title">Games Management</h1>
@@ -63,16 +63,20 @@
 
         </table>
 
-        <div class="modal-cont" [class.details-visible]="this.as.showGameDetail">
+        <div class="modal-cont" [class.details-visible]="this.as.showGameDetail" >
 
 
-            <div class="game-details-cont" [class.details-visible]="this.as.showGameDetail">
+            <div class="game-details-cont" [class.details-visible]="this.as.showGameDetail" #modalDetail>
 
-                <div class="close-modal" [class.btn-visible]="this.as.showGameDetail" (click)="closeModal()">
-                    <button><i class="fa-solid fa-x"></i></button>
+                <div class="close-modal" [class.btn-visible]="this.as.showGameDetail" (click)="closeModal()" *ngIf="this.as.showGameDetail">
+                    <div><i class="fa-solid fa-x" [class.btn-visible]="this.as.showGameDetail" ></i></div>
                 </div>
 
                 <div class="image-upload-container" *ngIf="this.editStates['imgUrl'].isEditMode">
+
+                    <div class="image-preview" *ngIf="!this.selectedImagePreview">
+                        <img [src]="this.gs.gameDetail?.imgUrl" alt="Preview">
+                    </div>
                     <div class="image-preview" *ngIf="this.selectedImagePreview">
                         <img [src]="this.selectedImagePreview" alt="Preview" />
                     </div>
@@ -91,7 +95,7 @@
                                     class="save-btn img">
                                     <i class="fa-solid fa-check"></i> Save
                                 </button>
-                                <button type="button" (click)="cancelImage()" class="cancel-btn img">
+                                <button type="button" (click)="cancelImage()" *ngIf="this.selectedImagePreview" class="cancel-btn img">
                                     <i class="fa-solid fa-x"></i> Cancel
                                 </button>
                             </div>
@@ -106,14 +110,12 @@
                     <div class="game-img-cont" *ngIf="!editStates['imgUrl'].isEditMode"
                         (mouseenter)="onMouseEnter('imgUrl') ; this.imgHover=true"
                         (mouseleave)="onMouseLeave('imgUrl') ; this.imgHover=false">
-                        @if(this.gs.gameDetail?.imgUrl === undefined){
-                        <div class="game-img"> <i class="fa-regular fa-user"></i></div>
-                        }
-                        @else if (this.imgHover) {
+                      
+                        @if (this.imgHover) {
                         <div class="imgHover" [ngStyle]="{ 'background-image': 'url(' + this.gs.gameDetail?.imgUrl + ')', 'opacity':'50%' }"
                             *ngIf="editStates['imgUrl'].editToggle" (click)="enableEdit(this.gs.gameDetail, 'imgUrl')">
                         </div>
-                        <div class="img-icon"><i class="fa-solid fa-image"></i></div> 
+                        <div class="img-icon" (click)="enableEdit(this.gs.gameDetail, 'imgUrl')"><i class="fa-solid fa-image"></i></div> 
                         }
                         @else{
                         <div class="imgHover" [ngStyle]="{ 'background-image': 'url(' + this.gs.gameDetail?.imgUrl + ')' }">

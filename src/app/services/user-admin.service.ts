@@ -19,7 +19,11 @@ export class UserAdminService {
     return new Promise((resolve, reject) => {
       this.http.get<any>(`${environment.apiUrl}api/ApplicationUser/GetAll`).subscribe({
         next: (res) => {
-          this.User$.next(res);
+          const sortedUsers = res.sort((a: User, b: User) => {
+            return Number(a.isDisabled) - Number(b.isDisabled);
+          });
+    
+          this.User$.next(sortedUsers);
           resolve(res);
         },
         error: (err) => {

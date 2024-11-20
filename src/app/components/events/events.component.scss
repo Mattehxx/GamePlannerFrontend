@@ -715,6 +715,31 @@ button:disabled {
 
 }
 
+
+
+@media (max-width:1030px) {
+    .title {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .event-list {
+        grid-template-columns: repeat(2, 1fr);
+        display: grid;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        justify-items: center;
+    }
+
+    .event-card {
+        width: 50vh;
+    }
+
+}
+
 @media (max-width:768px) {
     .title {
         display: flex;
@@ -729,7 +754,7 @@ button:disabled {
 
 }
 
-@media (max-width: 576px) {
+@media (max-width: 640px) {
     .event-list {
         grid-template-columns: repeat(1, 1fr);
         display: flex;

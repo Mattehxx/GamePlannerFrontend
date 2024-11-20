@@ -76,9 +76,10 @@ export class ModalCreateGameComponent {
 
   createGame() {
     const formData = new FormData();
-    formData.append('imgUrl', this.selectedImageFile!);
-    formData.append('name', this.gameForm.value.name!);
-    formData.append('description', this.gameForm.value.description!);
+    formData.append('ImgUrl', this.selectedImageFile!);
+    formData.append('Name', this.gameForm.value.name!);
+    formData.append('Description', this.gameForm.value.description!);
+
 
     this.gs.create(formData).subscribe({
       next: (res) => {

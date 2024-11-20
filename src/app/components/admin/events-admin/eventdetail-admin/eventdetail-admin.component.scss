@@ -659,6 +659,23 @@ input#game{
     align-items: center;
 }
 
+
+.alert-confirm{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-left: 1.5vh;
+    color: red;
+}
+
+.red{
+    background: rgb(246, 93, 93);
+}
+
+.green{
+    background: rgb(100, 248, 100);
+}
+
 @media (max-width:750px) {
     
     .double-form{
@@ -707,6 +724,16 @@ input#game{
     font-size: 2vh;
     margin-left: 5vh;
     cursor: pointer;
+}
+
+.seats{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.master{
+    color: gold !important;
 }
 
 

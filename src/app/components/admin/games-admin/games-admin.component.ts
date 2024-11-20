@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -86,6 +86,8 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<GameModel>([])
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('modalDetail') modalDetail!: ElementRef;
+  @ViewChild('container') modalContainer!: ElementRef;
 
   ngOnInit(): void {
     this.gs.Games$.pipe(takeUntil(this.death$)).subscribe({
@@ -113,6 +115,22 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     this.gn.isOverlayOn$.next(true);
   }
 
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent) {
+    // Verifica se la modale è aperta
+    if (this.as.showGameDetail) {
+      // Controlla se il clic è avvenuto all'interno del contenitore
+      const clickedInsideModal = this.modalDetail.nativeElement.contains(event.target);
+      console.log(clickedInsideModal)
+
+      // Se il clic è fuori dal contenitore (modale + overlay), chiudi la modale
+      if (this.as.showGameDetail && !clickedInsideModal) {
+        this.editStates['imgUrl'].isEditMode = false
+        this.as.showGameDetail = false;
+      }
+    }
+  }
+
   applyFilter(event: KeyboardEvent) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
@@ -124,6 +142,7 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     this.gs.gameDetail = game!;
   }
 
+ 
   closeModal() {
 
     this.isEditMode = false;
@@ -189,12 +208,17 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
 
     let patch = createPatch(this.gs.gameDetail, element);
 
+   if(patch.length>0){
     this.gs.patch(this.gs.gameDetail!, patch).then((res) => {
       this.gs.gameDetail = { ...element, [key]: control!.value };
     })
       .finally(() => {
         this.disableEdit(key);
       })
+   }
+   else{
+    this.disableEdit(key);
+   }
 
   }
 

@@ -47,6 +47,11 @@ export class MainLayoutComponent implements OnInit{
           if(document.getElementsByClassName('main-content')[0])
           document.getElementsByClassName('main-content')[0].scrollTo(0, 0);
           this.headerService.updateHeaderVisibility(true);
+          this.headerService.filtersVisible = false;
+          this.gn.isConfirmModal = false;
+          this.gn.isSignModal = false;
+          this.gn.isLoading = false
+          this.gn.isOverlayOn$.next(false);
         }, 0);
       }
     });

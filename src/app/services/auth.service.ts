@@ -28,14 +28,16 @@ export class AuthService {
           this.gn.setConfirm();
         },
         error: (error) => {
-          if (error.status === 400) {
-            this.gn.errorMessage = 'User with this email already exists';
-            this.gn.setError();
-          } else {
-            console.error(error);
-            this.gn.errorMessage = 'Server Error, please try again later';
-            this.gn.setError();
-          }
+          // if (error.status === 400) {
+          //   this.gn.errorMessage = 'User with this email already exists';
+          //   this.gn.setError();
+          // } else {
+          //   console.error(error);
+          //   this.gn.errorMessage = 'Server Error, please try again later';
+          //   this.gn.setError();
+          // }
+          this.gn.errorMessage=error.error.message;
+          this.gn.setError();
           reject(error);
         }
       });
@@ -67,19 +69,24 @@ export class AuthService {
     })
   }
 
-  getUser(id: string) {
-    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=Id eq '${id}'&$expand=Preferences($expand=Game&$expand=Knowledge),AdminEvents,Reservations`).subscribe({
-      next: (response) => {
-        if (response) {
-          this.user.next(response.value[0]);
-          this.isLogged = true;
-        } else {
-          console.error('User not found');
+  getUser(id: string) : Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=Id eq '${id}'&$expand=Preferences($expand=Game&$expand=Knowledge),AdminEvents,Reservations`).subscribe({
+        next: (response) => {
+          if (response) {
+            this.user.next(response.value[0]);
+            this.isLogged = true;
+            resolve(response.value[0]);
+          } else {
+            console.error('User not found');
+            reject('User not found');
+          }
+        },
+        error: (error) => {
+          console.error(error);
+          reject(error);
         }
-      },
-      error: (error) => {
-        console.error(error);
-      }
+      });
     });
   }
 
@@ -110,7 +117,7 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.isLogged = false;
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
     this.gn.confirmMessage = 'Logged out successfully';
     this.gn.setConfirm();
     this.gn.isLoadingScreen$.next(false);
@@ -121,6 +128,7 @@ export class AuthService {
     const token = this.getToken()
     return token !== null;
   }
+
   loginIsAdmin(): Promise<boolean> {
     const refreshToken = this.getRefreshToken();
     const accessToken = this.getToken();
@@ -137,13 +145,25 @@ export class AuthService {
         next: (res) => {
           this.isAdmin = res;
           resolve(res);
-        }, error: (msg) => {
-          console.error(msg);
-          reject(false);
+        },error: (msg) => {
+          if (msg.status === 401) {
+            this.refreshAccessToken().subscribe({
+              next: () => {
+                this.loginIsAdmin().then(resolve).catch(reject);
+              },
+              error: (refreshError) => {
+                console.error(refreshError);
+                reject(false);
+              }
+            });
+          } else {
+            console.error(msg);
+            reject(false);
+          }
         }
       });
     })
-
+    
   }
 
   refreshAccessToken(): Observable<any> {
