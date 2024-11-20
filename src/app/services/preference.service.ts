@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Operation } from 'rfc6902';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from '../environment/environment';
-import { AuthService } from './auth.service';
-import { GeneralService } from './general.service';
 import { ODataResponse } from '../models/odataResponse.model';
 import { preferenceInputModel, preferenceModel } from '../models/preference.model';
-import { BehaviorSubject } from 'rxjs';
-import { Operation } from 'rfc6902';
+import { AuthService } from './auth.service';
+import { GeneralService } from './general.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,10 +14,10 @@ import { Operation } from 'rfc6902';
 export class PreferenceService {
 
     odataQuery: string | undefined;
-    toAddPreference : preferenceInputModel = {
-        canBeMaster : false,
-        gameId : 0,
-        knowledgeId : 0,
+    toAddPreference: preferenceInputModel = {
+        canBeMaster: false,
+        gameId: 0,
+        knowledgeId: 0,
         userId: ""
     };
     private preferenceSubject = new BehaviorSubject<preferenceModel[]>([]);
@@ -42,49 +42,49 @@ export class PreferenceService {
         });
     }
     post() {
-        return new Promise((resolve,reject)=> {
+        return new Promise((resolve, reject) => {
             let userId = this.as.getUserId();
-            if(userId){
+            if (userId) {
                 this.toAddPreference.userId = userId;
-            }else{
+            } else {
                 reject("invalid user");
                 return;
             }
-            this.http.post<preferenceModel>(`${environment.apiUrl}api/Preference`,this.toAddPreference).subscribe({
-                next: (res)=> {
+            this.http.post<preferenceModel>(`${environment.apiUrl}api/Preference`, this.toAddPreference).subscribe({
+                next: (res) => {
                     const pref = this.preferenceSubject.value;
                     pref.push(res);
                     this.preferenceSubject.next(pref);
                     resolve(res);
-                },error: (msg)=> {
+                }, error: (msg) => {
                     console.error(msg);
                     reject(msg);
                 }
             });
         });
     }
-    patch(op : Operation[]) {
-        return new Promise((resolve,reject) => {
-            this.http.patch<preferenceModel>(`${environment.apiUrl}api/Preference`,op).subscribe({
-                next:(res)=>{
+    patch(op: Operation[]) {
+        return new Promise((resolve, reject) => {
+            this.http.patch<preferenceModel>(`${environment.apiUrl}api/Preference`, op).subscribe({
+                next: (res) => {
                     const pref = this.preferenceSubject.value;
-                    pref.map(p=>{
+                    pref.map(p => {
                         p.preferenceId == res.preferenceId ? res : p;
                     });
                     this.preferenceSubject.next(pref);
                     resolve(res);
-                },error:(msg)=> {
+                }, error: (msg) => {
                     reject(msg);
                 }
             });
         });
     }
-    delete(id : number) {
-        return new Promise((resolve,reject) => {
+    delete(id: number) {
+        return new Promise((resolve, reject) => {
             this.http.delete(`${environment.apiUrl}odata/Preference/${id}`).subscribe({
-                next: (res)=> {
+                next: (res) => {
                     resolve(res);
-                },error: (msg) => {
+                }, error: (msg) => {
                     reject(msg);
                 }
             });

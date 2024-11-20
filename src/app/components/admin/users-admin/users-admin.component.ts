@@ -105,7 +105,7 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
       this.uas.changeUserStatus(this.selectedUser!, patch).then((res) => {
         this.selectedUser!.isDisabled = !this.selectedUser?.isDisabled;
         this.uas.getUsers();
-        this.gn.confirmMessage = "User disabled successfully";
+        this.gn.confirmMessage = `User ${this.selectedUser!.isDisabled ? 'disabled' : 'enabled'} successfully`;
         this.gn.setConfirm();
       })
       .catch((err) => {

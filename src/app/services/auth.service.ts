@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Operation } from 'rfc6902';
@@ -17,7 +17,7 @@ export class AuthService {
 
   isAdmin: boolean = true;
   isLogged: boolean = false;
-  user: BehaviorSubject<User> = new BehaviorSubject<User>({ name: '', surname: '', role: '', id: '' });
+  user: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
 
   register(user: User): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -52,6 +52,7 @@ export class AuthService {
         this.isLogged = true;
         this.router.navigate(['/home'])
         this.getUser(response.userId);
+        this.loginIsAdmin();
       },
       error: (error) => {
         if (error.status === 401) {
@@ -113,11 +114,36 @@ export class AuthService {
     this.gn.confirmMessage = 'Logged out successfully';
     this.gn.setConfirm();
     this.gn.isLoadingScreen$.next(false);
+    this.isAdmin = false;
   }
 
   isAuthenticated(): boolean {
     const token = this.getToken()
     return token !== null;
+  }
+  loginIsAdmin(): Promise<boolean> {
+    const refreshToken = this.getRefreshToken();
+    const accessToken = this.getToken();
+    return new Promise((resolve,reject) => {
+      if (!refreshToken) {
+        reject(false);
+        return;
+      }
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${accessToken}`,
+        'Refresh-Token': refreshToken
+      });
+      this.http.get<boolean>(`${environment.apiUrl}api/user/isAdmin`,{ headers}).subscribe({
+        next: (res)=> {
+          this.isAdmin = res;
+          resolve(res);
+        },error : (msg)=> {
+          console.error(msg);
+          reject(false);
+        }
+      });
+    })
+    
   }
 
   refreshAccessToken(): Observable<any> {
@@ -142,7 +168,7 @@ export class AuthService {
   }
   patchUser(userDetail: User, patch: Operation[]): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.http.patch<User>(`${environment.apiUrl}api/ApplicationUser/${userDetail.id}`, patch).subscribe({
+      this.http.patch<User>(`${environment.apiUrl}api/ApplicationUser/${userDetail.id}?$expand=Preferences`, patch).subscribe({
         next: (res) => {
           this.user.next(res);
           resolve(res);

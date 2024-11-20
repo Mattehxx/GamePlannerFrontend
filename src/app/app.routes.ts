@@ -16,6 +16,8 @@ import { EventDetailAdminComponent } from './components/admin/events-admin/event
 import { ConfirmRegistrationComponent } from './components/confirm-registration/confirm-registration.component';
 import { RemoveRegistrationComponent } from './components/remove-registration/remove-registration.component';
 import { CreateEventComponent } from './components/admin/events-admin/create-event/create-event.component';
+import { AuthGuardService } from './services/guards/auth-guard.service';
+import { AdminGuardService } from './services/guards/admin-guard.service';
 
 export const routes: Routes = [
   {
@@ -24,7 +26,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
-      { path: 'userSettings', component: UserProfileComponent},
+      { path: 'userSettings', component: UserProfileComponent,canActivate: [AuthGuardService]},
       { path: 'events',component: EventsComponent},
       { path: 'events/:id', component: EventDetailComponent },
       { path: 'mobile', component: MobileComponent }
@@ -36,7 +38,7 @@ export const routes: Routes = [
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
-      { path: 'dashboard-admin', component: DashboardAdminComponent,
+      { path: 'dashboard-admin', component: DashboardAdminComponent,canActivate: [AdminGuardService],
       children:[
         {path:'users', component:UsersAdminComponent},
         {path:'events', component:EventsAdminComponent},
