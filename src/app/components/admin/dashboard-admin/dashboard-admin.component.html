@@ -1,9 +1,9 @@
 <div class="dashboard-cont">
-   
+
     <div class="sidenav" [class.open]="this.ds.isOpen" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
-        
+
         <div class="title">
-            <div class="right-img" (click)="this.router.navigate(['home'])">
+            <div class="right-img" (click)="goToHome()">
                 <img src="/assets/images/logo.png">
                 <div class="logo-title" *ngIf="this.ds.isOpen">
                     Game Planner
@@ -25,17 +25,23 @@
             </div>
         </nav>
 
-        <div class="logout-profile-cont" (click)="this.authService.logout()">
+        <div class="logout-profile-cont" (click)="this.logOut()">
+            
+            <div class="profile">
+
+                <div class="img">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <div>
+                    <span *ngIf="this.ds.isOpen" (click)="this.router.navigate(['/userSettings'])" class="userName">
+                        {{user?.name}} {{user?.surname}}
+                    </span>
+                </div>
+
+            </div>
             <div class="logout">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                <span *ngIf="this.ds.isOpen">Log Out</span>
-            </div>
-            <div class="profile" (click)="this.router.navigate(['userSettings'])">
-                <div class="img-or-logo">
-                    <div class="img">
-                        <i class="fa-regular fa-user"></i>
-                    </div>
-                </div>
+                <span *ngIf="this.ds.isOpen" (click)="logOut()">Log Out</span>
             </div>
         </div>
     </div>

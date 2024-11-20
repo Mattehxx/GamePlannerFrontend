@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { DashboardService } from '../../../services/dashboard.service';
 import { AdminService } from '../../../services/admin.service';
 import { AuthService } from '../../../services/auth.service';
+import { GeneralService } from '../../../services/general.service';
+import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -15,13 +17,34 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class DashboardAdminComponent implements OnInit {
 
-
+  user: User | undefined;
   isSidebarOpen: boolean = false;
 
-  constructor(public ds: DashboardService, public router: Router, private as: AdminService,protected authService : AuthService) { }
+  constructor(public ds: DashboardService, public router: Router, private as: AdminService, private auth: AuthService, private gn: GeneralService) { }
 
   ngOnInit() {
 
+    console.log('before', this.user)
+
+
+    this.auth.user?.subscribe({
+      next: (response) => {
+        if(response){
+          this.user = response;
+          console.log(this.user);
+        }
+        
+      }
+    })
+
+    console.log('after', this.user)
+  }
+  goToHome(){
+    this.as.showGameDetail = false;
+    this.gn.isOverlayOn$.next(false);
+    setTimeout(() => {
+      this.router.navigate(['home']);
+    },100);
   }
 
   onMouseEnter() {
@@ -36,4 +59,8 @@ export class DashboardAdminComponent implements OnInit {
     this.as.isCreateUserModal = false;
   }
 
+
+  logOut(){
+    this.auth.logout();
+  }
 }

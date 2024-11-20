@@ -89,10 +89,7 @@
   cursor: pointer;
 }
 
-.btn-upload i,
-.btn-remove i {
-  margin-right: 2vh;
-}
+
 
 .btn-remove {
   font-size: 2vh;
@@ -154,7 +151,6 @@ input {
   box-sizing: border-box;
   background: white;
   color: black;
-  font-family: montserrat;
   color: grey;
 }
 
@@ -364,12 +360,62 @@ label i {
   box-sizing: border-box;
   background: white;
   color: black;
-  font-family: montserrat;
   color: grey;
-
+  margin-top: 1rem;
 }
 
 .master-info {
   width: 100%;
   text-align: center;
+}
+
+.img-upload-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  width: 20vw;
+}
+
+.img-upload-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--purple);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.img-upload-button i {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.img-upload-button:hover {
+  background-color: var(--dark-purple);
+}
+
+.btn-upload {
+  display: none;
+}
+
+.btn-remove i {
+  margin-right: 2vh;
+}
+
+.btn-remove {
+  width: auto;
+}
+
+.option-btn i {
+  color: var(--purple);
+}
+
+.option-btn {
+  background-color: transparent;
+  border: none;
 }

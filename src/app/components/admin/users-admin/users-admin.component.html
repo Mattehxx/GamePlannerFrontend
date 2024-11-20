@@ -38,7 +38,7 @@
                         <div>{{user.name}} {{user.surname}}</div>
                     </div>     
 
-                        @if(user.isDeleted){
+                        @if(user.isDisabled){
                         <div class="status-disabled"> <span>INACT </span></div>
                         }
                         @else {
@@ -118,7 +118,7 @@
                 <div class="role-status">
                     <div class="details-role-admin" *ngIf="selectedUser?.role === 'Admin'">{{selectedUser?.role}}</div>
                     <div class="details-role-user" *ngIf="selectedUser?.role === 'User'">{{selectedUser?.role}}</div>
-                    @if(selectedUser?.isDeleted){
+                    @if(selectedUser?.isDisabled){
                     <div class="status-disabled details"> <span>INACT </span></div>
                     }
                     @else {

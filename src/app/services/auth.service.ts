@@ -67,19 +67,24 @@ export class AuthService {
     })
   }
 
-  getUser(id: string) {
-    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=Id eq '${id}'&$expand=Preferences($expand=Game&$expand=Knowledge),AdminEvents,Reservations`).subscribe({
-      next: (response) => {
-        if (response) {
-          this.user.next(response.value[0]);
-          this.isLogged = true;
-        } else {
-          console.error('User not found');
+  getUser(id: string) : Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=Id eq '${id}'&$expand=Preferences($expand=Game&$expand=Knowledge),AdminEvents,Reservations`).subscribe({
+        next: (response) => {
+          if (response) {
+            this.user.next(response.value[0]);
+            this.isLogged = true;
+            resolve(response.value[0]);
+          } else {
+            console.error('User not found');
+            reject('User not found');
+          }
+        },
+        error: (error) => {
+          console.error(error);
+          reject(error);
         }
-      },
-      error: (error) => {
-        console.error(error);
-      }
+      });
     });
   }
 
@@ -95,7 +100,7 @@ export class AuthService {
   setUserId(id: string): void {
     localStorage.setItem('userId', id);
   }
-  getUserId() : string | null {
+  getUserId(): string | null {
     return localStorage.getItem('userId');
   }
 
@@ -110,7 +115,7 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.isLogged = false;
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
     this.gn.confirmMessage = 'Logged out successfully';
     this.gn.setConfirm();
     this.gn.isLoadingScreen$.next(false);
@@ -138,8 +143,7 @@ export class AuthService {
         next: (res) => {
           this.isAdmin = res;
           resolve(res);
-        },
-        error: (msg) => {
+        },error: (msg) => {
           if (msg.status === 401) {
             this.refreshAccessToken().subscribe({
               next: () => {
@@ -156,7 +160,8 @@ export class AuthService {
           }
         }
       });
-    });
+    })
+    
   }
 
   refreshAccessToken(): Observable<any> {
@@ -185,7 +190,7 @@ export class AuthService {
         next: (res) => {
           this.user.next(res);
           resolve(res);
-          console.log(res);
+          this.getUser(userDetail.id!);
         },
         error: (err) => {
           console.error(err);
@@ -193,5 +198,19 @@ export class AuthService {
         }
       });
     });
+  }
+  //update image of user
+  updateProfileImg(newImage : FormData){
+    this.http.put<User>(`${environment.apiUrl}api/ApplicationUser/image/${localStorage.getItem('userId')}`,newImage).subscribe({
+      next: (res)=> {
+        const newUser = this.user.value;
+        newUser!.imgUrl = res.imgUrl;
+        this.user.next(newUser);
+      },error: (msg)=> {
+        console.error(msg);
+        this.gn.errorMessage = 'failed to update profile image';
+        this.gn.setError();
+      }
+    })
   }
 }

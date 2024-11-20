@@ -17,7 +17,7 @@ export class GameService {
   gameDetail: GameModel | undefined;
 
   getGames() {
-    return this.http.get<any>(`${environment.apiUrl}odata/Game`).subscribe(
+    return this.http.get<any>(`${environment.apiUrl}odata/Game?$orderby=isDisabled asc`).subscribe(
       {
         next: (res) => {
           this.Games$.next(res.value);
