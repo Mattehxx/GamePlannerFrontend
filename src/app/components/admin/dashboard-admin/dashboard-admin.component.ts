@@ -4,6 +4,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DashboardService } from '../../../services/dashboard.service';
 import { AdminService } from '../../../services/admin.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -17,7 +18,7 @@ export class DashboardAdminComponent implements OnInit {
 
   isSidebarOpen: boolean = false;
 
-  constructor(public ds: DashboardService, public router: Router, private as: AdminService) { }
+  constructor(public ds: DashboardService, public router: Router, private as: AdminService,protected authService : AuthService) { }
 
   ngOnInit() {
 
