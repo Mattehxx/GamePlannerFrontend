@@ -95,7 +95,7 @@ export class AuthService {
   setUserId(id: string): void {
     localStorage.setItem('userId', id);
   }
-  getUserId() : string | null {
+  getUserId(): string | null {
     return localStorage.getItem('userId');
   }
 
@@ -124,7 +124,7 @@ export class AuthService {
   loginIsAdmin(): Promise<boolean> {
     const refreshToken = this.getRefreshToken();
     const accessToken = this.getToken();
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       if (!refreshToken) {
         reject(false);
         return;
@@ -133,17 +133,17 @@ export class AuthService {
         'Authorization': `Bearer ${accessToken}`,
         'Refresh-Token': refreshToken
       });
-      this.http.get<boolean>(`${environment.apiUrl}api/user/isAdmin`,{ headers}).subscribe({
-        next: (res)=> {
+      this.http.get<boolean>(`${environment.apiUrl}api/user/isAdmin`, { headers }).subscribe({
+        next: (res) => {
           this.isAdmin = res;
           resolve(res);
-        },error : (msg)=> {
+        }, error: (msg) => {
           console.error(msg);
           reject(false);
         }
       });
     })
-    
+
   }
 
   refreshAccessToken(): Observable<any> {
@@ -172,7 +172,7 @@ export class AuthService {
         next: (res) => {
           this.user.next(res);
           resolve(res);
-          console.log(res);
+          this.getUser(userDetail.id!);
         },
         error: (err) => {
           console.error(err);
