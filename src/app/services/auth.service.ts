@@ -17,7 +17,7 @@ export class AuthService {
 
   isAdmin: boolean = true;
   isLogged: boolean = false;
-  user: BehaviorSubject<User> = new BehaviorSubject<User>({ name: '', surname: '', role: '', id: '' });
+  user: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
 
   register(user: User): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -142,7 +142,7 @@ export class AuthService {
   }
   patchUser(userDetail: User, patch: Operation[]): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.http.patch<User>(`${environment.apiUrl}api/ApplicationUser/${userDetail.id}`, patch).subscribe({
+      this.http.patch<User>(`${environment.apiUrl}api/ApplicationUser/${userDetail.id}?$expand=Preferences`, patch).subscribe({
         next: (res) => {
           this.user.next(res);
           resolve(res);
