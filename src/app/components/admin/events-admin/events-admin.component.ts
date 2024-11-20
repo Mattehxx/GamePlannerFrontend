@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,6 +16,7 @@ import { User } from '../../../models/user.model';
 import { DashboardService } from '../../../services/dashboard.service';
 import { EventService } from '../../../services/event.service';
 import { GeneralService } from '../../../services/general.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-events-admin',
@@ -46,42 +47,6 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
   isRecurrencyModal: boolean = false;
 
   newDate: Date = new Date();
-
-  admin: User = {
-    id: 'sfasf',
-    name: 'Yassine',
-    surname: 'Char',
-    email: '',
-    phoneNumber: '',
-    birthDate: new Date('1995-01-01'),
-    imgUrl: '/assets/images/pfp.jpg',
-    level: 1,
-    isDeleted: false,
-    role: 'User'
-  }
-
-  reservation: reservationModel = {
-    reservationId: 1,
-    token: '',
-    isConfirmed: false,
-    isDeleted: false,
-    sessionId: 1,
-    userId: '1',
-    user: this.admin
-  }
-
-  gameSession: gameSessionModel = {
-    sessionId: 1,
-    startDate: new Date('2023-11-01'),
-    endDate: new Date('2023-11-02'),
-    isDeleted: false,
-    masterId: '301',
-    eventId: 1,
-    master: this.admin,
-    seats: 4,
-    gameId: 101,
-    reservations: [this.reservation]
-  }
   
   async ngOnInit() {
     this.isLoading=true;
@@ -128,12 +93,45 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
     this.isRecurrencyModal = false;
     this.gn.isOverlayOn$.next(false);
   }
+  isFilterMenuOpen: boolean = false;
 
-  setRecurrency(){
+  toggleFilterMenu() {
+    this.isFilterMenuOpen = !this.isFilterMenuOpen;
+  }
+
+  applyDeletedFilter(event: Event) {
+    const filterValue = (event.target as HTMLSelectElement).value;
+    if (filterValue === 'all') {
+      this.dataSource.filterPredicate = (data: EventModel, filter: string) => true;
+    } else {
+      const isDeleted = filterValue === 'true';
+      this.dataSource.filterPredicate = (data: EventModel, filter: string) => data.isDeleted === isDeleted;
+    }
+    this.dataSource.filter = filterValue;
+    this.isFilterMenuOpen = false; // Chiudi il menu dopo aver applicato il filtro
+  }
+
+  @ViewChild('filter') filterElement: ElementRef | undefined;
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.isFilterMenuOpen && this.filterElement && !this.filterElement.nativeElement.contains(event.target)) {
+      this.isFilterMenuOpen = false;
+    }
+  }
+
+  async setRecurrency(){
     
     //CHIAMATA API
+    // await this.eventService.setRecurrency(this.eventService.eventDetail.eventId, this.newDate).then(() => {
+    //   await this.eventService.get().then(() => {
+    //     this.eventService.event$.subscribe(events => this.dataSource.data = events);
+    //   }
+    // );
+    // this.gn.confirmMessage = 'Recurrency set successfully';
+    // this.gn.setConfirm();
+    // });
     this.closeModalRecurrency();
-    this.gn.confirmMessage = 'Recurrency set successfully';
-    this.gn.setConfirm();
+
   }
 }

@@ -4,6 +4,17 @@
             <h1 class="page-title">Events Management</h1>
             <div class="search-bar-cont">
 
+                <div class="filter-container" >
+                    <div class="container-icon"><i class="fa-solid fa-filter" (click)="toggleFilterMenu()"></i></div>
+                    <div class="filter-menu" *ngIf="isFilterMenuOpen" #filter >
+                      <select id="deletedFilter" (change)="applyDeletedFilter($event)">
+                        <option value="all">All</option>
+                        <option value="true">Deleted</option>
+                        <option value="false">Not Deleted</option>
+                      </select>
+                    </div>
+                  </div>
+
                 <div class="search-bar">
                     <input type="text" placeholder="Search events..." (keyup)="applyFilter($event)">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -36,7 +47,7 @@
 
             <ng-container matColumnDef="Admin">
                 <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
-                <mat-cell *matCellDef="let event"> <div class="admin-cell"> <img *ngIf="event.adminUser" [src]="event.adminUser.imgUrl ?? admin.imgUrl"> {{event.adminUser?.name}} {{event.adminUser?.surname}}</div> </mat-cell>
+                <mat-cell *matCellDef="let event"> <div class="admin-cell"> <img *ngIf="event.adminUser" [src]="event.adminUser.imgUrl"> {{event.adminUser?.name}} {{event.adminUser?.surname}}</div> </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="Sessions">

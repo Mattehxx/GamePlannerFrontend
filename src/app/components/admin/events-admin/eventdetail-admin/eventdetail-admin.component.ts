@@ -331,14 +331,13 @@ export class EventDetailAdminComponent implements OnInit {
   }
 
   toggleReservation(user: User) {
-    console.log(user);
     const index = this.newSession.reservations.findIndex(reservation => reservation.userId === user.id);
-    console.log(index);
     if (index === -1) {
       this.newSession.reservations.push({ reservationId: 0, token: '', isConfirmed: false, isDeleted: false, sessionId: this.newSession.sessionId, userId: user.id!, user: user });
     } else {
       this.newSession.reservations.splice(index, 1);
     }
+    this.reservationSearch='';
   }
 
   toggleReservationEdit(user: User) {
@@ -348,6 +347,7 @@ export class EventDetailAdminComponent implements OnInit {
     } else {
       this.sessionEdit!.reservations.splice(index, 1);
     }
+    this.reservationSearch='';
   }
 
   removeReservation(user: User) {
@@ -355,6 +355,7 @@ export class EventDetailAdminComponent implements OnInit {
     if (index !== -1) {
       this.newSession.reservations.splice(index, 1);
     }
+    this.reservationSearch='';
   }
 
   removeReservationEdit(reservation: reservationModel) {
@@ -362,6 +363,7 @@ export class EventDetailAdminComponent implements OnInit {
     if (index !== -1) {
       this.sessionEdit!.reservations.splice(index, 1);
     }
+    this.reservationSearch='';
   }
 
   isUserSelected(user: User): boolean {

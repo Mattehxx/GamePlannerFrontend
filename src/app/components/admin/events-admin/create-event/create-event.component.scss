@@ -389,7 +389,7 @@ input:checked + .slider:before {
 
 .modal-edit {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     position: fixed;
@@ -405,6 +405,7 @@ input:checked + .slider:before {
     width: 40vw;
     max-width: 400px;
     min-width: 300px;
+    max-height: 85vh;
     overflow-x: hidden;
 }
 
@@ -550,7 +551,11 @@ input:checked + .slider:before {
 .options li {
     padding: 10px;
     cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
+
 
 .options li:hover {
     background-color: #ececec93;
@@ -667,6 +672,37 @@ input#game{
     font-size: 2vh;
     margin-left: 5vh;
     cursor: pointer;
+}
+
+.user-img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 4vh;
+    height: 4vh;
+    border-radius: 50%;
+    border: 1px solid rgb(197, 197, 197);
+    margin-right: 1vh;
+    background: white;
+}
+
+.user-img i{
+    margin-left: 0 !important;
+}
+
+.user-img img{
+    width: 4vh;
+    height: 4vh;
+    border-radius: 50%;
+}
+
+.no-results{
+    font-size: 2vh;
+    color: var(--light-gray2);
+
+    &:hover{
+        background: white !important;
+    }
 }
 
 @media (max-width:750px) {

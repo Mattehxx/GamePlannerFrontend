@@ -160,7 +160,7 @@ export class EventService {
   }
 
   getUsersContainsString(name: string) {
-    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=contains(tolower(name),'${name.toLowerCase()}')&$top=5`);
+    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=contains(tolower(name),'${name.toLowerCase()}')&$top=10`);
   }
   
   getGames(){
