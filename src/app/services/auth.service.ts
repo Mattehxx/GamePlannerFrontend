@@ -181,4 +181,18 @@ export class AuthService {
       });
     });
   }
+  //update image of user
+  updateProfileImg(newImage : FormData){
+    this.http.put<User>(`${environment.apiUrl}api/ApplicationUser/image/${localStorage.getItem('userId')}`,newImage).subscribe({
+      next: (res)=> {
+        const newUser = this.user.value;
+        newUser!.imgUrl = res.imgUrl;
+        this.user.next(newUser);
+      },error: (msg)=> {
+        console.error(msg);
+        this.gn.errorMessage = 'failed to update profile image';
+        this.gn.setError();
+      }
+    })
+  }
 }
