@@ -28,7 +28,7 @@ export class ReservationService {
                 },
                 error: (err) => {
                     console.error(err);
-                    this.gn.errorMessage='Error, please try again later';
+                    this.gn.errorMessage = err.error.message;
                     this.gn.setError();
                     reject(err);
                 }

@@ -28,14 +28,16 @@ export class AuthService {
           this.gn.setConfirm();
         },
         error: (error) => {
-          if (error.status === 400) {
-            this.gn.errorMessage = 'User with this email already exists';
-            this.gn.setError();
-          } else {
-            console.error(error);
-            this.gn.errorMessage = 'Server Error, please try again later';
-            this.gn.setError();
-          }
+          // if (error.status === 400) {
+          //   this.gn.errorMessage = 'User with this email already exists';
+          //   this.gn.setError();
+          // } else {
+          //   console.error(error);
+          //   this.gn.errorMessage = 'Server Error, please try again later';
+          //   this.gn.setError();
+          // }
+          this.gn.errorMessage=error.error.message;
+          this.gn.setError();
           reject(error);
         }
       });
