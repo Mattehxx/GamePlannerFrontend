@@ -27,33 +27,50 @@ export class EventService {
 
   //#region CRUD
   get() {
-    return new Promise((resolve,reject) => {
-      /* const x = `${this.odataQuery && this.odataQuery.trim() != ""
-          ? `${this.odataQuery}` : ""}?$expand=AdminUser,Sessions`; */
+    return new Promise((resolve, reject) => {
       const params: HttpParams = new HttpParams()
-      .append('expand', 'AdminUser').append('expand','Sessions');
-      this.http.get<ODataResponse<EventModel>>(`${environment.apiUrl}odata/Event`, {params}).subscribe({
-            next: (res) => {
-              this.eventSubject.next(res.value);
-              resolve(res);
-            }, error: (msg) => {
-              console.error(msg);
-              reject(msg);
-            }
-          });
+        .append('expand', 'AdminUser')
+        .append('expand', 'Sessions($filter=isDeleted eq false)');
+      this.http.get<ODataResponse<EventModel>>(`${environment.apiUrl}odata/Event`, { params }).subscribe({
+        next: (res) => {
+          this.eventSubject.next(res.value);
+          resolve(res);
+        }, error: (msg) => {
+          console.error(msg);
+          reject(msg);
+        }
+      });
     });
   }
-  post(model: EventInputModel) {
-    this.http.post<EventModel>(`${environment.apiUrl}api/Event`, model).subscribe({
-      next: (res) => {
-        const events = this.eventSubject.value;
-        events.push(res);
-        this.eventSubject.next(events);
-      }, error: (msg) => {
-        console.error(msg);
+
+  post(model: EventInputModel): Promise<EventModel> {
+    const formData = new FormData();
+    Object.keys(model).forEach(key => {
+      const value = model[key as keyof EventInputModel];
+      if (value !== null) {
+        if (key === 'image' && value instanceof File) {
+          formData.append(key, value);
+        } else {
+          formData.append(key, String(value));
+        }
       }
     });
+
+    return new Promise((resolve, reject) => {
+      this.http.post<EventModel>(`${environment.apiUrl}api/Event`, formData).subscribe({
+        next: (res) => {
+          const events = this.eventSubject.value;
+          events.push(res);
+          this.eventSubject.next(events);
+          resolve(res);
+        }, error: (msg) => {
+          console.error(msg);
+          reject(msg);
+        }
+      });
+    });
   }
+
   public delete(id: number) {
     this.http.delete<EventModel>(`${environment.apiUrl}api/Event/${id}`).subscribe({
       next: (res) => {
@@ -86,15 +103,15 @@ export class EventService {
 
 
   getEventCount(): Observable<number> {
-    return this.http.get<any>(`${environment.apiUrl}odata/Event?$count=true`).pipe(
+    const query = `${environment.apiUrl}odata/Event?$count=true&$filter=isDeleted eq false and isPublic eq true`;
+    return this.http.get<any>(query).pipe(
       map(response => response['@odata.count'])
     );
   }
 
-  
   getPagination(skip: number = 0, top: number = 10) {
-    const query = `${environment.apiUrl}odata/Event?$count=true&$skip=${skip}&$top=${top}`;
-    const expandedQuery = `${query}&$expand=Sessions($expand=Game,Reservations)`;
+    const query = `${environment.apiUrl}odata/Event?$count=true&$filter=isDeleted eq false and isPublic eq true&$skip=${skip}&$top=${top}`;
+    const expandedQuery = `${query}&$expand=Sessions($filter=isDeleted eq false;$expand=Game,Reservations)`;
     return this.http.get<ODataResponse<EventModel>>(expandedQuery).pipe(
       map((res: ODataResponse<EventModel>) => {
         this.eventSubject.next(res.value);
@@ -130,7 +147,7 @@ export class EventService {
 
   getEventsId(id: number) : Promise<EventModel>{
     return new Promise((resolve, reject) => {
-      this.http.get<any>(`${environment.apiUrl}odata/Event?$filter=eventId eq ${id}&$expand=Sessions($expand=Master,Game,Reservations($expand=User))`).subscribe({
+      this.http.get<any>(`${environment.apiUrl}odata/Event?$filter=eventId eq ${id}&$expand=Sessions($filter=isDeleted eq false;$expand=Master,Game,Reservations($filter=isDeleted eq false;$expand=User))`).subscribe({
         next: (res) => {
           this.eventDetail = res.value[0];
           resolve(res.value[0]);

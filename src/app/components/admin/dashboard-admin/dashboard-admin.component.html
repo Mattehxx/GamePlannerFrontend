@@ -25,12 +25,12 @@
             </div>
         </nav>
 
-        <div class="logout-profile-cont">
+        <div class="logout-profile-cont" (click)="this.authService.logout()">
             <div class="logout">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 <span *ngIf="this.ds.isOpen">Log Out</span>
             </div>
-            <div class="profile">
+            <div class="profile" (click)="this.router.navigate(['userSettings'])">
                 <div class="img-or-logo">
                     <div class="img">
                         <i class="fa-regular fa-user"></i>
