@@ -14,9 +14,12 @@
         </div>
         }
         <div class="buttons">
-          <div class="imgUpload">
-            <input class="btn-upload" type="file" (change)="onFileSelected($event)">
-            <i class="fa-solid fa-upload"></i> Upload new image
+          <div class="img-upload-container">
+            <button class="img-upload-button" (click)="fileInput.click()">
+              <i class="fa-solid fa-upload"></i> Upload new image
+            </button>
+            <input #fileInput class="btn-upload" type="file" accept="image/*" (change)="onFileSelected($event)"
+              hidden />
           </div>
           <button class="btn-remove" (click)="removeImg()">
             <i class="fa-solid fa-xmark"></i> Remove image
@@ -84,14 +87,15 @@
           <i class="fa-solid fa-shield"></i> Preferences
         </div>
         <div class="wrapper-option">
-          <div (click)="changeViewMode('add')"><i class="fa-solid fa-plus"></i> Add</div>
-          <div (click)="changeViewMode('edit')"><i class="fa-solid fa-pen-to-square"></i> Modify</div>
+          <button class="option-btn" (click)="changeViewMode('add')"><i class="fa-solid fa-plus"></i> Add</button>
+          <button class="option-btn" (click)="changeViewMode('edit')"><i class="fa-solid fa-pen-to-square"></i> Modify
+          </button>
         </div>
       </div>
       <!--default view-->
       <div *ngIf="viewMode === 'default'" class="input-preference ">
-        <div class="preference-form" *ngFor="let preference of modelToEdit?.preferences">
-          <div class="game-name">{{preference.game.name}}</div>
+        <div class  ="preference-form" *ngFor="let preference of modelToEdit?.preferences">
+          <div class="game-name" *ngIf="preference.game">{{preference.game!.name}}</div>
           <div class="display-radios">
             @if (preference.canBeMaster) {
             <p class="master-info">Yes</p>
@@ -99,7 +103,7 @@
             <p class="master-info">No</p>
             }
           </div>
-          <div class="knowledge-name">{{preference.knowledge.name}}</div>
+          <div class="knowledge-name" *ngIf="preference.knowledge">{{preference.knowledge!.name}}</div>
         </div>
       </div>
       <!--edit view-->
@@ -131,7 +135,7 @@
         </div>
       </div>
       <!--add view-->
-      <div *ngIf="viewMode === 'add'" class="input--preference">
+      <div *ngIf="viewMode === 'add'" class="input-preference">
         <div class="preference-form">
           <div class="game-name">
             <select name="game" id="{{this.modelToEdit.id}}GamePreference" [(ngModel)]="newPreference.gameId">

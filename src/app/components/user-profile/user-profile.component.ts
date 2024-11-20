@@ -34,7 +34,7 @@ export class UserProfileComponent implements OnInit {
   viewMode: string = 'default';
   games: GameModel[] = [];
   knowledges: knowledgeModel[] = [];
-  deepCopy : User | undefined;
+  deepCopy: User | undefined;
   modelToEdit: User = {
     name: '',
     surname: '',
@@ -44,6 +44,7 @@ export class UserProfileComponent implements OnInit {
     role: '',
     preferences: [],
   };
+
   newPreference: preferenceInputModel = {
     canBeMaster: false,
     userId: "",
@@ -52,6 +53,7 @@ export class UserProfileComponent implements OnInit {
   };
 
   constructor(public as: AuthService, public gs: GameService, public ks: KnowledgeService) { }
+
   ngOnInit(): void {
     if (this.as.isLogged) {
       this.as.user?.subscribe({
@@ -61,7 +63,7 @@ export class UserProfileComponent implements OnInit {
             this.modelToEdit = { ...user };
             this.deepCopy = JSON.parse(JSON.stringify(user));
             console.log('UserEdit:', this.modelToEdit);
-          } 
+          }
         },
         error: (error) => {
           console.error('Error fetching user:', error);
@@ -89,12 +91,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
   resetUserInfo() {
-    this.modelToEdit = {
-      ...this.originalModel,
-      name: this.originalModel?.name || '',
-      surname: this.originalModel?.surname || '',
-      role: this.originalModel?.role || '',
-    };
+    this.modelToEdit = { ...this.deepCopy! };
     this.viewMode = 'default';
   }
   SaveChanges() {
@@ -102,19 +99,17 @@ export class UserProfileComponent implements OnInit {
   }
   onSubmit(): void {
     let patch = createPatch(this.deepCopy, this.modelToEdit);
-    console.log("Patch operations:", patch);
-    console.log("Original preferences:", this.deepCopy?.preferences);
-    console.log("Edited preferences:", this.modelToEdit.preferences);
     this.as.patchUser(this.deepCopy!, patch).then((res) => {
-      console.log(res);
+      this.viewMode = 'default';
+      this.modelToEdit = this.as.user?.value!;
     });
-}
+  }
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
     if (input.files && input.files[0]) {
       const file = input.files[0];
-
+      console.log(file);
       if (!file.type.startsWith('image/')) {
         console.error('The selected file is not an image.');
         return;
