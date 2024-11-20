@@ -1,0 +1,7 @@
+touch src/_redirects
+/*  /index.html 200
+{
+  "glob": "_redirects",
+  "input": "src",
+  "output": "/"
+}

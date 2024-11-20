@@ -68,7 +68,7 @@
                     </div>
                     <div class="session-info">
                         <div class="session date"> <i class="fa-regular fa-calendar"></i> {{session.startDate | date:'MMM dd, h:mm a'}} - {{session.endDate | date:'MMM dd, h:mm a'}}</div>
-                        <div class="session master"><i class="fa-solid fa-crown"></i> {{session.master?.name}} {{session.master?.surname}}</div>
+                        <div class="session master" *ngIf="session.master"><i class="fa-solid fa-crown"></i> {{session.master!.name}} {{session.master!.surname}}</div>
                         <div class="session seats"><i class="fa-solid fa-user-group"></i> {{getResNumber(session.reservations,true)}} / {{session.seats}} <div class = "alert-confirm" *ngIf="getResNumber(session.reservations,false) > 0"><i class="fa-solid fa-circle-exclamation"></i> {{getResNumber(session.reservations,false)}} unconfirmed emails</div> </div>
                         <div class="session game"><i class="fa-solid fa-gamepad"></i> {{session.game?.name}}</div>
                     </div>

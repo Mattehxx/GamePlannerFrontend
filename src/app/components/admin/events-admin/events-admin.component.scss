@@ -203,6 +203,14 @@ mat-paginator {
     }
 }
 
+.purple{
+    background: var(--purple);
+    color: white;
+    &:hover{
+        background: var(--dark-purple);
+    }
+}
+
 .sessions-cell{
     display: flex;
     justify-content: center;
