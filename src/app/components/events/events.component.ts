@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, switchMap, takeUntil } from 'rxjs';
 import { EventModel } from '../../models/event.model';
 import { DurationPipe } from "../../pipes/duration.pipe";
 import { EventService } from '../../services/event.service';
@@ -37,6 +37,8 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   userInput: string = '';
   destroy$ = new Subject<void>();
+  searchTerms = new Subject<string>();
+
 
   isLoading: boolean = false;
 
@@ -53,6 +55,22 @@ export class EventsComponent implements OnInit, OnDestroy {
         console.error('Error fetching event count:', error);
       }
     );
+
+    this.searchTerms.pipe(
+      debounceTime(500), 
+      distinctUntilChanged(),
+      switchMap(term => {
+        const skip = (this.currentPage - 1) * this.itemsPerPage;
+        return this.eventService.filterEventsByName(term, skip, this.itemsPerPage);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe(res => {
+      this.filteredEvents = res.value;
+      this.isEmpty = this.filteredEvents.length === 0;
+      this.totalPages = Math.ceil(this.filteredEvents.length / this.itemsPerPage);
+      this.currentPage = 1;
+      this.updatePaginatedEvents();
+    });
   }
 
   ngOnDestroy() {
@@ -81,6 +99,12 @@ export class EventsComponent implements OnInit, OnDestroy {
       this.currentPage = 1;
       this.updatePaginatedEvents();
     });
+  }
+
+  
+  onSearch(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.searchTerms.next(target.value);
   }
 
   toggleFilters() {

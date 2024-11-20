@@ -69,7 +69,7 @@
                     <div class="session-info">
                         <div class="session date"> <i class="fa-regular fa-calendar"></i> {{session.startDate | date:'MMM dd, h:mm a'}} - {{session.endDate | date:'MMM dd, h:mm a'}}</div>
                         <div class="session master"><i class="fa-solid fa-crown"></i> {{session.master?.name}} {{session.master?.surname}}</div>
-                        <div class="session seats"><i class="fa-solid fa-user-group"></i> {{session.reservations.length}} / {{session.seats}}</div>
+                        <div class="session seats"><i class="fa-solid fa-user-group"></i> {{getResNumber(session.reservations,true)}} / {{session.seats}} <div class = "alert-confirm" *ngIf="getResNumber(session.reservations,false) > 0"><i class="fa-solid fa-circle-exclamation"></i> {{getResNumber(session.reservations,false)}} unconfirmed emails</div> </div>
                         <div class="session game"><i class="fa-solid fa-gamepad"></i> {{session.game?.name}}</div>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
                     <label for="reservations">Add Players</label>
                     <div #dropdownElementReservation class="custom-dropdown-double ">
                         <div class="selected-users" *ngIf="sessionEdit!.reservations!.length > 0">
-                            <span *ngFor="let reservation of sessionEdit?.reservations" class="selected-user">
+                            <span *ngFor="let reservation of sessionEdit?.reservations" class="selected-user" [class.red]="!reservation.isConfirmed" [class.green]="reservation.isConfirmed" >
                                 {{ reservation.user!.name }} {{ reservation.user!.surname }}
                                 <i class="fa-solid fa-xmark" (click)="removeReservationEdit(reservation)"></i>
                             </span>

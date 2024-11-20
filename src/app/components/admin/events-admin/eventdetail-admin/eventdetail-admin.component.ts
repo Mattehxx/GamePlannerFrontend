@@ -629,5 +629,14 @@ export class EventDetailAdminComponent implements OnInit {
     this.router.navigate(['/dashboard-admin/events']);
   }
 
+  getResNumber(reservations: Array<reservationModel>,status: boolean){
+    if(status){
+      return reservations.filter((res: { isConfirmed: any; }) => res.isConfirmed).length;
+    }
+    else{
+      return reservations.filter((res: { isConfirmed: any; }) => !res.isConfirmed).length;
+    }
+  }
+
   
 }

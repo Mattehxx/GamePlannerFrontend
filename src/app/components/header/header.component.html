@@ -107,7 +107,7 @@
                     <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
                     }
                     @else {
-                    <div>{{this.user.imgUrl}}</div>
+                    <img class="img" [src]="this.user!.imgUrl" alt="User Profile image">
                     }
                     <div class="username-email-mobile">
                         <div class="username">{{this.user.name}} {{this.user.surname}}</div>

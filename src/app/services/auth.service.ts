@@ -121,10 +121,11 @@ export class AuthService {
     const token = this.getToken()
     return token !== null;
   }
+
   loginIsAdmin(): Promise<boolean> {
     const refreshToken = this.getRefreshToken();
     const accessToken = this.getToken();
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       if (!refreshToken) {
         reject(false);
         return;
@@ -133,17 +134,29 @@ export class AuthService {
         'Authorization': `Bearer ${accessToken}`,
         'Refresh-Token': refreshToken
       });
-      this.http.get<boolean>(`${environment.apiUrl}api/user/isAdmin`,{ headers}).subscribe({
-        next: (res)=> {
+      this.http.get<boolean>(`${environment.apiUrl}api/user/isAdmin`, { headers }).subscribe({
+        next: (res) => {
           this.isAdmin = res;
           resolve(res);
-        },error : (msg)=> {
-          console.error(msg);
-          reject(false);
+        },
+        error: (msg) => {
+          if (msg.status === 401) {
+            this.refreshAccessToken().subscribe({
+              next: () => {
+                this.loginIsAdmin().then(resolve).catch(reject);
+              },
+              error: (refreshError) => {
+                console.error(refreshError);
+                reject(false);
+              }
+            });
+          } else {
+            console.error(msg);
+            reject(false);
+          }
         }
       });
-    })
-    
+    });
   }
 
   refreshAccessToken(): Observable<any> {
