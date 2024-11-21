@@ -92,7 +92,6 @@ export class EventDetailAdminComponent implements OnInit {
         this.newSession.eventId = this.event.eventId;
         this.gn.isLoadingScreen$.next(false);
         this.isLoading = false;
-        console.log(this.event);
       });
     }
     this.eventService.getGames().subscribe({
@@ -170,7 +169,6 @@ export class EventDetailAdminComponent implements OnInit {
       isDeleted: false,
       reservations: []
     };
-    console.log(this.event, this.arrayAddedSessions);
     this.closeAddModal();
   }
 
@@ -526,7 +524,6 @@ export class EventDetailAdminComponent implements OnInit {
     // Delete removed sessions
     for (const originalSession of this.deepCopy!.sessions!) {
       if (!this.event!.sessions!.some(s => s.sessionId === originalSession.sessionId) && !this.arrayAddedSessions.some(s => s.sessionId === originalSession.sessionId)) {
-        console.log('deleting session:', originalSession);
         await this.sessionService.deleteSession(originalSession.sessionId).catch((err) => {
           console.error('Failed to delete session:', err);
           this.gn.errorMessage = 'Failed to delete session';
@@ -624,7 +621,7 @@ export class EventDetailAdminComponent implements OnInit {
 
       // this.http.post(`${environment.apiUrl}/upload`, formData).subscribe({
       //   next: (response) => {
-      //     console.log('Upload successful:', response);
+      //     
       //   },
       //   error: (error) => {
       //     console.error('Upload error:', error);

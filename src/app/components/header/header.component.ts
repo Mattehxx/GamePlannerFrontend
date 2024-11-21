@@ -44,7 +44,6 @@ export class HeaderComponent implements OnInit,OnDestroy {
       next: (response) => {
         if(response){
           this.user = response;
-          console.log(this.user);
         }
         
       }

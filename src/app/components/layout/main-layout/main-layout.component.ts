@@ -117,6 +117,17 @@ export class MainLayoutComponent implements OnInit{
         this.isLoading = false;
       }
     });
+
+    this.headerService.ScrollToHalf$.pipe(takeUntil(this.death$)).subscribe((value) => {
+      if(value){
+        setTimeout(() => {
+            const content = document.getElementsByClassName('main-content')[0];
+            if (content) {
+            content.scrollTo(0, Math.floor(window.innerHeight / 2) - 200);
+            }
+        }, 0);
+      }
+    });
    
   }
 

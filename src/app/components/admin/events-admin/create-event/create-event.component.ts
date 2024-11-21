@@ -177,7 +177,6 @@ export class CreateEventComponent implements OnInit {
     this.filteredGameMasters = this.gameMasters.filter(master =>
       `${master.name} ${master.surname}`.toLowerCase().includes(search)
     );
-    console.log(this.filteredGameMasters);
   }
 
   filterGames() {
@@ -464,7 +463,6 @@ export class CreateEventComponent implements OnInit {
 
       if (reservationsToCreate.length > 0) {
         this.resService.createMultipleReservation(reservationsToCreate).then(() => {
-          console.log('Reservations created successfully');
         }).catch((err) => {
           console.error('Failed to create reservations:', err);
           this.gn.errorMessage = 'Failed to create reservations';

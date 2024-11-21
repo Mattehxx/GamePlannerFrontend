@@ -122,7 +122,6 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     if (this.as.showGameDetail) {
       // Controlla se il clic è avvenuto all'interno del contenitore
       const clickedInsideModal = this.modalDetail.nativeElement.contains(event.target);
-      console.log(clickedInsideModal)
 
       // Se il clic è fuori dal contenitore (modale + overlay), chiudi la modale
       if (this.as.showGameDetail && !clickedInsideModal) {

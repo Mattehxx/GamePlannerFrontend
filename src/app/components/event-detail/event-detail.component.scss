@@ -446,9 +446,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 100;
     border-radius: 1vh;
     box-shadow: 0 1vh 2vh rgb(0 0 0 / 37%);
+    overflow-x: hidden;
 }
 
 .modal-sign {
