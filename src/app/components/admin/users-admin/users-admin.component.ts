@@ -67,7 +67,6 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.dataSource.data.length
   }
 
 

@@ -1,13 +1,17 @@
-.container{
+.container {
     overflow-y: hidden;
     height: 100vh;
-    padding: 5vh 10vh;
-    padding-left: 20vh;
+    /* width: 100vw; */
+    padding: 2vh 6vw 2vh 10vw;
     transition: 0.3s ease;
-    padding-top: 2vh;
+    /* padding-top: 2vh; */
 }
 
-.container.dashboarsIsOpen{
+.table-container {
+    width: 100%;
+}
+
+.container.dashboarsIsOpen {
     padding-left: 36vh;
 }
 
@@ -26,7 +30,7 @@
 }
 
 
-.search-bar-cont{
+.search-bar-cont {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,9 +67,9 @@
     z-index: 1;
 }
 
-.btn-create{
+.btn-create {
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     width: 15vh;
     height: 5vh;
@@ -75,7 +79,14 @@
     border: 1px solid var(--purple);
     border-radius: 1vh;
     cursor: pointer;
-  
+
+}
+
+.table-events-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
 }
 
 .page-container {
@@ -162,7 +173,7 @@ mat-paginator {
     border-bottom: 1px solid transparent !important;
 }
 
-.status{
+.status {
     width: max-content;
     display: flex;
     justify-content: center;
@@ -172,7 +183,7 @@ mat-paginator {
     font-size: 2vh;
 }
 
-.visibility{
+.visibility {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -180,11 +191,11 @@ mat-paginator {
     font-size: 2vh;
 }
 
-.eventDisabled{
+.eventDisabled {
     opacity: 50%;
 }
 
-.btn-details{
+.btn-details {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -198,20 +209,21 @@ mat-paginator {
     border-radius: 1vh;
     cursor: pointer;
 
-    &:hover{
-        background-color:rgb(231, 231, 231);
+    &:hover {
+        background-color: rgb(231, 231, 231);
     }
 }
 
-.purple{
+.purple {
     background: var(--purple);
     color: white;
-    &:hover{
+
+    &:hover {
         background: var(--dark-purple);
     }
 }
 
-.sessions-cell{
+.sessions-cell {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -258,8 +270,9 @@ mat-paginator {
     align-items: center;
 }
 
-.event-name{
+.event-name {
     display: flex;
+    text-wrap: nowrap;
     align-items: center;
     justify-content: center;
     font-size: 2vh;
@@ -267,14 +280,15 @@ mat-paginator {
     margin-right: 1vh;
 }
 
-.admin-cell{
+.admin-cell {
     display: flex;
+    text-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
     gap: 1vh;
 }
 
-.admin-cell img{
+.admin-cell img {
     width: 5vh;
     height: 5vh;
     border-radius: 50%;
@@ -291,7 +305,7 @@ mat-paginator {
     box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
 }
 
-.modal-recurrency{
+.modal-recurrency {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -311,7 +325,7 @@ mat-paginator {
     align-items: flex-start;
 }
 
-.modal-content{
+.modal-content {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -320,6 +334,7 @@ mat-paginator {
     position: relative;
     width: 100%;
 }
+
 .modal-header {
     display: flex;
     justify-content: flex-start;
@@ -384,7 +399,8 @@ mat-paginator {
     padding-top: 1vh;
 }
 
-.btn-cancel, .btn-confirm {
+.btn-cancel,
+.btn-confirm {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -422,38 +438,39 @@ mat-paginator {
     gap: 1vh;
     margin-right: 4vh;
     color: var(--purple);
-  
+
     .fa-filter {
-      cursor: pointer;
-      font-size: 2vh;
+        cursor: pointer;
+        font-size: 2vh;
     }
-  
+
     .filter-menu {
-      position: absolute;
-      top: 5vh;
-      right: 0;
-      background: white;
-      border: 1px solid var(--light-gray2);
-      border-radius: 1vh;
-      padding: 1vh;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      z-index: 10;
-      label {
-        font-size: 2vh;
-        color: #333;
-      }
-  
-      select {
-        padding: 0.5vh;
-        font-size: 2vh;
+        position: absolute;
+        top: 5vh;
+        right: 0;
+        background: white;
         border: 1px solid var(--light-gray2);
         border-radius: 1vh;
-        margin-top: 1vh;
-      }
-    }
-  }
+        padding: 1vh;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 10;
 
-  .container-icon{
+        label {
+            font-size: 2vh;
+            color: #333;
+        }
+
+        select {
+            padding: 0.5vh;
+            font-size: 2vh;
+            border: 1px solid var(--light-gray2);
+            border-radius: 1vh;
+            margin-top: 1vh;
+        }
+    }
+}
+
+.container-icon {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -461,12 +478,41 @@ mat-paginator {
     padding: 1vh;
     border-radius: 1vh;
     border: 1px solid rgb(206, 206, 206);
-  }
+}
 
-  .disabled{
+.disabled {
     opacity: 70%;
     cursor: not-allowed;
-  }
+}
+
+@media (max-width: 1100px) {
+    .container {
+        padding: 2vh 6vw 2vh 13vw;
+    }
+
+    .mat-column-Sessions {
+        display: none;
+    }
+}
+
+@media (max-width: 975px) {
+    .container {
+        padding: 2vh 6vw 2vh 12vw;
+    }
+}
+
+@media (max-width: 875px) {
+
+    .mat-column-Admin {
+        display: none;
+
+    }
+
+    .container {
+        padding: 2vh 6vw 2vh 14vw;
+    }
+
+}
 
 @media (max-width: 768px) {
     .header-bar {
@@ -478,22 +524,23 @@ mat-paginator {
         gap: 3vh;
     }
 
-    .mat-mdc-cell{
+    .mat-mdc-cell {
         width: 20vh;
     }
 
 }
 
 @media (max-width:480px) {
-    .container{
+    .container {
         padding-left: 8vh;
     }
-    
-    .container.dashboarsIsOpen{
+
+    .container.dashboarsIsOpen {
         padding-left: 24vh;
     }
 
-    .sessions-cell,.visibility{
+    .sessions-cell,
+    .visibility {
         width: max-content;
     }
 
@@ -505,5 +552,3 @@ mat-paginator {
         border-radius: 1vh;
     }
 }
-
-

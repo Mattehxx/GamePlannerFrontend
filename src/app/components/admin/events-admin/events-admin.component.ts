@@ -35,7 +35,7 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['Event', 'Admin', 'Sessions', 'Visibility', 'Actions', 'Recurrency'];
+  displayedColumns: string[] = ['Event', 'Admin', 'Sessions', 'Actions', 'Recurrency'];// 'Visibility'
 
   isLoading: boolean = false;
 

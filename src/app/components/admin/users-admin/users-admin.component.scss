@@ -360,17 +360,12 @@ mat-paginator {
 
 .details-page .close-section {
     display: flex;
-    height: 3.1vh;
+    height: 4.4vh;
     cursor: pointer;
     background: var(--lightPurple);
     font-size: 500;
     padding: 2vh 2vh 2.2vh;
     gap: 1vh;
-    font-family: "Segoe UI",
-        Tahoma,
-        Geneva,
-        Verdana,
-        sans-serif;
     box-shadow: 1px -1px 4px rgba(0, 0, 0, 0.1);
     align-items: center;
 

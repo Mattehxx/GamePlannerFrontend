@@ -94,7 +94,7 @@
                     [class.userDisabled]="row.isDisabled" (click)="$event.stopPropagation(); toggleUserDetails(row)">
 
                 </mat-row>
-
+                <mat-paginator [pageSize]="10" showFirstLastButtons #MatPaginator></mat-paginator>
             </table>
 
             <!-- <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons
