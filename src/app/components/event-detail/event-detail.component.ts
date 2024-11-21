@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { GeneralService } from '../../services/general.service';
 import { ReservationService } from '../../services/reservation.service';
 import { SessionService } from '../../services/session.service';
+import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -18,7 +19,7 @@ import { SessionService } from '../../services/session.service';
 })
 export class EventDetailComponent implements OnInit{
 
-  constructor(public gn: GeneralService,public auth: AuthService,private router: Router,private resService: ReservationService,private sesService: SessionService) { }
+  constructor(public gn: GeneralService,public auth: AuthService,private router: Router,private resService: ReservationService,private sesService: SessionService,private headerService: HeaderService) { }
 
   event : EventModel | undefined;
 
@@ -142,6 +143,9 @@ export class EventDetailComponent implements OnInit{
     this.sessionDetail = session;
     this.isSessionDetail = true;
     this.gn.isOverlayOn$.next(true);
+    if(this.headerService.windowWidth < 768){
+      this.headerService.updateScrollToHalf(true);
+    }
   }
 
   closeSessionDetail() {
@@ -164,6 +168,9 @@ export class EventDetailComponent implements OnInit{
 
   sessionModal(status: boolean) {
     if(status){
+      if(this.headerService.windowWidth < 768){
+        this.headerService.updateScrollToHalf(true);
+      }
       this.gn.isSessionModal = true;
       this.gn.isOverlayOn$.next(true);
     }

@@ -56,7 +56,6 @@ export class UserProfileComponent implements OnInit {
 
             this.gs.Games$.subscribe({
               next: (games) => {
-                console.log(this.modelToEdit)
                 const userGames = this.modelToEdit!.preferences?.map(pref => pref.gameId);
                 this.games = games.filter(g => !userGames?.includes(g.gameId ?? 0));
               }
@@ -100,7 +99,6 @@ export class UserProfileComponent implements OnInit {
     };
 
     this.games = this.games.filter(game => !this.modelToEdit!.preferences?.some(pref => pref.gameId === game.gameId));
-    console.log(this.modelToEdit!.preferences);
     // this.prefService.post().then(res => {
     //    this.modelToEdit.preferences?.push(res as preferenceModel);
     //    this.deepCopy?.preferences?.push(res as preferenceModel);
@@ -174,7 +172,6 @@ export class UserProfileComponent implements OnInit {
 
     let patch = createPatch(this.deepCopy, this.modelToEdit);
 
-    console.log(new Date(this.modelToEdit!.birthDate.getTime() - 3600000).toISOString(), new Date(this.originalModel!.birthDate!).toISOString());
     if (new Date(this.modelToEdit!.birthDate.getTime() - 3600000).toISOString() === new Date(this.originalModel!.birthDate!).toISOString()) {
       patch = patch.filter(p => p.path !== '/birthDate');
     }
@@ -202,7 +199,6 @@ export class UserProfileComponent implements OnInit {
 
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      console.log(file);
       if (!file.type.startsWith('image/')) {
         console.error('The selected file is not an image.');
         return;
@@ -220,7 +216,6 @@ export class UserProfileComponent implements OnInit {
 
       reader.readAsDataURL(file);
 
-      console.log(this.selectedImagePreview)
     }
   }
 

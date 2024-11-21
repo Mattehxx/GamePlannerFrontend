@@ -24,20 +24,15 @@ export class DashboardAdminComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('before', this.user)
-
-
     this.auth.user?.subscribe({
       next: (response) => {
         if(response){
           this.user = response;
-          console.log(this.user);
         }
         
       }
     })
 
-    console.log('after', this.user)
   }
   goToHome(){
     this.as.showGameDetail = false;

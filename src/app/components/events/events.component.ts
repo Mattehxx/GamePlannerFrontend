@@ -96,7 +96,6 @@ export class EventsComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       this.arrayEvent = res.value;
       this.filteredEvents = res.value;
-      console.log(this.arrayEvent,this.filteredEvents)
       this.updatePaginatedEvents();
     });
   }

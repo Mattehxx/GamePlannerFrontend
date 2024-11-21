@@ -47,7 +47,6 @@ export class AuthService {
   login(request: any) {
     return this.http.post<any>(`${environment.apiUrl}api/login`, request).subscribe({
       next: (response) => {
-        console.log(response);
         this.setToken(response.token);
         this.setRefreshToken(response.refreshToken);
         this.setUserId(response.userId);
@@ -101,7 +100,6 @@ export class AuthService {
   }
 
   setRefreshToken(refreshToken: string): void {
-    console.log("setting " + refreshToken)
     localStorage.setItem('refreshToken', refreshToken);
   }
 
