@@ -180,9 +180,13 @@ video{
     perspective: 800px; /* Controls the distance between the viewer and the element */
   }
    
-  #video:hover {
-    transform: rotateY(180deg) rotateX(20deg) rotateZ(10deg); /* 3D rotation */
-  }
+#video:hover {
+transform: rotateY(180deg) rotateX(20deg) rotateZ(10deg); /* 3D rotation */
+}
+
+.left img{
+    width: 15vh;
+}
 
 @media (max-width: 750px){
     .right img{

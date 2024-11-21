@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    if(this.router.url.startsWith('/dashboard-admin')){
+    if(this.router.url.startsWith('/dashboard-admin') || this.authService.isLogged || request.url.includes('isAdmin')){
       const token = this.authService.getToken();
 
     if (token) {
@@ -26,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
       } else {
         return this.authService.refreshAccessToken().pipe(
           switchMap((newAuth: any) => {
-            const newRequest = this.addTokenToRequest(request, newAuth.token);
+            const newRequest = this.addTokenToRequest(request, newAuth.accessToken);
             return next.handle(newRequest);
           }),
           catchError(error => {

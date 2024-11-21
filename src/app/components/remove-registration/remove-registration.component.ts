@@ -23,7 +23,7 @@ export class RemoveRegistrationComponent {
   async ngOnInit(): Promise<void> {
     this.gn.isLoadingScreen$.next(true);
     const urlParams = new URLSearchParams(window.location.search);
-    this.reservationId = urlParams.get('reservationId'); 'https://localhost:7015/api/delete?reservationId=13&token=18cddeba-76a1-41db-b7e9-da09ac0150c0'
+    this.reservationId = urlParams.get('reservationId');   
 
     if(this.reservationId === null){
       this.router.navigate(['home']);
@@ -36,6 +36,7 @@ export class RemoveRegistrationComponent {
       })
       .catch((error) => {
         console.error('Error loading session:', error);
+        this.gn.isLoadingScreen$.next(false);
       });;
     }
 

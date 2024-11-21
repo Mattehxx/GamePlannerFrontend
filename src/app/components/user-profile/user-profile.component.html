@@ -111,7 +111,7 @@
         <div class="preference-form" *ngFor="let preference of modelToEdit?.preferences">
           <div class="game-name">
             <select name="game" id="{{this.modelToEdit.id}}GamePreference" [(ngModel)]="preference.gameId">
-              <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
+              <option *ngFor="let pref of modelToEdit.preferences" [value]="pref.game?.gameId">{{pref.game?.name}}</option>
             </select>
           </div>
           <div class="display-radios">

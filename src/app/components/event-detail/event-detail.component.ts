@@ -31,16 +31,18 @@ export class EventDetailComponent implements OnInit{
     if(this.gn.eventDetail == undefined){ 
       this.router.navigate(['events']);
     } else {
-      this.gn.eventDetail.sessions = this.gn.eventDetail.sessions?.sort((a, b) => {
-      return new Date(a.startDate!).getTime() - new Date(b.startDate!).getTime();
+      const now = new Date().getTime();
+      this.gn.eventDetail.sessions = this.gn.eventDetail.sessions?.filter(session => {
+        return new Date(session.startDate!).getTime() > now;
+      }).sort((a, b) => {
+        return new Date(a.startDate!).getTime() - new Date(b.startDate!).getTime();
       });
-      this.gn.eventDetail!.sessions!.forEach(session => {
-        session.reservations = session.reservations.filter(reservation => reservation.isConfirmed);
-      }); 
+      // this.gn.eventDetail!.sessions!.forEach(session => {
+      //   session.reservations = session.reservations.filter(reservation => reservation.isConfirmed);
+      // }); 
     }
 
     this.event= this.gn.eventDetail;
-
   }
 
   register(session: gameSessionModel) {
@@ -134,11 +136,15 @@ export class EventDetailComponent implements OnInit{
   }
 
   checkSessionReservation(session: gameSessionModel) {
-    return session.reservations.some(reservation => reservation.userId === this.userId);
+    return session.reservations.some(reservation => reservation.userId === this.userId && !reservation.isDeleted);
+  }
+
+  checkQueueReservation(session: gameSessionModel) {
+    return session.reservations.some(reservation => reservation.userId === this.userId && !reservation.isDeleted && !reservation.isConfirmed);
   }
 
   checkConfirmedReservation(session: gameSessionModel) {
-    return session.reservations.some(reservation => reservation.userId === this.userId && reservation.isConfirmed);
+    return session.reservations.some(reservation => reservation.userId === this.userId && reservation.isConfirmed && !reservation.isDeleted);
   }
 
   sessionModal(status: boolean) {

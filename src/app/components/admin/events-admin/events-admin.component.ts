@@ -117,16 +117,18 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async setRecurrency(){
-    
-    await this.eventService.setRecurrency(this.eventService.eventDetail!.eventId, this.newDate).then(async () => {
-      await this.eventService.get().then(() => {
-        this.eventService.event$.subscribe(events => this.dataSource.data = events);
-      }
-    );
-    this.gn.confirmMessage = 'Recurrency set successfully';
-    this.gn.setConfirm();
-    });
-    this.closeModalRecurrency();
+  async setRecurrency() {
+    if (this.eventService.eventDetail) {
+      await this.eventService.setRecurrency(this.eventService.eventDetail.eventId, this.newDate).then(() => {
+        this.eventService.get().then(() => {
+          this.eventService.event$.subscribe(events => this.dataSource.data = events);
+        });
+        this.gn.confirmMessage = 'Recurrency set successfully';
+        this.gn.setConfirm();
+      }).catch((error) => {
+        console.error('Error setting recurrency:', error);
+      });
+      this.closeModalRecurrency();
+    }
   }
 }
