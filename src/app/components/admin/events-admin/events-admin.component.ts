@@ -37,7 +37,6 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
   
   constructor(public ds: DashboardService,public eventService: EventService,private router: Router,private gn: GeneralService){}
 
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['Event', 'Admin', 'Sessions', 'Visibility', 'Actions', 'Recurrency'];
@@ -47,12 +46,16 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
   isRecurrencyModal: boolean = false;
 
   newDate: Date = new Date();
+
+  filterValue: string = 'all';
   
   async ngOnInit() {
     this.isLoading=true;
     this.gn.isLoadingScreen$.next(true);
     await this.eventService.get().then(()=>{
-      this.eventService.event$.subscribe(events => this.dataSource.data = events);
+      this.eventService.event$.subscribe(events => {
+        this.dataSource.data = events;
+      });
       this.isLoading=false;
       this.gn.isLoadingScreen$.next(false);
     });
@@ -60,9 +63,14 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (data: EventModel, filter: string) => {
-      return data.name.toLowerCase().includes(filter);
-    };
+    // this.dataSource.filterPredicate = (data: EventModel, filter: string) => {
+    //   if (filter === 'all') {
+    //     return true;
+    //   } else {
+    //     const isDeleted = filter === 'true';
+    //     return data.isDeleted === isDeleted;
+    //   }
+    // };
   }
 
   applyFilter(event: KeyboardEvent) {
@@ -74,8 +82,8 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
     this.router.navigate(['dashboard-admin/events/create']);
   }
 
-  toggleFilters( ) {
-
+  toggleFilters() {
+    // Logica per mostrare/nascondere i filtri
   }
 
   goToEventDetail(event: EventModel) {
@@ -93,22 +101,11 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
     this.isRecurrencyModal = false;
     this.gn.isOverlayOn$.next(false);
   }
+
   isFilterMenuOpen: boolean = false;
 
   toggleFilterMenu() {
     this.isFilterMenuOpen = !this.isFilterMenuOpen;
-  }
-
-  applyDeletedFilter(event: Event) {
-    const filterValue = (event.target as HTMLSelectElement).value;
-    if (filterValue === 'all') {
-      this.dataSource.filterPredicate = (data: EventModel, filter: string) => true;
-    } else {
-      const isDeleted = filterValue === 'true';
-      this.dataSource.filterPredicate = (data: EventModel, filter: string) => data.isDeleted === isDeleted;
-    }
-    this.dataSource.filter = filterValue;
-    this.isFilterMenuOpen = false; // Chiudi il menu dopo aver applicato il filtro
   }
 
   @ViewChild('filter') filterElement: ElementRef | undefined;
@@ -122,16 +119,14 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
 
   async setRecurrency(){
     
-    //CHIAMATA API
-    // await this.eventService.setRecurrency(this.eventService.eventDetail.eventId, this.newDate).then(() => {
-    //   await this.eventService.get().then(() => {
-    //     this.eventService.event$.subscribe(events => this.dataSource.data = events);
-    //   }
-    // );
-    // this.gn.confirmMessage = 'Recurrency set successfully';
-    // this.gn.setConfirm();
-    // });
+    await this.eventService.setRecurrency(this.eventService.eventDetail.eventId, this.newDate).then(() => {
+      await this.eventService.get().then(() => {
+        this.eventService.event$.subscribe(events => this.dataSource.data = events);
+      }
+    );
+    this.gn.confirmMessage = 'Recurrency set successfully';
+    this.gn.setConfirm();
+    });
     this.closeModalRecurrency();
-
   }
 }

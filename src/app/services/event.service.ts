@@ -201,4 +201,18 @@ export class EventService {
     });
   }
 
+  setRecurrency(eventId: number, date: Date): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.put<any>(`${environment.apiUrl}api/Event/recurrency/${eventId}`, { date }).subscribe({
+        next: (res) => {
+          this.eventDetail = res;
+          resolve(res);
+        }, error: (msg) => {
+          console.error(msg);
+          reject(msg);
+        }
+      });
+    });
+  }
+
 }
