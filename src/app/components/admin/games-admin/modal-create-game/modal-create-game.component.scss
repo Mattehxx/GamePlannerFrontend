@@ -11,12 +11,12 @@
 .modal-create {
   z-index: 100;
   margin-left: 5vh;
-  width: 84%;
+  width: 80%;
   background-color: white;
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 2vh;
+  padding: 3vh;
   border-radius: 1vh;
   border: 1px solid rgba(0, 0, 0, 0.1803921569);
   position: absolute;
@@ -83,9 +83,6 @@
 .form-cont{
   display: flex;
   width: 100%;
-  padding-top: 3vh;
-  margin-left: 3vh;
-  height: 100vw;
   flex-direction: column;
 }
 
@@ -340,6 +337,7 @@ small {
   background-color: white;
   color: var(--dark-purple);
   border: solid 2px;
+  width: 100%;
 }
 
 .save-btn.img:disabled {
@@ -378,4 +376,26 @@ small {
     border-radius: 1vh;
   }
 
+}
+
+@media (max-width: 700px) {
+  .modal-create{
+    width: 65%;
+  }
+
+  .modal-create-btns .create,.modal-create-btns .close{
+    width: 13vw;
+  }
+
+  .cancel-btn.img {
+    width: 100%;
+  }
+
+  .image-preview{
+    margin-right: -0.5vh;
+    width: 40%;
+    top: 13vh;
+    padding: 2vh;
+    height: 25vh;
+  }
 }

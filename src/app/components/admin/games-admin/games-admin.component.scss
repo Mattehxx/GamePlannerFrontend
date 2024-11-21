@@ -1,11 +1,13 @@
 .container {
-        overflow-y: hidden;
+    overflow-y: hidden;
     height: 100vh;
-    padding: 5vh 10vh;
-    padding-left: 14vh;
-    padding-right: 14vh;
+    padding: 2vh 4vw 2vh 10vw;
     transition: 0.3s ease;
     padding-top: 2vh;
+}
+
+.search-table-container {
+    width: 100%;
 }
 
 .container.dashboarsIsOpen {
@@ -17,6 +19,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 2vh;
 }
 
 .page-title {
@@ -26,26 +29,59 @@
     color: #333;
 }
 
-.search-bar {
-    width: 35vh;
-    margin-right: 2vh;
-    transition: 0.5s ease;
+.search-bar-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2vh;
+    margin-right: 4vw;
 }
+
+.search-bar {
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2vh;
+    position: relative;
+    color: var(--light-gray2);
+    z-index: 1;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 2vh;
+    font-size: 2vh;
+    z-index: 1;
+}
+
+.search-bar input {
+    width: 30vw;
+    max-width: 300px;
+    height: 5vh;
+    border: 1px solid var(--light-gray2);
+    border-radius: 1vh;
+    font-size: 2vh;
+    padding-left: 2vw;
+    z-index: 1;
+}
+
 
 .searchBarUserDetailOpen {
     z-index: 11;
     width: 37vh;
-    position: relative;
-    margin-right: -37vh;
+    // position: relative;
+    // margin-right: -37vh;
     transition: ease 0.5s;
 }
+
 
 
 .btn-create {
     display: flex;
     width: 100%;
     justify-content: flex-start;
-    padding-bottom: 2vh;
+    padding-block: 2vh;
 
     button {
         display: flex;
@@ -73,8 +109,15 @@ td {
     white-space: nowrap;
 }
 
+.table-games-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+
+}
+
 .user-table {
-    min-width: 60vh;
     transition: 0.8s ease;
     width: 100%;
     margin-bottom: 1vh;
@@ -149,6 +192,10 @@ mat-paginator {
     gap: 1vh;
     align-items: center;
 }
+
+.mat-column-imgUrl .mat-cell {
+    padding-right: 0; 
+  }
 
 .profile-image {
     display: flex;
@@ -302,8 +349,7 @@ mat-paginator {
     position: fixed;
     z-index: 100;
     flex-direction: column;
-    /* height: 100vw; */
-    width: 88%;
+    width: 91%;
     bottom: -100%;
     align-items: center;
     transition: 1s ease;
@@ -359,7 +405,7 @@ mat-paginator {
     padding-left: -7vh;
     box-shadow: 0 0px 5px 1px rgba(0, 0, 0, 0.24);
     /* margin-left: -6vh; */
-    width: 88.1%;
+    width: 86.1%;
     height: 75vh;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
@@ -373,6 +419,8 @@ mat-paginator {
 
 .details-visible {
     bottom: 0;
+    width: 85%;
+    margin-left: -2vh;
     /* right: 2vh; */
     transition: 0.5s ease;
 }
@@ -493,6 +541,7 @@ mat-paginator {
         display: flex;
         flex-direction: row;
         align-items: center;
+        gap: 2vh;
 
         .status-enabled,
         .status-disabled {
@@ -866,4 +915,69 @@ small {
     background-color: #6c757d;
     border: solid 2px #6c757d;
     cursor: not-allowed;
+}
+
+
+
+@media (max-width: 1250px) {
+    .container{
+        padding: 2vh 4vw 2vh 12vw;
+    }
+}
+
+
+@media (max-width: 890px) {
+    .container{
+        padding: 2vh 4vw 2vh 16vw;
+    }
+}
+
+
+
+@media (max-width: 700px) {
+    
+    .page-title{
+        font-size: 3vh;
+    }
+
+    .btn-visible{
+        top: 0vh;
+        right: 5vh;
+    }
+
+    .btn-visible div{
+        width: 5vh;
+        height: 6vh;
+        font-size: 2.4vh;
+    }
+}
+
+@media (max-width: 590px) {
+    .mat-column-isDisabled{
+        display: none;
+    }
+    .page-title{
+        font-size: 2.5vh;
+    }
+}
+
+@media (max-width: 560px) {
+
+    .game-img-name-cont{
+        gap: 2vw;
+    }
+
+    .game-name{
+        font-size: 2.5vh;
+    }
+
+    .game-img-cont{
+        width: 13vh;
+        height: 13vh;
+    }
+
+    .imgHover {
+        width: 13vh;
+        height: 13vh;
+    }
 }
