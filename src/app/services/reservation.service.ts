@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EventModel } from '../models/event.model';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../environment/environment';
+import { environment } from '../environments/environment';
 import { AuthService } from './auth.service';
 import { GeneralService } from './general.service';
 import { ReservationInputDTO } from '../models/input-models/reservationInputDTO.model';

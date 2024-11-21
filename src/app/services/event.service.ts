@@ -3,7 +3,7 @@ import { EventModel, EventSessionsModel } from '../models/event.model';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from '../environment/environment';
+import { environment } from '../environments/environment';
 import { ODataResponse } from '../models/odataResponse.model';
 import { EventInputModel } from '../models/input-models/event.input.model';
 import { Operation } from 'rfc6902';

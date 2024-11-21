@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Operation } from 'rfc6902';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
-import { environment } from '../environment/environment';
+import { environment } from '../environments/environment';
 import { GameModel } from '../models/game.model';
 
 

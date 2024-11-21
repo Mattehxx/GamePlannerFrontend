@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
-import { environment } from '../environment/environment';
+import { environment } from '../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { GameModel } from '../models/game.model';
 import { Operation } from 'rfc6902';
