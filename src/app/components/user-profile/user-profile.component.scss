@@ -268,42 +268,22 @@ label i {
   color: var(--purple);
 }
 
-
-@media (max-width: 480px) {
-
-  .buttons {
-    flex-direction: column;
-  }
-
-  .bottom-buttons {
-    justify-content: center;
-  }
-
-  .img {
-
-    width: 14vh;
-    height: 12vh;
-  }
-
-  .fa-regular.fa-user {
-    font-size: 4vh;
-  }
-
-  .btn-upload,
-  .btn-remove {
-    font-size: 1.5vh;
-    height: 2vh;
-    padding: 1vh;
-    border-radius: 1vh;
-  }
-}
-
 .preference-form {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding-block: 2vh;
+  border-bottom:  1px solid #d5d5d5;
+  position: relative;
+}
+
+.trash{
+  position: absolute;
+  left: 1vh;
+  color: red;
+  cursor: pointer;
 }
 
 .display-radios {
@@ -316,6 +296,21 @@ label i {
 .game-name {
   width: 40%;
   text-align: center;
+}
+
+.game-name select{
+  border-radius: 1vh;
+  border: 1px solid #c4c4c4;
+  max-width: 18vw;
+}
+
+.knowledge-name select{
+  border-radius: 1vh;
+  border: 1px solid #c4c4c4;
+}
+
+input[type="radio"] {
+  accent-color: black;
 }
 
 .knowledge-name {
@@ -353,15 +348,12 @@ label i {
 
 .input-preference {
   width: 100%;
-  padding: 1.5vh;
-  border: 2px solid var(--light-gray);
   border-radius: 1vh;
   font-size: 2vh;
   box-sizing: border-box;
   background: white;
   color: black;
   color: grey;
-  margin-top: 1rem;
 }
 
 .master-info {
@@ -373,8 +365,6 @@ label i {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px;
-  width: 20vw;
 }
 
 .img-upload-button {
@@ -384,8 +374,8 @@ label i {
   background-color: var(--purple);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 1.5vh;
+  border-radius: 1vh;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -418,4 +408,42 @@ label i {
 .option-btn {
   background-color: transparent;
   border: none;
+  cursor: pointer;
+}
+
+.preference-label{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4vh;
+  font-size: 2vh;
+  border-bottom: 1px solid var(--purple);
+  padding-bottom: 2vh;
+}
+
+
+@media (max-width: 480px) {
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .bottom-buttons {
+    justify-content: center;
+  }
+
+  .img {
+
+    width: 14vh;
+    height: 12vh;
+  }
+
+  .btn-upload,
+  .btn-remove {
+    font-size: 1.5vh;
+    height: 2vh;
+    padding: 1vh;
+    border-radius: 1vh;
+  }
 }

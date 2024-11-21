@@ -18,4 +18,6 @@ export interface preferenceInputModel {
     userId: string;
     knowledgeId: number;
     gameId: number;
+    game?: GameModel;
+    knowledge?: knowledgeModel;
 }
