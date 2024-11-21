@@ -463,6 +463,11 @@ mat-paginator {
     border: 1px solid rgb(206, 206, 206);
   }
 
+  .disabled{
+    opacity: 70%;
+    cursor: not-allowed;
+  }
+
 @media (max-width: 768px) {
     .header-bar {
         display: flex;

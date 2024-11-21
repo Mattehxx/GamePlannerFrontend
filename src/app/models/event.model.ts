@@ -1,8 +1,7 @@
-import { GameModel } from "./game.model";
 import { gameSessionModel } from "./gameSession.model";
 import { User } from "./user.model";
 
-export interface EventModel{
+export interface EventModel {
     eventId: number
     name: string,
     description: string,
@@ -13,21 +12,22 @@ export interface EventModel{
     adminId: number,
     adminUser?: User,
 }
-export interface EventSessionsModel{
-    sessionId : number,
-    startDate : Date,
-    endDate : Date,
-    seats : number,
-    master : User | undefined,
-    game :  {
-        name : string,
-        description : string,
+export interface EventSessionsModel {
+    sessionId: number,
+    startDate: Date,
+    endDate: Date,
+    seats: number,
+    master: User | undefined,
+    game: {
+        name: string,
+        description: string,
         imgUrl: string
     },
-    event : {
-        eventId : number,
+    event: {
+        eventId: number,
         name: string,
-        description : string
+        description: string, 
+        imgUrl: string
     }
 }
 

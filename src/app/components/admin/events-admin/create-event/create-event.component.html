@@ -67,7 +67,7 @@
                         </div>
                     </div>
                     <div class="session-info">
-                        <div class="session date"> <i class="fa-regular fa-calendar"></i> {{session.startDate | date:'MMM dd, h:mm a'}} - {{session.endDate | date:'MMM dd, h:mm a'}}</div>
+                        <div class="session date"> <i class="fa-regular fa-calendar"></i> {{session.startDate | date:'MMM dd, h:mm a':'UTC+1'}} - {{session.endDate | date:'MMM dd, h:mm a':'UTC+1'}}</div>
                         <div class="session master"><i class="fa-solid fa-crown"></i> {{session.master?.name}} {{session.master?.surname}}</div>
                         <div class="session seats"><i class="fa-solid fa-user-group"></i> {{session.reservations.length}} / {{session.seats}}</div>
                         <div class="session game"><i class="fa-solid fa-gamepad"></i> {{session.game?.name}}</div>
