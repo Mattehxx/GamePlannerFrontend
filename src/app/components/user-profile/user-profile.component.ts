@@ -190,10 +190,7 @@ export class UserProfileComponent implements OnInit {
         this.gn.setError();
       });
     }
-    else{
-      this.gn.confirmMessage = "No changes detected";
-      this.gn.setConfirm();
-    }
+
   }
 
   onFileSelected(event: Event): void {
