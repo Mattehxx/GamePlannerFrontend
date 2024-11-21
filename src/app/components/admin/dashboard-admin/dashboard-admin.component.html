@@ -30,7 +30,12 @@
             <div class="profile">
 
                 <div class="img">
-                    <i class="fa-regular fa-user"></i>
+                    @if (user?.imgUrl && user?.imgUrl!== "") {
+                        <img [src]="user?.imgUrl">
+                    }
+                    @else {
+                        <i class="fa-regular fa-user"></i>
+                    }
                 </div>
                 <div>
                     <span *ngIf="this.ds.isOpen" (click)="this.router.navigate(['/userSettings'])" class="userName">

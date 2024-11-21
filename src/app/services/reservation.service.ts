@@ -28,7 +28,8 @@ export class ReservationService {
                 },
                 error: (err) => {
                     console.error(err);
-                    this.gn.errorMessage = err.error.message;
+                    if(err.error== "Reservation already exists")
+                    this.gn.errorMessage = err.error;
                     this.gn.setError();
                     reject(err);
                 }
