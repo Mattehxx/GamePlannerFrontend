@@ -119,7 +119,7 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
 
   async setRecurrency(){
     
-    await this.eventService.setRecurrency(this.eventService.eventDetail.eventId, this.newDate).then(() => {
+    await this.eventService.setRecurrency(this.eventService.eventDetail!.eventId, this.newDate).then(async () => {
       await this.eventService.get().then(() => {
         this.eventService.event$.subscribe(events => this.dataSource.data = events);
       }
