@@ -137,6 +137,10 @@ export class EventDetailComponent implements OnInit{
     return session.reservations.some(reservation => reservation.userId === this.userId);
   }
 
+  checkConfirmedReservation(session: gameSessionModel) {
+    return session.reservations.some(reservation => reservation.userId === this.userId && reservation.isConfirmed);
+  }
+
   sessionModal(status: boolean) {
     if(status){
       this.gn.isSessionModal = true;

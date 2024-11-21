@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,6 +16,7 @@ import { User } from '../../../models/user.model';
 import { DashboardService } from '../../../services/dashboard.service';
 import { EventService } from '../../../services/event.service';
 import { GeneralService } from '../../../services/general.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-events-admin',
@@ -36,7 +37,6 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
   
   constructor(public ds: DashboardService,public eventService: EventService,private router: Router,private gn: GeneralService){}
 
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['Event', 'Admin', 'Sessions', 'Visibility', 'Actions', 'Recurrency'];
@@ -47,47 +47,15 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
 
   newDate: Date = new Date();
 
-  admin: User = {
-    id: 'sfasf',
-    name: 'Yassine',
-    surname: 'Char',
-    email: '',
-    phoneNumber: '',
-    birthDate: new Date('1995-01-01'),
-    imgUrl: '/assets/images/pfp.jpg',
-    level: 1,
-    isDeleted: false,
-    role: 'User'
-  }
-
-  reservation: reservationModel = {
-    reservationId: 1,
-    token: '',
-    isConfirmed: false,
-    isDeleted: false,
-    sessionId: 1,
-    userId: '1',
-    user: this.admin
-  }
-
-  gameSession: gameSessionModel = {
-    sessionId: 1,
-    startDate: new Date('2023-11-01'),
-    endDate: new Date('2023-11-02'),
-    isDeleted: false,
-    masterId: '301',
-    eventId: 1,
-    master: this.admin,
-    seats: 4,
-    gameId: 101,
-    reservations: [this.reservation]
-  }
+  filterValue: string = 'all';
   
   async ngOnInit() {
     this.isLoading=true;
     this.gn.isLoadingScreen$.next(true);
     await this.eventService.get().then(()=>{
-      this.eventService.event$.subscribe(events => this.dataSource.data = events);
+      this.eventService.event$.subscribe(events => {
+        this.dataSource.data = events;
+      });
       this.isLoading=false;
       this.gn.isLoadingScreen$.next(false);
     });
@@ -95,9 +63,14 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (data: EventModel, filter: string) => {
-      return data.name.toLowerCase().includes(filter);
-    };
+    // this.dataSource.filterPredicate = (data: EventModel, filter: string) => {
+    //   if (filter === 'all') {
+    //     return true;
+    //   } else {
+    //     const isDeleted = filter === 'true';
+    //     return data.isDeleted === isDeleted;
+    //   }
+    // };
   }
 
   applyFilter(event: KeyboardEvent) {
@@ -109,8 +82,8 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
     this.router.navigate(['dashboard-admin/events/create']);
   }
 
-  toggleFilters( ) {
-
+  toggleFilters() {
+    // Logica per mostrare/nascondere i filtri
   }
 
   goToEventDetail(event: EventModel) {
@@ -129,11 +102,31 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
     this.gn.isOverlayOn$.next(false);
   }
 
-  setRecurrency(){
+  isFilterMenuOpen: boolean = false;
+
+  toggleFilterMenu() {
+    this.isFilterMenuOpen = !this.isFilterMenuOpen;
+  }
+
+  @ViewChild('filter') filterElement: ElementRef | undefined;
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.isFilterMenuOpen && this.filterElement && !this.filterElement.nativeElement.contains(event.target)) {
+      this.isFilterMenuOpen = false;
+    }
+  }
+
+  async setRecurrency(){
     
-    //CHIAMATA API
-    this.closeModalRecurrency();
+    await this.eventService.setRecurrency(this.eventService.eventDetail!.eventId, this.newDate).then(async () => {
+      await this.eventService.get().then(() => {
+        this.eventService.event$.subscribe(events => this.dataSource.data = events);
+      }
+    );
     this.gn.confirmMessage = 'Recurrency set successfully';
     this.gn.setConfirm();
+    });
+    this.closeModalRecurrency();
   }
 }

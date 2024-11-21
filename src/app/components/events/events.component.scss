@@ -24,6 +24,7 @@
     box-shadow: 0 0 2vh #0000004d;
     margin-bottom: 5vh;
     animation: moveBackground 15s infinite alternate;
+    overflow: visible;
 
     &::before {
         content: '';
@@ -706,6 +707,23 @@ button:disabled {
     width: 20vh;
     margin: 0 auto;
     display: block;
+}
+
+.icon-container{
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2vh;
+    position: relative;
+}
+
+.fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 1vh;
 }
 
 @media (max-width: 1200px) {

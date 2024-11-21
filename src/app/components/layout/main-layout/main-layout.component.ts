@@ -70,8 +70,16 @@ export class MainLayoutComponent implements OnInit{
         } else {
           this.headerService.updateHeaderVisibility(true);
         }
-
         this.scrollEvent.emit(currentScroll > 0);
+
+        if(currentScroll > 370){
+          this.gn.isInputFixed$.next(true);
+        }
+        else{
+          if(this.gn.isInputFixed$.value){
+            this.gn.isInputFixed$.next(false);
+          }
+        }
 
         this.lastScrollPosition = currentScroll;
       });

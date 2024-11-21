@@ -32,12 +32,12 @@
             
             <div class="form-group">
                 <label for="eventTitle">Event Title</label>
-                <input id="eventTitle" type="text" [(ngModel)]="event.name" placeholder="Enter event title">
+                <input id="eventTitle" autocomplete="off" type="text" [(ngModel)]="event.name" placeholder="Enter event title">
             </div>
 
             <div class="form-group">
                 <label for="eventTitle">Event Description</label>
-                <input id="eventTitle" type="text" [(ngModel)]="event.description" placeholder="Enter event description">
+                <input id="eventTitle" autocomplete="off" type="text" [(ngModel)]="event.description" placeholder="Enter event description">
             </div>
             
             <div class="form-group" >
@@ -94,7 +94,7 @@
                 <div class="form-group">
                     <label for="game">Game</label>
                     <div #dropdownElementGame class="custom-dropdown">
-                        <input type="text" id="game" [(ngModel)]="gameSearch" name="gameSearch" placeholder="Search game" (focus)="showOptionsGame()" (input)="filterGames()" />
+                        <input type="text" autocomplete="off" id="game" [(ngModel)]="gameSearch" name="gameSearch" placeholder="Search game" (focus)="showOptionsGame()" (input)="filterGames()" />
                         <i *ngIf="gameSearch" (click)="clearGameSearch()" class="fa-solid fa-xmark"></i>
                         <ul class="options" *ngIf="isShowingGameOptions">
                             <li *ngFor="let game of filteredGames" (click)="selectGame(game)" [class.highlight]="game.gameId === newSession.gameId">
@@ -117,12 +117,13 @@
                     <div class="form-group">
                         <label for="gameMaster">Game Master</label>
                         <div #dropdownElementMaster class="custom-dropdown">
-                            <input type="text" [(ngModel)]="gameMasterSearch" name="gameMasterSearch" placeholder="Search game master" (focus)="showOptions()" (input)="filterGameMasters()" [disabled]="!selectedGame" />
+                            <input type="text" autocomplete="off" [(ngModel)]="gameMasterSearch" name="gameMasterSearch" placeholder="Search game master" (focus)="showOptions()" (input)="filterGameMasters()" [disabled]="!selectedGame" />
                             <!-- <i *ngIf="gameMasterSearch" (click)="clearMasterSearch()" class="fa-solid fa-xmark"></i> -->
                             <ul class="options" *ngIf="isShowingMasterOptions">
                                 <li *ngFor="let master of filteredGameMasters" (click)="selectGameMaster(master)" [class.highlight]="master.id === newSession.masterId">
                                     {{ master.name }} {{ master.surname }}
                                 </li>
+                                <li *ngIf="filteredGameMasters.length == 0" class="no-results">No Game Master Found</li>
                             </ul>
                         </div>
                     </div>
@@ -137,14 +138,26 @@
                     <div #dropdownElementReservation class="custom-dropdown-double ">
                         <div class="selected-users">
                             <span *ngFor="let user of selectedUsers" class="selected-user">
+                                <div class="user-img">
+                                    <img *ngIf="user?.imgUrl; else defaultIcon" [src]="user!.imgUrl" alt="User Image" class="user-image">
+                                    <ng-template #defaultIcon>
+                                        <i class="fa-solid fa-user"></i>
+                                    </ng-template>
+                                </div>
                                 {{ user.name }} {{ user.surname }}
                                 <i class="fa-solid fa-xmark" (click)="removeReservation(user)"></i>
                             </span>
                         </div>
-                        <input id="game" type="text" [(ngModel)]="reservationSearch" name="reservationSearch" placeholder="Search players" (focus)="showOptionsReservation()" (input)="filterUsers()" />
+                        <input id="game" autocomplete="off" type="text" [(ngModel)]="reservationSearch" name="reservationSearch" placeholder="Search players" (focus)="showOptionsReservation()" (input)="filterUsers()" />
                         <!-- <i *ngIf="reservationSearch" (click)="clearReservationSearch()" class="fa-solid fa-xmark"></i> -->
                         <ul class="options" *ngIf="isShowingReservationOptions">
                             <li *ngFor="let user of filteredUsers" (click)="toggleReservation(user)" [class.highlight]="isUserSelected(user)">
+                                <div class="user-img">
+                                    <img *ngIf="user?.imgUrl; else defaultIcon" [src]="user!.imgUrl" alt="User Image" class="user-image">
+                                    <ng-template #defaultIcon>
+                                        <i class="fa-solid fa-user"></i>
+                                    </ng-template>
+                                </div>
                                 {{ user.name }} {{ user.surname }}
                             </li>
                         </ul>
@@ -169,7 +182,7 @@
                 <div class="form-group">
                     <label for="game">Game</label>
                     <div #dropdownElementGame class="custom-dropdown">
-                        <input type="text" id="game" [(ngModel)]="gameSearch" name="gameSearch" placeholder="Search game" (focus)="showOptionsGame()" (input)="filterGames()" />
+                        <input type="text" autocomplete="off" id="game" [(ngModel)]="gameSearch" name="gameSearch" placeholder="Search game" (focus)="showOptionsGame()" (input)="filterGames()" />
                         <i *ngIf="gameSearch" (click)="clearGameEditSearch()" class="fa-solid fa-xmark"></i>
                         <ul class="options" *ngIf="isShowingGameOptions">
                             <li *ngFor="let game of filteredGames" (click)="selectEditGame(game)" [class.highlight]="game.gameId === newSession.gameId">
@@ -192,12 +205,13 @@
                     <div class="form-group">
                         <label for="gameMaster">Game Master</label>
                         <div #dropdownElementMaster class="custom-dropdown">
-                            <input type="text" [(ngModel)]="gameMasterSearch" name="gameMasterSearch" placeholder="Search game master" (focus)="showOptionsEdit()" (input)="filterGameMasters()" [disabled]="!this.sessionEdit!.game" />
+                            <input type="text" autocomplete="off"  [(ngModel)]="gameMasterSearch" name="gameMasterSearch" placeholder="Search game master" (focus)="showOptionsEdit()" (input)="filterGameMasters()" [disabled]="!this.sessionEdit!.game" />
                             <i *ngIf="gameMasterSearch" (click)="clearMasterSearch()" class="fa-solid fa-xmark"></i>
                             <ul class="options" *ngIf="isShowingMasterOptions">
                                 <li *ngFor="let master of filteredGameMasters" (click)="selectGameMaster(master)" [class.highlight]="master.id === newSession.masterId">
                                     {{ master.name }} {{ master.surname }}
                                 </li>
+                                <li *ngIf="filteredGameMasters.length === 0" class="options no-results">No Game Master Found</li>
                             </ul>
                         </div>
                     </div>
@@ -216,7 +230,7 @@
                                 <i class="fa-solid fa-xmark" (click)="removeReservationEdit(reservation)"></i>
                             </span>
                         </div>
-                        <input id="game" type="text" [(ngModel)]="reservationSearch" name="reservationSearch" placeholder="Search players" (focus)="showOptionsReservation()" (input)="filterUsers()" />
+                        <input id="game" autocomplete="off" type="text" [(ngModel)]="reservationSearch" name="reservationSearch" placeholder="Search players" (focus)="showOptionsReservation()" (input)="filterUsers()" />
                         <!-- <i *ngIf="reservationSearch" (click)="clearReservationSearch()" class="fa-solid fa-xmark"></i> -->
                         <ul class="options" *ngIf="isShowingReservationOptions">
                             <li *ngFor="let user of filteredUsers" (click)="toggleReservationEdit(user)" [class.highlight]="isUserSelectedEdit(user)">

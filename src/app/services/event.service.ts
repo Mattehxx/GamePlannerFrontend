@@ -160,7 +160,7 @@ export class EventService {
   }
 
   getUsersContainsString(name: string) {
-    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=contains(tolower(name),'${name.toLowerCase()}')&$top=5`);
+    return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=contains(tolower(name),'${name.toLowerCase()}')&$top=10`);
   }
   
   getGames(){
@@ -196,6 +196,20 @@ export class EventService {
         error: (err) => {
           console.error(err);
           reject(err);
+        }
+      });
+    });
+  }
+
+  setRecurrency(eventId: number, date: Date): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.put<any>(`${environment.apiUrl}api/Event/recurrency/${eventId}`, { date }).subscribe({
+        next: (res) => {
+          this.eventDetail = res;
+          resolve(res);
+        }, error: (msg) => {
+          console.error(msg);
+          reject(msg);
         }
       });
     });

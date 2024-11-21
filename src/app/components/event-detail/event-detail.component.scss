@@ -245,6 +245,15 @@
     }
 }
 
+.join{
+    background-color: rgb(76, 94, 250) !important;
+    border: 1px solid rgb(60, 79, 250) !important;
+
+    &:hover {
+        background: rgb(50, 70, 252) !important;
+    }
+}
+
 .btn-arleady {
     font-size: 2vh;
     width: max-content;
