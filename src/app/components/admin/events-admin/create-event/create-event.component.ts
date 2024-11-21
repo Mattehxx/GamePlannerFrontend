@@ -5,16 +5,16 @@ import { Router } from '@angular/router';
 import { EventModel } from '../../../../models/event.model';
 import { GameModel } from '../../../../models/game.model';
 import { gameSessionModel } from '../../../../models/gameSession.model';
+import { EventInputModel } from '../../../../models/input-models/event.input.model';
+import { ReservationInputDTO } from '../../../../models/input-models/reservationInputDTO.model';
 import { reservationModel } from '../../../../models/reservation.model';
 import { User } from '../../../../models/user.model';
+import { AuthService } from '../../../../services/auth.service';
 import { DashboardService } from '../../../../services/dashboard.service';
 import { EventService } from '../../../../services/event.service';
 import { GeneralService } from '../../../../services/general.service';
-import { SessionService } from '../../../../services/session.service';
 import { ReservationService } from '../../../../services/reservation.service';
-import { EventInputModel } from '../../../../models/input-models/event.input.model';
-import { AuthService } from '../../../../services/auth.service';
-import { ReservationInputDTO } from '../../../../models/input-models/reservationInputDTO.model';
+import { SessionService } from '../../../../services/session.service';
 
 @Component({
   selector: 'app-create-event',
@@ -25,7 +25,7 @@ import { ReservationInputDTO } from '../../../../models/input-models/reservation
 })
 export class CreateEventComponent implements OnInit {
 
-  constructor(private eventService: EventService, public ds: DashboardService, public gn: GeneralService, private router: Router, private sessionService: SessionService, private resService: ReservationService,private auth: AuthService) { }
+  constructor(private eventService: EventService, public ds: DashboardService, public gn: GeneralService, private router: Router, private sessionService: SessionService, private resService: ReservationService, private auth: AuthService) { }
 
   event: EventModel = {
     eventId: 0,
@@ -133,13 +133,20 @@ export class CreateEventComponent implements OnInit {
       this.gn.errorMessage = 'Please fill all the fields';
       this.gn.setError();
       return;
-    } else if (!this.isSameDay(new Date(this.newSession.startDate), new Date(this.newSession.endDate))) {
+    }
+
+    const startDate = new Date(this.newSession.startDate);
+    const endDate = new Date(this.newSession.endDate);
+    
+    if (!this.isSameDay(startDate, endDate)) {
       this.gn.errorMessage = 'Start Date and End Date must be on the same day';
       this.gn.setError();
       return;
-    } else {
-      this.gn.confirmMessage = 'Session added';
-      this.gn.setConfirm();
+    }
+    if (!this.isStartDateBeforeEndDate(startDate, endDate)) {
+      this.gn.errorMessage = 'Start Date must be before End Date';
+      this.gn.setError();
+      return;
     }
 
     this.newSession.eventId = this.event.eventId;
@@ -162,7 +169,9 @@ export class CreateEventComponent implements OnInit {
   isSameDay(startDate: Date, endDate: Date): boolean {
     return startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth();
   }
-
+  isStartDateBeforeEndDate(startDate: Date, endDate: Date): boolean {
+    return startDate < endDate;
+  }
   filterGameMasters() {
     const search = this.gameMasterSearch.toLowerCase();
     this.filteredGameMasters = this.gameMasters.filter(master =>
@@ -398,7 +407,7 @@ export class CreateEventComponent implements OnInit {
     this.gn.isOverlayOn$.next(false);
   }
 
-  Cancel(){
+  Cancel() {
     this.router.navigate(['/dashboard-admin/events']);
   }
 
@@ -406,7 +415,7 @@ export class CreateEventComponent implements OnInit {
     this.gn.isLoadingScreen$.next(true);
     this.isLoading = true;
 
-    if(this.formData==undefined){
+    if (this.formData == undefined) {
       this.gn.errorMessage = 'Please upload an image';
       this.gn.setError();
       this.gn.isLoadingScreen$.next(false);
@@ -419,14 +428,14 @@ export class CreateEventComponent implements OnInit {
       name: this.event.name,
       description: this.event.description,
       isPublic: this.event.isPublic,
-      image: (this.formData!.get('file') as File) ,
+      image: (this.formData!.get('file') as File),
       adminId: this.auth.getUserId() ?? ''
     };
     await this.eventService.post(eventInput).then((res) => {
       this.event.eventId = res.eventId;
 
       // Create new sessions
-      const reservationsToCreate : Array<ReservationInputDTO> = [];
+      const reservationsToCreate: Array<ReservationInputDTO> = [];
       for (const session of this.arrayAddedSessions) {
         const transformedSession = {
           StartDate: new Date(session.startDate),
@@ -439,9 +448,9 @@ export class CreateEventComponent implements OnInit {
         this.sessionService.addSessionNoNoti(transformedSession).then((res) => {
           session.sessionId = res.sessionId;
           if (session.reservations.length > 0) {
-          session.reservations.forEach(reservation => {
-          reservationsToCreate.push({ sessionId: session.sessionId, userId: reservation.userId });
-        });
+            session.reservations.forEach(reservation => {
+              reservationsToCreate.push({ sessionId: session.sessionId, userId: reservation.userId });
+            });
           }
         }).catch((err) => {
           console.error('Failed to create session:', err);

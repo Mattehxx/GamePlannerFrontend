@@ -10,13 +10,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { EventModel } from '../../../models/event.model';
-import { gameSessionModel } from '../../../models/gameSession.model';
-import { reservationModel } from '../../../models/reservation.model';
-import { User } from '../../../models/user.model';
 import { DashboardService } from '../../../services/dashboard.service';
 import { EventService } from '../../../services/event.service';
 import { GeneralService } from '../../../services/general.service';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-events-admin',
@@ -92,9 +88,11 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
   }
 
   openModalRecurrency(event: EventModel){
-    this.isRecurrencyModal = true;
-    this.gn.isOverlayOn$.next(true);
-    this.eventService.eventDetail = event;
+    if(event.sessions!.length > 0){
+      this.isRecurrencyModal = true;
+      this.gn.isOverlayOn$.next(true);
+      this.eventService.eventDetail = event;
+    }
   }
 
   closeModalRecurrency(){

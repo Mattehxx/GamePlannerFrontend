@@ -1,12 +1,13 @@
 <div class="display">
-  <div class="container">
+  <div class="container"  >
     <div class="title-page">Account Settings</div>
     <!--Img-->
-    <div class="player-profile-cont">
+    <div class="player-profile-cont" *ngIf="this.modelToEdit && !this.isLoading">
       <div class="img-btns">
-        @if (modelToEdit.imgUrl) {
+        @if (modelToEdit!.imgUrl || selectedImagePreview) {
         <div class="img">
-          <img class="img" [src]="modelToEdit.imgUrl" alt="User profile image">
+          <img class="img" [src]="modelToEdit!.imgUrl" alt="User profile image" *ngIf="!selectedImagePreview">
+          <img class="img" [src]="selectedImagePreview" alt="User profile image" *ngIf="selectedImagePreview">
         </div>
         }@else {
         <div class="img">
@@ -27,15 +28,15 @@
         </div>
       </div>
     </div>
-    <div class="input-container">
+    <div class="input-container" *ngIf="this.modelToEdit">
       <!--Name-->
       <div class="wrapper">
         <label for="name"><i class="fa-regular fa-user"></i>Name</label>
         <div class="input-group">
-          <input id="name" type="text" [(ngModel)]="modelToEdit.name" name="name" placeholder="Name" required
-            [class.input-error]="!modelToEdit.name" />
+          <input id="name" type="text" [(ngModel)]="modelToEdit!.name" name="name" placeholder="Name" required
+            [class.input-error]="!modelToEdit!.name" />
         </div>
-        <div *ngIf="!modelToEdit.name" class="display-errors">
+        <div *ngIf="!modelToEdit!.name" class="display-errors">
           <small class="error">Name is required</small>
         </div>
       </div>
@@ -43,10 +44,10 @@
       <div class="wrapper">
         <label for="surname"><i class="fa-regular fa-user"> </i>Surname</label>
         <div class="input-group">
-          <input id="surname" type="text" [(ngModel)]="modelToEdit.surname" name="surname" placeholder="Surname"
-            required [class.input-error]="!modelToEdit.surname" />
+          <input id="surname" type="text" [(ngModel)]="modelToEdit!.surname" name="surname" placeholder="Surname"
+            required [class.input-error]="!modelToEdit!.surname" />
         </div>
-        <div *ngIf="!modelToEdit.surname" class="display-errors">
+        <div *ngIf="!modelToEdit!.surname" class="display-errors">
           <small class="error">Surname is required</small>
         </div>
       </div>
@@ -54,10 +55,10 @@
       <div class="wrapper">
         <label for="email"><i class="fa-regular fa-envelope"></i>Email</label>
         <div class="input-group">
-          <input id="email" type="email" [(ngModel)]="modelToEdit.email" name="email" placeholder="Email" required
-            [class.input-error]="!modelToEdit.email " />
+          <input id="email" type="email" [(ngModel)]="modelToEdit!.email" name="email" placeholder="Email" required
+            [class.input-error]="!modelToEdit!.email " />
         </div>
-        <div *ngIf="!modelToEdit.email" class="display-errors">
+        <div *ngIf="!modelToEdit!.email" class="display-errors">
           <small class="error">Email is required</small>
         </div>
       </div>
@@ -65,10 +66,10 @@
       <div class="wrapper">
         <label for="phoneNumber"><i class="fa-regular fa-envelope"></i>Phone</label>
         <div class="input-group">
-          <input id="phoneNumber" type="text" [(ngModel)]="modelToEdit.phoneNumber" name="phoneNumber"
-            placeholder="Phone Number" required [class.input-error]="!modelToEdit.phoneNumber " />
+          <input id="phoneNumber" type="text" [(ngModel)]="modelToEdit!.phoneNumber" name="phoneNumber"
+            placeholder="Phone Number" required [class.input-error]="!modelToEdit!.phoneNumber " />
         </div>
-        <div *ngIf="!modelToEdit.phoneNumber" class="display-errors">
+        <div *ngIf="!modelToEdit!.phoneNumber" class="display-errors">
           <small class="error">Phone number is required</small>
         </div>
       </div>
@@ -76,8 +77,7 @@
       <div class="wrapper">
         <label for="birthDate"><i class="fa-regular fa-calendar"></i>Birthdate</label>
         <div class="input-group">
-          <input id="birthDate" type="date" [(ngModel)]="formattedBirthdate" name="birthDate"
-            placeholder="birthDate" />
+          <input id="birthDate" type="date" [(ngModel)]="formattedBirthdate" name="birthDate" placeholder="birthDate" />
         </div>
       </div>
     </div>
@@ -92,9 +92,15 @@
           </button>
         </div>
       </div>
+
+      <div class="preference-label">
+        <div class="game-name">Game</div>
+        <div class="display-radios">Can be Master</div>
+        <div class="knowledge-name">Knowledge</div>
+      </div>
       <!--default view-->
       <div *ngIf="viewMode === 'default'" class="input-preference ">
-        <div class  ="preference-form" *ngFor="let preference of modelToEdit?.preferences">
+        <div class="preference-form" *ngFor="let preference of modelToEdit?.preferences">
           <div class="game-name" *ngIf="preference.game">{{preference.game!.name}}</div>
           <div class="display-radios">
             @if (preference.canBeMaster) {
@@ -109,9 +115,11 @@
       <!--edit view-->
       <div *ngIf="viewMode === 'edit'" class="input-preference ">
         <div class="preference-form" *ngFor="let preference of modelToEdit?.preferences">
+          <div class="trash" (click)="deletePreference(preference)"><i class="fa-solid fa-trash-can"></i></div>
           <div class="game-name">
-            <select name="game" id="{{this.modelToEdit.id}}GamePreference" [(ngModel)]="preference.gameId">
-              <option *ngFor="let pref of modelToEdit.preferences" [value]="pref.game?.gameId">{{pref.game?.name}}</option>
+            <select name="game" id="{{this.modelToEdit!.id}}GamePreference" [(ngModel)]="preference.gameId">
+              <option *ngFor="let pref of modelToEdit!.preferences" [value]="pref.game?.gameId">{{pref.game?.name}}
+              </option>
             </select>
           </div>
           <div class="display-radios">
@@ -127,7 +135,7 @@
             </div>
           </div>
           <div>
-            <select name="knowledge" id="{{this.modelToEdit.id}}knowledgePreference"
+            <select name="knowledge" id="{{this.modelToEdit!.id}}knowledgePreference"
               [(ngModel)]="preference.knowledgeId">
               <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
             </select>
@@ -138,7 +146,7 @@
       <div *ngIf="viewMode === 'add'" class="input-preference">
         <div class="preference-form">
           <div class="game-name">
-            <select name="game" id="{{this.modelToEdit.id}}GamePreference" [(ngModel)]="newPreference.gameId">
+            <select name="game" id="{{this.modelToEdit!.id}}GamePreference" [(ngModel)]="newPreference.gameId">
               <option *ngFor="let game of games" [value]="game.gameId">{{game.name}}</option>
             </select>
           </div>
@@ -155,7 +163,7 @@
             </div>
           </div>
           <div class="knowledge-name">
-            <select name="knowledge" id="{{this.modelToEdit.id}}knowledgePreference"
+            <select name="knowledge" id="{{this.modelToEdit!.id}}knowledgePreference"
               [(ngModel)]="newPreference.knowledgeId">
               <option *ngFor="let knowledge of knowledges" [value]="knowledge.knowledgeId">{{knowledge.name}}</option>
             </select>
@@ -165,12 +173,13 @@
     </div>
     <!--bottom buttons-->
     <div class="bottom-buttons">
-      <button (click)="resetUserInfo()" class="btn-cancel">Cancel</button>
+      <button (click)="resetUserInfo()" class="btn-cancel" *ngIf="viewMode!== 'default'">Cancel</button>
+      <button (click)="backHome()" class="btn-cancel" *ngIf="viewMode=== 'default'">Cancel</button>
       @if (viewMode=== 'add') {
       <button (click)="PostPreference()" class="btn-save">Add Preference</button>
       }
       @else {
-      <button (click)="SaveChanges()" class="btn-save">Save Changes</button>
+      <button (click)="onSubmit()" class="btn-save">Save Changes</button>
       }
     </div>
   </div>

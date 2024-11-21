@@ -111,6 +111,12 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  navigateUserSettings(){
+    this.headerService.isMobileMenuOpen = false;
+    this.headerService.isModalOpen = false;
+    this.gn.isOverlayOn$.next(false);
+    this.router.navigate(['userSettings']);
+  }
   navigateDashboardAdmin() {
     this.headerService.isMobileMenuOpen = false;
     this.headerService.isModalOpen = false;

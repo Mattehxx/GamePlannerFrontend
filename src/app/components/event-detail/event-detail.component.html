@@ -149,8 +149,8 @@
                 <div class="session-detail date">
                     <i class="fa-solid fa-calendar"></i>
                     <div class="session-date">
-                        <div class="date">{{ sessionDetail!.startDate | date:'EEE, MMM d' }}</div>
-                        <div class="time">{{ sessionDetail!.startDate | date:'HH:mm' }} - {{ sessionDetail!.endDate | date:'HH:mm' }}</div>
+                        <div class="date">{{ sessionDetail!.startDate | date:'EEE, MMM d'  }}</div>
+                        <div class="time">{{ sessionDetail!.startDate | date:'HH:mm':'UTC+1' }} - {{ sessionDetail!.endDate | date:'HH:mm' }}</div>
                     </div>
                 </div>
                 <div class="session-detail seats"><i class="fa-solid fa-users"></i> {{sessionDetail!.reservations.length}} / {{sessionDetail!.seats}} <span class="light">players</span>

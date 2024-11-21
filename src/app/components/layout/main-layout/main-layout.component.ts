@@ -25,6 +25,7 @@ export class MainLayoutComponent implements OnInit{
   death$ = new Subject<void>();
 
   isOverlay : boolean = false;
+  isLoading : boolean = false;
   
   @Output() scrollEvent = new EventEmitter<boolean>();
 
@@ -91,6 +92,15 @@ export class MainLayoutComponent implements OnInit{
       }
       else{
         this.isOverlay = false;
+      }
+    });
+
+    this.gn.isLoadingScreen$.pipe(takeUntil(this.death$)).subscribe((value) => {
+      if(value){
+        this.isLoading = true;
+      }
+      else{
+        this.isLoading = false;
       }
     });
    
