@@ -168,6 +168,7 @@ export class CreateEventComponent implements OnInit {
     this.filteredGameMasters = this.gameMasters.filter(master =>
       `${master.name} ${master.surname}`.toLowerCase().includes(search)
     );
+    console.log(this.filteredGameMasters);
   }
 
   filterGames() {

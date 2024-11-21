@@ -24,6 +24,8 @@ export class GeneralService {
   isOverlayOn$ = new BehaviorSubject<boolean>(false);
   isLoadingScreen$ = new BehaviorSubject<boolean>(false);
 
+  isInputFixed$ = new BehaviorSubject<boolean>(false);
+
   serverError: boolean = false;
   serverConfirm: boolean = false;
   confirmMessage: string = '';

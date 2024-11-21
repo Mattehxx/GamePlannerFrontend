@@ -20,9 +20,9 @@
                 <div class="group-subtitle">Participate in weekly and monthly events for all experience levels</div>
             </div>
             <div class="info-group">
-                <span class="icon-container"><i class="fa-solid fa-location-dot"></i></span>
-                <div class="group-title">Unique Locations</div>
-                <div class="group-subtitle">Play in exciting venues that enhance the gaming experience</div>
+                <span class="icon-container"><i class="fa-solid fa-gear"></i></span>
+                <div class="group-title">Immersive Settings</div>
+                <div class="group-subtitle">Experience games in thematic venues that transport you into the story.</div>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="event-details">
                     <div class="event-title">{{session.event.name}}</div>
-                    <div class="event-game">Dungeons And Dragons</div>
+                    <div class="event-game">{{session.game.name}}</div>
                     <div class="info" *ngIf="session">
                         <div class="event-date"><i class="fa-regular fa-clock"></i>  {{session.startDate | date:'MMM dd, h:mm a'}}</div>
                         <!-- <div class="event-duration"><i class="fa-solid fa-hourglass-end"></i>     {{ event.startDate | duration: event.endDate }}

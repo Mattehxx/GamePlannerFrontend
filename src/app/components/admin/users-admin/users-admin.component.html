@@ -26,7 +26,7 @@
 
                     <div class="cont-user-cell">
 
-                        @if(user.imgUrl === null){
+                        @if(user.imgUrl === null || !user.imgUrl){
                             <div class="profile-image"> <i class="fa-regular fa-user"></i></div>
                         }
                         @else {
@@ -87,7 +87,7 @@
 
             <!-- Righe della tabella -->
 
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-header-row *matHeaderRowDef="displayedColumns" ></mat-header-row>
 
             <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row" [class.userDisabled]="row.isDisabled"
                 (click)="$event.stopPropagation(); toggleUserDetails(row)">
@@ -96,7 +96,7 @@
 
         </table>
 
-        <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons [length]="this.dataSource.data.length"></mat-paginator>
 
         <div class="details-page" [class.visible]="this.ds.userDetailPanel">
             <div class="close-section" (click)="toggleUserDetails(undefined)">

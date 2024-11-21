@@ -45,6 +45,17 @@ export class EventsComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     window.scrollTo({ top: 0 });
 
+    this.gn.isInputFixed$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      if(value){
+        const searchBar = document.getElementById('search-bar');
+        searchBar!.classList.add('fixed');
+      }
+      else{
+        const searchBar = document.getElementById('search-bar');
+        searchBar!.classList.remove('fixed');
+      }
+    });
+
     this.eventService.getEventCount().subscribe(
       count => {
         this.eventsCount = count;
