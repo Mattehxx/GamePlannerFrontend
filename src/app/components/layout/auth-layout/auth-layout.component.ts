@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterContentChecked, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterOutlet } from '@angular/router';
+import { Event as RouterEvent, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AdminService } from '../../../services/admin.service';
 import { GeneralService } from '../../../services/general.service';
@@ -23,6 +23,16 @@ export class AuthLayoutComponent implements OnInit,OnDestroy,AfterContentChecked
   isLoading : boolean = false;
 
   ngOnInit(): void {
+    this.router.events.subscribe((event: RouterEvent) => {
+      if (event instanceof NavigationEnd) {
+        setTimeout(() => {
+          if(this.gn.isOverlayOn$.value){
+            this.gn.isOverlayOn$.next(false);
+          }
+        }, 0);
+      }
+    });
+
     this.gn.isOverlayOn$.pipe(takeUntil(this.death$)).subscribe((value) => {
       if(value){
         this.isOverlay = true;
@@ -51,7 +61,7 @@ export class AuthLayoutComponent implements OnInit,OnDestroy,AfterContentChecked
   }
 
   get isOverlayVisible(): boolean {
-    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay || this.as.showGameDetail;
+    return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay ;
   }
 
   

@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { HeaderService } from '../../services/header.service';
 import { GeneralService } from '../../services/general.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -14,18 +15,23 @@ import { GeneralService } from '../../services/general.service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit,OnDestroy {
 
-  user: User | undefined
   constructor(public headerService: HeaderService, public router: Router, private elementRef: ElementRef, public as: AuthService,private gn: GeneralService) { }
 
   @ViewChild('modalElement') modalElement!: ElementRef;
   @ViewChild('overlayElement') overlayElement!: ElementRef;
+  @ViewChild('title') titleElement: ElementRef | undefined;
+  @ViewChild('containerImg') containerImgElement: ElementRef | undefined;
+
+  user: User | undefined;
+  destroy$ = new Subject<void>();
 
   logOut() {
     this.as.logout();
     this.toggleModal();
   }
+
   ngOnInit() {
     this.headerService.headerVisibility$.subscribe(isVisible => {
       const header = document.querySelector('.header-container') as HTMLElement;
@@ -43,6 +49,35 @@ export class HeaderComponent implements OnInit {
         
       }
     })
+    this.headerService.headerTitle$.pipe(takeUntil(this.destroy$)).subscribe((bool) => {
+      setTimeout(() => {
+        if(bool && this.router.url === '/events'){  
+          if (this.titleElement && this.isMobile()) {
+            (this.titleElement.nativeElement as HTMLElement).style.display = 'none';
+            if (this.containerImgElement) {
+              (this.containerImgElement.nativeElement as HTMLElement).style.width = '10vh';
+            }
+          }
+        }
+        else{
+          if (this.titleElement) {
+            (this.titleElement.nativeElement as HTMLElement).style.display = 'flex';
+          }
+          if (this.containerImgElement) {
+            (this.containerImgElement.nativeElement as HTMLElement).style.width = '30vh';
+          }
+        }
+      }, 100);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  isMobile(): boolean {
+    return window.innerWidth <= 768;
   }
 
   toggleModal() {
@@ -56,6 +91,9 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateAndClose() {
+    if(this.headerService.isMobileMenuOpen){
+      this.headerService.isMobileMenuOpen = false;
+    }
     this.headerService.isModalOpen = false;
     this.gn.isOverlayOn$.next(false);
     this.router.navigate(['userSettings']);

@@ -7,6 +7,7 @@ import { gameSessionModel } from '../../models/gameSession.model';
 import { AuthService } from '../../services/auth.service';
 import { GeneralService } from '../../services/general.service';
 import { ReservationService } from '../../services/reservation.service';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -17,7 +18,7 @@ import { ReservationService } from '../../services/reservation.service';
 })
 export class EventDetailComponent implements OnInit{
 
-  constructor(public gn: GeneralService,public auth: AuthService,private router: Router,private resService: ReservationService) { }
+  constructor(public gn: GeneralService,public auth: AuthService,private router: Router,private resService: ReservationService,private sesService: SessionService) { }
 
   event : EventModel | undefined;
 
@@ -55,6 +56,13 @@ export class EventDetailComponent implements OnInit{
         this.resService.createReservation(session.sessionId).then(() => {
           this.gn.isLoading = false;
           this.gn.isConfirmModal = true;
+            this.sesService.getSessionById(session.sessionId).then((updatedSession) => {
+            const sessionIndex = this.event?.sessions?.findIndex(s => s.sessionId === session.sessionId);
+            if (sessionIndex !== undefined && sessionIndex !== -1 && this.event?.sessions) {
+              this.event.sessions[sessionIndex] = updatedSession;
+            }
+            });
+          
         }).catch(() => {
           this.gn.isLoading = false;
         });
@@ -87,6 +95,13 @@ export class EventDetailComponent implements OnInit{
         this.resService.createReservation(session.sessionId).then(() => {
           this.gn.isLoading = false;
           this.gn.isConfirmModal = true;
+          this.sesService.getReservationById(session.sessionId).then((updatedSession) => {
+            const sessionIndex = this.event?.sessions?.findIndex(s => s.sessionId === session.sessionId);
+            if (sessionIndex !== undefined && sessionIndex !== -1 && this.event?.sessions) {
+              this.event.sessions[sessionIndex] = updatedSession;
+            }
+          });
+          
         }).catch(() => {
           this.gn.isLoading = false;
         });

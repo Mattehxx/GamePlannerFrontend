@@ -90,6 +90,7 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
   @ViewChild('container') modalContainer!: ElementRef;
 
   ngOnInit(): void {
+    this.as.isCreateGameModal=false;
     this.gs.Games$.pipe(takeUntil(this.death$)).subscribe({
       next: (games) => {
         this.dataSource.data = games;
@@ -127,6 +128,7 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
       if (this.as.showGameDetail && !clickedInsideModal) {
         this.editStates['imgUrl'].isEditMode = false
         this.as.showGameDetail = false;
+        this.gn.isOverlayOn$.next(false);
       }
     }
   }
@@ -138,6 +140,7 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
 
   openGameDetailsModal(game: GameModel) {
     this.as.showGameDetail = true;
+    this.gn.isOverlayOn$.next(true);
     this.gs.getDetails(game.gameId!);
     this.gs.gameDetail = game!;
   }
@@ -153,6 +156,7 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     else {
 
       this.as.showGameDetail = false;
+      this.gn.isOverlayOn$.next(true);
     }
   }
 
@@ -289,6 +293,7 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
    this.gs.delete(this.gs.gameDetail!.gameId!).then((res) => {
     this.toggleDeleteGameModal();
      this.as.showGameDetail = false;
+     this.gn.isOverlayOn$.next(false);
      this.gs.getGames();
    });
   }

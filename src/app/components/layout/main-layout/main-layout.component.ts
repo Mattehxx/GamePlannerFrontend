@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GeneralService } from '../../../services/general.service';
 import { Subject, takeUntil } from 'rxjs';
+import { AdminService } from '../../../services/admin.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -38,7 +39,8 @@ export class MainLayoutComponent implements OnInit{
     private ds: DashboardService,
     public gn: GeneralService,
     private router: Router,
-    private viewportScroller: ViewportScroller
+    private viewportScroller: ViewportScroller,
+    private as: AdminService
   ) {}
 
   ngOnInit() {
@@ -47,6 +49,7 @@ export class MainLayoutComponent implements OnInit{
         setTimeout(() => {
           if(document.getElementsByClassName('main-content')[0])
           document.getElementsByClassName('main-content')[0].scrollTo(0, 0);
+
           this.headerService.updateHeaderVisibility(true);
           this.headerService.filtersVisible = false;
           this.gn.isConfirmModal = false;
@@ -66,19 +69,30 @@ export class MainLayoutComponent implements OnInit{
           this.headerService.isModalOpen = false;
         }
 
-        if (currentScroll > this.lastScrollPosition) {
-          this.headerService.updateHeaderVisibility(false);
-        } else {
-          this.headerService.updateHeaderVisibility(true);
+        if (!this.isMobile() && this.router.url === '/events') {
+          if (currentScroll > this.lastScrollPosition) {
+            this.headerService.updateHeaderVisibility(false);
+          } else {
+            this.headerService.updateHeaderVisibility(true);
+          }
         }
         this.scrollEvent.emit(currentScroll > 0);
 
         if(currentScroll > 370){
           this.gn.isInputFixed$.next(true);
+          if(this.isMobile() &&  this.router.url === '/events'){
+            this.headerService.updateHeaderTitleVisiblity(true);
+          }
+          else{
+            this.headerService.updateHeaderTitleVisiblity(false);
+          }
         }
         else{
           if(this.gn.isInputFixed$.value){
             this.gn.isInputFixed$.next(false);
+          }
+          if(this.headerService.getTitleVisibility()){
+            this.headerService.updateHeaderTitleVisiblity(false);
           }
         }
 
@@ -104,6 +118,11 @@ export class MainLayoutComponent implements OnInit{
       }
     });
    
+  }
+
+          
+  isMobile(): boolean {
+    return window.innerWidth <= 768;
   }
 
   onActivate(event: any) {

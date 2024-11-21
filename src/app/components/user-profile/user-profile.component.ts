@@ -191,7 +191,7 @@ export class UserProfileComponent implements OnInit {
       });
     }
     else if(this.selectedImageFile){
-      this.gn.confirmMessage = "User updated sucfixcessfully";
+      this.gn.confirmMessage = "User updated successfully";
       this.gn.setConfirm();
     }
 

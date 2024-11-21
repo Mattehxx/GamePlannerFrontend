@@ -1,5 +1,4 @@
-<div class="container" *ngIf="this.event"
-[ngStyle]="{'background': 'url(/assets/images/wallpaper2.jpg) no-repeat center center'}" > <!--[ngStyle]="{'background': 'url(' + this.event.imgUrl + ') no-repeat center center'}"-->
+<div class="container" *ngIf="this.event" > <!--[ngStyle]="{'background': 'url(' + this.event.imgUrl + ') no-repeat center center'}"-->
     <div class="main-event" *ngIf="this.event">
         <div class="event-image">
             <img [src]="this.event!.imgUrl" alt="event image">

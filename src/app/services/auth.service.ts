@@ -24,7 +24,7 @@ export class AuthService {
       this.http.post(`${environment.apiUrl}api/register`, user).subscribe({
         next: (res) => {
           resolve(res);
-          this.gn.confirmMessage = 'User registered successfully';
+          this.gn.confirmMessage = 'User registered successfully, please login';
           this.gn.setConfirm();
         },
         error: (error) => {
