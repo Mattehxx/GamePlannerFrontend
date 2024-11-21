@@ -6,7 +6,7 @@
       <div class="img-btns">
         @if (modelToEdit.imgUrl) {
         <div class="img">
-          <img class="img" src="{{modelToEdit.imgUrl}}" alt="User profile image">
+          <img class="img" [src]="modelToEdit.imgUrl" alt="User profile image">
         </div>
         }@else {
         <div class="img">
