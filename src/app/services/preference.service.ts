@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Operation } from 'rfc6902';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from '../environment/environment';
+import { environment } from '../environments/environment';
 import { ODataResponse } from '../models/odataResponse.model';
 import { preferenceInputModel, preferenceModel } from '../models/preference.model';
 import { AuthService } from './auth.service';
