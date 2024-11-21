@@ -42,7 +42,7 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
   constructor(public ds: DashboardService, public headerService: HeaderService, public as: AdminService, private router: Router, private gn: GeneralService, public uas: UserAdminService) { }
 
 
-  displayedColumns: string[] = ['user', 'email', 'phoneNumber', 'role'];
+  displayedColumns: string[] = ['user', 'email','phoneNumber',  'role']; 
   dataSource = new MatTableDataSource<User>([]);
   isLoading: boolean = false;
 
@@ -50,6 +50,7 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
+    this.ds.userDetailPanel = false;
     this.gn.isLoadingScreen$.next(true);
     this.isLoading = true;
     this.uas.User$.pipe(takeUntil(this.death$)).subscribe({
