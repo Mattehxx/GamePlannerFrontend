@@ -26,8 +26,8 @@ export interface EventSessionsModel {
     event: {
         eventId: number,
         name: string,
-        description: string, 
-        imgUrl: string
+        description : string,
+        imgUrl : string
     }
 }
 
