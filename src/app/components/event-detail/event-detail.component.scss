@@ -6,7 +6,7 @@
     padding-inline: 4vh;
     padding-block: 15vh;
     position: relative;
-    background: url('/assets/images/wallpaper1.jpg') no-repeat center center;
+    background: url('/assets/images/wallpaper2.jpg') no-repeat center center;
     background-size: cover;
     overflow: hidden;
 }
@@ -902,6 +902,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        background: url('/assets/images/mobile-eventdetail.png') no-repeat center center !important;
     }
 
     .event-display {
@@ -914,4 +915,6 @@
         padding-block: 2vh;
         padding-inline: 0;
     }
+
+
 }

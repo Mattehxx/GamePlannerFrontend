@@ -1,5 +1,4 @@
-<div class="container" *ngIf="this.event"
-[ngStyle]="{'background': 'url(/assets/images/wallpaper2.jpg) no-repeat center center'}" > <!--[ngStyle]="{'background': 'url(' + this.event.imgUrl + ') no-repeat center center'}"-->
+<div class="container" *ngIf="this.event" > <!--[ngStyle]="{'background': 'url(' + this.event.imgUrl + ') no-repeat center center'}"-->
     <div class="main-event" *ngIf="this.event">
         <div class="event-image">
             <img [src]="this.event!.imgUrl" alt="event image">
@@ -45,7 +44,7 @@
                     <div class="btn-register" (click)="register(this.event.sessions[0])" *ngIf="this.event.sessions[0].reservations.length < this.event.sessions[0].seats && !checkSessionReservation(this.event.sessions[0])">Register for this Session</div>
                     <div class="btn-queue join" (click)="joinQueue(this.event.sessions[0])" *ngIf="this.event.sessions[0].reservations.length >= this.event.sessions[0].seats && !checkSessionReservation(this.event.sessions[0])">Join Queue</div>
                     <div class="btn-arleady" *ngIf="checkSessionReservation(this.event.sessions[0]) && checkConfirmedReservation(this.event.sessions[0])">Already Registered</div>
-                    <div class="btn-queue" *ngIf="checkSessionReservation(this.event.sessions[0]) && checkConfirmedReservation(this.event.sessions[0])">Queued</div>
+                    <div class="btn-queue" *ngIf="checkSessionReservation(this.event.sessions[0]) && checkQueueReservation(this.event.sessions[0])">Queued</div>
                 </div>
             </div>
         </div>
@@ -149,8 +148,8 @@
                 <div class="session-detail date">
                     <i class="fa-solid fa-calendar"></i>
                     <div class="session-date">
-                        <div class="date">{{ sessionDetail!.startDate | date:'EEE, MMM d' }}</div>
-                        <div class="time">{{ sessionDetail!.startDate | date:'HH:mm' }} - {{ sessionDetail!.endDate | date:'HH:mm' }}</div>
+                        <div class="date">{{ sessionDetail!.startDate | date:'EEE, MMM d'  }}</div>
+                        <div class="time">{{ sessionDetail!.startDate | date:'HH:mm':'UTC+1' }} - {{ sessionDetail!.endDate | date:'HH:mm' }}</div>
                     </div>
                 </div>
                 <div class="session-detail seats"><i class="fa-solid fa-users"></i> {{sessionDetail!.reservations.length}} / {{sessionDetail!.seats}} <span class="light">players</span>
@@ -161,10 +160,10 @@
                     <div class="master-info"><span class="master-name">{{sessionDetail!.master?.name}}</span><span class="gamemaster">Game Master</span></div>
                 </div>
             <div class="buttons lowtop" *ngIf="sessionDetail">
-                 <div class="btn-register" (click)="register(sessionDetail)" *ngIf="sessionDetail.reservations.length < sessionDetail.seats && !checkSessionReservation(sessionDetail)">Register for this Session</div>
-                 <div class="btn-queue join" (click)="joinQueue(sessionDetail)" *ngIf="sessionDetail.reservations.length >= sessionDetail.seats && !checkSessionReservation(sessionDetail)">Join Queue</div>
-                 <div class="btn-arleady" *ngIf="checkSessionReservation(sessionDetail) && checkConfirmedReservation(sessionDetail)">Already Registered</div>
-                 <div class="btn-queue" *ngIf="checkSessionReservation(sessionDetail) && checkConfirmedReservation(sessionDetail)">Queued</div>
+                <div class="btn-register" (click)="register(sessionDetail)" *ngIf="sessionDetail.reservations.length < sessionDetail.seats && !checkSessionReservation(sessionDetail)">Register for this Session</div>
+                <div class="btn-queue join" (click)="joinQueue(sessionDetail)" *ngIf="sessionDetail.reservations.length >= sessionDetail.seats && !checkSessionReservation(sessionDetail)">Join Queue</div>
+                <div class="btn-arleady" *ngIf="checkSessionReservation(sessionDetail) && checkConfirmedReservation(sessionDetail)">Already Registered</div>
+                <div class="btn-queue" *ngIf="checkSessionReservation(sessionDetail) && checkQueueReservation(sessionDetail)">Queued</div>
             </div>
         </div>
     </div>

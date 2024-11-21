@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { createPatch } from 'rfc6902';
 import { EventModel } from '../../../../models/event.model';
 import { GameModel } from '../../../../models/game.model';
 import { gameSessionModel } from '../../../../models/gameSession.model';
@@ -10,9 +11,8 @@ import { User } from '../../../../models/user.model';
 import { DashboardService } from '../../../../services/dashboard.service';
 import { EventService } from '../../../../services/event.service';
 import { GeneralService } from '../../../../services/general.service';
-import { SessionService } from '../../../../services/session.service';
-import { createPatch } from 'rfc6902';
 import { ReservationService } from '../../../../services/reservation.service';
+import { SessionService } from '../../../../services/session.service';
 
 @Component({
   selector: 'app-eventdetail-admin',
@@ -23,7 +23,7 @@ import { ReservationService } from '../../../../services/reservation.service';
 })
 export class EventDetailAdminComponent implements OnInit {
 
-  constructor(private eventService: EventService, public ds: DashboardService, public gn: GeneralService, private router: Router, private sessionService: SessionService,private resService: ReservationService) { }
+  constructor(private eventService: EventService, public ds: DashboardService, public gn: GeneralService, private router: Router, private sessionService: SessionService, private resService: ReservationService) { }
 
   event: EventModel | undefined;
   @ViewChild('dropdownElementMaster') dropdownElementMaster: ElementRef | undefined;
@@ -133,21 +133,25 @@ export class EventDetailAdminComponent implements OnInit {
   }
 
   addSession() {
-    console.log(this.newSession);
-    
-    console.log(this.newSession.startDate );
 
-    if(this.newSession.startDate == '' || this.newSession.endDate == '' || this.newSession.gameId === 0) {
+    const startDate = new Date(this.newSession.startDate);
+    const endDate = new Date(this.newSession.endDate);
+    if (this.newSession.startDate == '' || this.newSession.endDate == '' || this.newSession.gameId === 0) {
       this.gn.errorMessage = 'Please fill all the fields';
       this.gn.setError();
       return;
-    } 
+    }
     else if (!this.isDifferentDay(new Date(this.newSession.startDate), new Date(this.newSession.endDate))) {
       this.gn.errorMessage = 'Start Date and End Date must be on the same day';
       this.gn.setError();
       return;
     }
-    else{ 
+    if (!this.isStartDateBeforeEndDate(startDate, endDate)) {
+      this.gn.errorMessage = 'Start Date must be before End Date';
+      this.gn.setError();
+      return;
+    }
+    else {
       this.gn.confirmMessage = 'Session added';
       this.gn.setConfirm();
     }
@@ -170,11 +174,13 @@ export class EventDetailAdminComponent implements OnInit {
     this.closeAddModal();
   }
 
-  
+  isStartDateBeforeEndDate(startDate: Date, endDate: Date): boolean {
+    return startDate < endDate;
+  }
   isDifferentDay(startDate: Date, endDate: Date): boolean {
     return startDate.getFullYear() == endDate.getFullYear() &&
-           startDate.getMonth() == endDate.getMonth() &&
-           startDate.getDate() == endDate.getDate();
+      startDate.getMonth() == endDate.getMonth() &&
+      startDate.getDate() == endDate.getDate();
   }
 
   filterGameMasters() {
@@ -292,16 +298,16 @@ export class EventDetailAdminComponent implements OnInit {
     } else {
       this.gameSearch = '';
     }
-    if(this.sessionEdit.master) {
+    if (this.sessionEdit.master) {
       this.gameMasterSearch = this.sessionEdit!.master!.name ? `${this.sessionEdit!.master!.name} ${this.sessionEdit!.master!.surname}` : '';
     }
     else {
       this.gameMasterSearch = '';
     }
-     this.sessionEditStartDate = this.formatDate(new Date(this.sessionEdit.startDate));
-     this.sessionEditEndDate = this.formatDate(new Date(this.sessionEdit.endDate));
-     this.isEditSessionModal = true;
-     this.gn.isOverlayOn$.next(true);
+    this.sessionEditStartDate = this.formatDate(new Date(this.sessionEdit.startDate));
+    this.sessionEditEndDate = this.formatDate(new Date(this.sessionEdit.endDate));
+    this.isEditSessionModal = true;
+    this.gn.isOverlayOn$.next(true);
   }
 
   editSession() {
@@ -337,7 +343,7 @@ export class EventDetailAdminComponent implements OnInit {
     } else {
       this.newSession.reservations.splice(index, 1);
     }
-    this.reservationSearch='';
+    this.reservationSearch = '';
   }
 
   toggleReservationEdit(user: User) {
@@ -347,7 +353,7 @@ export class EventDetailAdminComponent implements OnInit {
     } else {
       this.sessionEdit!.reservations.splice(index, 1);
     }
-    this.reservationSearch='';
+    this.reservationSearch = '';
   }
 
   removeReservation(user: User) {
@@ -355,7 +361,7 @@ export class EventDetailAdminComponent implements OnInit {
     if (index !== -1) {
       this.newSession.reservations.splice(index, 1);
     }
-    this.reservationSearch='';
+    this.reservationSearch = '';
   }
 
   removeReservationEdit(reservation: reservationModel) {
@@ -363,7 +369,7 @@ export class EventDetailAdminComponent implements OnInit {
     if (index !== -1) {
       this.sessionEdit!.reservations.splice(index, 1);
     }
-    this.reservationSearch='';
+    this.reservationSearch = '';
   }
 
   isUserSelected(user: User): boolean {
@@ -442,15 +448,15 @@ export class EventDetailAdminComponent implements OnInit {
           StartDate: new Date(session.startDate),
           EndDate: new Date(session.endDate),
           Seats: session.seats,
-          MasterId: session.masterId ? session.masterId :  null,
+          MasterId: session.masterId ? session.masterId : null,
           EventId: session.eventId,
           GameId: session.gameId
         };
         await this.sessionService.addSessionNoNoti(transformedSession).then((res) => {
           session.sessionId = res.sessionId;
-          if(session.reservations.length > 0) {
+          if (session.reservations.length > 0) {
             session.reservations.forEach(async reservation => {
-              await this.resService.createReservation(session.sessionId,reservation.userId);
+              await this.resService.createReservation(session.sessionId, reservation.userId);
             });
           }
         }).catch((err) => {
@@ -468,52 +474,52 @@ export class EventDetailAdminComponent implements OnInit {
     for (const session of this.event!.sessions!) {
       const originalSession = this.deepCopy!.sessions!.find(s => s.sessionId === session.sessionId);
       if (originalSession && JSON.stringify(originalSession) !== JSON.stringify(session)) {
-      let patchSession = createPatch(originalSession, session);
+        let patchSession = createPatch(originalSession, session);
 
-      // Handle reservation removal separately
-      for (const op of patchSession) {
-        if (op.op === 'remove' && op.path.startsWith('/reservations/')) {
-          const reservationIndex = parseInt(op.path.split('/')[2], 10);
-          const reservationId = originalSession.reservations[reservationIndex].reservationId;
-          await this.sessionService.removeRegistration(reservationId).catch((err) => {
-        console.error('Failed to delete reservation:', err);
-        this.gn.errorMessage = 'Failed to delete reservation';
-        this.gn.setError();
-        this.gn.isLoadingScreen$.next(false);
-        this.isLoading = false;
-        throw new Error('Failed to delete reservation');
+        // Handle reservation removal separately
+        for (const op of patchSession) {
+          if (op.op === 'remove' && op.path.startsWith('/reservations/')) {
+            const reservationIndex = parseInt(op.path.split('/')[2], 10);
+            const reservationId = originalSession.reservations[reservationIndex].reservationId;
+            await this.sessionService.removeRegistration(reservationId).catch((err) => {
+              console.error('Failed to delete reservation:', err);
+              this.gn.errorMessage = 'Failed to delete reservation';
+              this.gn.setError();
+              this.gn.isLoadingScreen$.next(false);
+              this.isLoading = false;
+              throw new Error('Failed to delete reservation');
+            });
+          }
+        }
+
+        // Handle reservation addition separately
+        for (const op of patchSession) {
+          if (op.op === 'add' && op.path.startsWith('/reservations/')) {
+            const reservation = op.value;
+            await this.resService.createReservation(session.sessionId, reservation.userId).catch((err) => {
+              console.error('Failed to add reservation:', err);
+              this.gn.errorMessage = 'Failed to add reservation';
+              this.gn.setError();
+              this.gn.isLoadingScreen$.next(false);
+              this.isLoading = false;
+              throw new Error('Failed to add reservation');
+            });
+          }
+        }
+
+        // Filter out reservation removal operations from the patch
+        patchSession = patchSession.filter(op => !(op.op === 'remove' && op.path.startsWith('/reservations/')));
+
+        if (patchSession.length > 0) {
+          await this.sessionService.updateSession(session.sessionId, patchSession).catch((err) => {
+            console.error('Failed to update session:', err);
+            this.gn.errorMessage = 'Failed to update session';
+            this.gn.setError();
+            this.gn.isLoadingScreen$.next(false);
+            this.isLoading = false;
+            throw new Error('Failed to update session');
           });
         }
-      }
-
-      // Handle reservation addition separately
-      for (const op of patchSession) {
-        if (op.op === 'add' && op.path.startsWith('/reservations/')) {
-          const reservation = op.value;
-          await this.resService.createReservation(session.sessionId, reservation.userId).catch((err) => {
-        console.error('Failed to add reservation:', err);
-        this.gn.errorMessage = 'Failed to add reservation';
-        this.gn.setError();
-        this.gn.isLoadingScreen$.next(false);
-        this.isLoading = false;
-        throw new Error('Failed to add reservation');
-          });
-        }
-      }
-
-      // Filter out reservation removal operations from the patch
-      patchSession = patchSession.filter(op => !(op.op === 'remove' && op.path.startsWith('/reservations/')));
-
-      if (patchSession.length > 0) {
-        await this.sessionService.updateSession(session.sessionId, patchSession).catch((err) => {
-        console.error('Failed to update session:', err);
-        this.gn.errorMessage = 'Failed to update session';
-        this.gn.setError();
-        this.gn.isLoadingScreen$.next(false);
-        this.isLoading = false;
-        throw new Error('Failed to update session');
-        });
-      }
       }
     }
 
@@ -547,13 +553,13 @@ export class EventDetailAdminComponent implements OnInit {
 
     const patch = createPatch(this.deepCopy, this.event);
 
-    const filteredPatch = patch.filter(op => 
-      !(op.op === 'add' && (op.path.startsWith('/sessions/') || op.path.startsWith('/reservations/'))) && 
-      !(op.op === 'remove' && (op.path.startsWith('/sessions/') || op.path.startsWith('/reservations/'))) && 
+    const filteredPatch = patch.filter(op =>
+      !(op.op === 'add' && (op.path.startsWith('/sessions/') || op.path.startsWith('/reservations/'))) &&
+      !(op.op === 'remove' && (op.path.startsWith('/sessions/') || op.path.startsWith('/reservations/'))) &&
       !(op.op === 'replace' && (op.path.startsWith('/sessions/') || op.path.startsWith('/reservations/')))
     );
 
-    if(filteredPatch.length === 0) {
+    if (filteredPatch.length === 0) {
       this.eventService.get();
       this.router.navigate(['/dashboard-admin/events']);
       this.gn.isLoadingScreen$.next(false);
@@ -561,7 +567,7 @@ export class EventDetailAdminComponent implements OnInit {
       this.gn.confirmMessage = 'Changes saved';
       this.gn.setConfirm();
     }
-    else{
+    else {
       this.eventService.patch(this.deepCopy!.eventId, filteredPatch).then((res) => {
         this.eventService.get();
         this.router.navigate(['/dashboard-admin/events']);
@@ -631,14 +637,14 @@ export class EventDetailAdminComponent implements OnInit {
     this.router.navigate(['/dashboard-admin/events']);
   }
 
-  getResNumber(reservations: Array<reservationModel>,status: boolean){
-    if(status){
+  getResNumber(reservations: Array<reservationModel>, status: boolean) {
+    if (status) {
       return reservations.filter((res: { isConfirmed: any; }) => res.isConfirmed).length;
     }
-    else{
+    else {
       return reservations.filter((res: { isConfirmed: any; }) => !res.isConfirmed).length;
     }
   }
 
-  
+
 }

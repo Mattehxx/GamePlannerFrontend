@@ -25,15 +25,20 @@
             </div>
         </nav>
 
-        <div class="logout-profile-cont" (click)="this.logOut()">
-            
-            <div class="profile">
+        <div class="logout-profile-cont">
+
+            <div routerLink="/userSettings" class="profile">
 
                 <div class="img">
+                    @if (user?.imgUrl && user?.imgUrl!== "") {
+                    <img [src]="user?.imgUrl">
+                    }
+                    @else {
                     <i class="fa-regular fa-user"></i>
+                    }
                 </div>
                 <div>
-                    <span *ngIf="this.ds.isOpen" (click)="this.router.navigate(['/userSettings'])" class="userName">
+                    <span *ngIf="this.ds.isOpen" class="userName">
                         {{user?.name}} {{user?.surname}}
                     </span>
                 </div>

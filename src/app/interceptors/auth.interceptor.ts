@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import { catchError, Observable, switchMap, throwError, BehaviorSubject, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { filter, take } from 'rxjs/operators';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private isRefreshing = false;
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
   constructor(private authService: AuthService, private router: Router) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -13,30 +17,47 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    if(this.router.url.startsWith('/dashboard-admin')){
+    if(this.router.url.startsWith('/dashboard-admin') || this.authService.isLogged || request.url.includes('isAdmin')){
       const token = this.authService.getToken();
 
-    if (token) {
-      const payload = this.decodeTokenPayload(token);
-      const isTokenExpired = this.isTokenExpired(payload?.exp);
+      if (token) {
+        const payload = this.decodeTokenPayload(token);
+        const isTokenExpired = this.isTokenExpired(payload?.exp);
 
-      if (!isTokenExpired) {
-        request = this.addTokenToRequest(request, token);
-        return next.handle(request);
-      } else {
-        return this.authService.refreshAccessToken().pipe(
-          switchMap((newAuth: any) => {
-            const newRequest = this.addTokenToRequest(request, newAuth.token);
-            return next.handle(newRequest);
-          }),
-          catchError(error => {
-            this.authService.logout();
-            return throwError(() => error);
-          })
-        );
+        if (!isTokenExpired) {
+          request = this.addTokenToRequest(request, token);
+          return next.handle(request);
+        } else {
+          if (!this.isRefreshing) {
+            this.isRefreshing = true;
+            this.refreshTokenSubject.next(null);
+
+            return this.authService.refreshAccessToken().pipe(
+              switchMap((newAuth: any) => {
+                this.isRefreshing = false;
+                this.refreshTokenSubject.next(newAuth.accessToken);
+                const newRequest = this.addTokenToRequest(request, newAuth.accessToken);
+                return next.handle(newRequest);
+              }),
+              catchError(error => {
+                this.isRefreshing = false;
+                this.authService.logout();
+                return throwError(() => error);
+              })
+            );
+          } else {
+            return this.refreshTokenSubject.pipe(
+              filter(token => token != null),
+              take(1),
+              switchMap(token => {
+                const newRequest = this.addTokenToRequest(request, token);
+                return next.handle(newRequest);
+              })
+            );
+          }
+        }
       }
-    }
-    return next.handle(request);
+      return next.handle(request);
     }
 
     return next.handle(request);

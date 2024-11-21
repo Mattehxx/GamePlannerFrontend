@@ -24,7 +24,7 @@ export class AuthService {
       this.http.post(`${environment.apiUrl}api/register`, user).subscribe({
         next: (res) => {
           resolve(res);
-          this.gn.confirmMessage = 'User registered successfully';
+          this.gn.confirmMessage = 'User registered successfully, please login';
           this.gn.setConfirm();
         },
         error: (error) => {
@@ -52,7 +52,13 @@ export class AuthService {
         this.setRefreshToken(response.refreshToken);
         this.setUserId(response.userId);
         this.isLogged = true;
-        this.router.navigate(['/home'])
+        if(this.gn.eventRoute){
+          this.router.navigate([this.gn.eventRoute]);
+          this.gn.eventRoute = '';
+        }
+        else{
+          this.router.navigate(['/home'])
+        }
         this.getUser(response.userId);
         this.loginIsAdmin();
       },
@@ -130,36 +136,27 @@ export class AuthService {
   }
 
   loginIsAdmin(): Promise<boolean> {
-    const refreshToken = this.getRefreshToken();
-    const accessToken = this.getToken();
     return new Promise((resolve, reject) => {
-      if (!refreshToken) {
-        reject(false);
-        return;
-      }
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${accessToken}`,
-        'Refresh-Token': refreshToken
-      });
-      this.http.get<boolean>(`${environment.apiUrl}api/user/isAdmin`, { headers }).subscribe({
+      this.http.get<boolean>(`${environment.apiUrl}api/user/isAdmin`).subscribe({ 
         next: (res) => {
           this.isAdmin = res;
           resolve(res);
         },error: (msg) => {
-          if (msg.status === 401) {
-            this.refreshAccessToken().subscribe({
-              next: () => {
-                this.loginIsAdmin().then(resolve).catch(reject);
-              },
-              error: (refreshError) => {
-                console.error(refreshError);
-                reject(false);
-              }
-            });
-          } else {
-            console.error(msg);
-            reject(false);
-          }
+          reject();
+          // // if (msg.status === 401) {
+          // //   this.refreshAccessToken().subscribe({
+          // //     next: () => {
+          // //       this.loginIsAdmin().then(resolve).catch(reject);
+          // //     },
+          // //     error: (refreshError) => {
+          // //       console.error(refreshError);
+          // //       reject(false);
+          // //     }
+          // //   });
+          // // } else {
+          //   console.error(msg);
+          //   reject(false);
+          // }
         }
       });
     })
@@ -202,17 +199,22 @@ export class AuthService {
     });
   }
   //update image of user
-  updateProfileImg(newImage : FormData){
-    this.http.put<User>(`${environment.apiUrl}api/ApplicationUser/image/${localStorage.getItem('userId')}`,newImage).subscribe({
-      next: (res)=> {
-        const newUser = this.user.value;
-        newUser!.imgUrl = res.imgUrl;
-        this.user.next(newUser);
-      },error: (msg)=> {
-        console.error(msg);
-        this.gn.errorMessage = 'failed to update profile image';
-        this.gn.setError();
-      }
+  updateProfileImg(newImage : FormData) : Promise<any>{
+    return new Promise((resolve, reject) => {
+      this.http.put<User>(`${environment.apiUrl}api/ApplicationUser/image/${localStorage.getItem('userId')}`, newImage).subscribe({
+        next: (res) => {
+          const newUser = this.user.value;
+          newUser!.imgUrl = res.imgUrl;
+          this.user.next(newUser);
+          resolve(res);
+        },
+        error: (msg) => {
+          console.error(msg);
+          this.gn.errorMessage = 'failed to update profile image';
+          this.gn.setError();
+          reject(msg);
+        }
+      });
     });
   }
 }

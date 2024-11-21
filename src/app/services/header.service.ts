@@ -10,9 +10,21 @@ export class HeaderService {
   
 
   private headerVisibilitySubject = new BehaviorSubject<boolean>(true);
-  isModalOpen: boolean = false;
   headerVisibility$ = this.headerVisibilitySubject.asObservable();
+  isModalOpen: boolean = false;
 
+  private headerTitleSubject = new BehaviorSubject<boolean>(false);
+  headerTitle$ = this.headerTitleSubject.asObservable();
+
+
+  updateHeaderTitleVisiblity(isVisible: boolean){
+    this.headerTitleSubject.next(isVisible);
+  }
+
+  getTitleVisibility(): boolean {
+    return this.headerTitleSubject.value;
+  }
+  
   updateHeaderVisibility(isVisible: boolean) {
     this.headerVisibilitySubject.next(isVisible);
   }

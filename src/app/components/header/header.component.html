@@ -1,7 +1,7 @@
 <div class="header-container">
-    <div class="right-img" (click)="this.router.navigate(['home'])">
+    <div class="right-img" (click)="this.router.navigate(['home'])" #containerImg>
         <img src="/assets/images/logo.png">
-        <div class="logo-title">
+        <div class="logo-title" #title>
             Game Planner
         </div>
     </div>
@@ -104,10 +104,10 @@
             <div class="user" *ngIf="this.as.isLogged && this.user">
                 <div class="img-name-mobile">
                     @if(this.user.imgUrl==undefined){
-                    <div class="img-name-border"> <i class="fa-regular fa-user"></i></div>
+                    <div style="cursor: pointer;" class="img-name-border" (click)="navigateUserSettings()"> <i class="fa-regular fa-user"></i></div>
                     }
                     @else {
-                    <img class="img" [src]="this.user!.imgUrl" alt="User Profile image">
+                    <img style="cursor: pointer;" class="img" [src]="this.user!.imgUrl" alt="User Profile image" (click)="navigateUserSettings()">
                     }
                     <div class="username-email-mobile">
                         <div class="username">{{this.user.name}} {{this.user.surname}}</div>

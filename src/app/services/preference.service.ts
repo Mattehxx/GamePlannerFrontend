@@ -14,12 +14,7 @@ import { GeneralService } from './general.service';
 export class PreferenceService {
 
     odataQuery: string | undefined;
-    toAddPreference: preferenceInputModel = {
-        canBeMaster: false,
-        gameId: 0,
-        knowledgeId: 0,
-        userId: ""
-    };
+    toAddPreference: Array<preferenceInputModel> = [];
     private preferenceSubject = new BehaviorSubject<preferenceModel[]>([]);
     userPreference$ = this.preferenceSubject.asObservable();
     constructor(private http: HttpClient, private as: AuthService, private gn: GeneralService) { }
@@ -41,16 +36,17 @@ export class PreferenceService {
             }
         });
     }
-    post() {
+
+    post(preference: preferenceInputModel) {
         return new Promise((resolve, reject) => {
             let userId = this.as.getUserId();
             if (userId) {
-                this.toAddPreference.userId = userId;
+                preference.userId = userId;
             } else {
                 reject("invalid user");
                 return;
             }
-            this.http.post<preferenceModel>(`${environment.apiUrl}api/Preference`, this.toAddPreference).subscribe({
+            this.http.post<preferenceModel>(`${environment.apiUrl}api/Preference`, preference).subscribe({
                 next: (res) => {
                     const pref = this.preferenceSubject.value;
                     pref.push(res);
@@ -63,6 +59,7 @@ export class PreferenceService {
             });
         });
     }
+    
     patch(op: Operation[]) {
         return new Promise((resolve, reject) => {
             this.http.patch<preferenceModel>(`${environment.apiUrl}api/Preference`, op).subscribe({

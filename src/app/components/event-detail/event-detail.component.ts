@@ -7,6 +7,7 @@ import { gameSessionModel } from '../../models/gameSession.model';
 import { AuthService } from '../../services/auth.service';
 import { GeneralService } from '../../services/general.service';
 import { ReservationService } from '../../services/reservation.service';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -17,7 +18,7 @@ import { ReservationService } from '../../services/reservation.service';
 })
 export class EventDetailComponent implements OnInit{
 
-  constructor(public gn: GeneralService,public auth: AuthService,private router: Router,private resService: ReservationService) { }
+  constructor(public gn: GeneralService,public auth: AuthService,private router: Router,private resService: ReservationService,private sesService: SessionService) { }
 
   event : EventModel | undefined;
 
@@ -31,16 +32,18 @@ export class EventDetailComponent implements OnInit{
     if(this.gn.eventDetail == undefined){ 
       this.router.navigate(['events']);
     } else {
-      this.gn.eventDetail.sessions = this.gn.eventDetail.sessions?.sort((a, b) => {
-      return new Date(a.startDate!).getTime() - new Date(b.startDate!).getTime();
+      const now = new Date().getTime();
+      this.gn.eventDetail.sessions = this.gn.eventDetail.sessions?.filter(session => {
+        return new Date(session.startDate!).getTime() > now;
+      }).sort((a, b) => {
+        return new Date(a.startDate!).getTime() - new Date(b.startDate!).getTime();
       });
-      this.gn.eventDetail!.sessions!.forEach(session => {
-        session.reservations = session.reservations.filter(reservation => reservation.isConfirmed);
-      }); 
+      // this.gn.eventDetail!.sessions!.forEach(session => {
+      //   session.reservations = session.reservations.filter(reservation => reservation.isConfirmed);
+      // }); 
     }
 
     this.event= this.gn.eventDetail;
-
   }
 
   register(session: gameSessionModel) {
@@ -53,6 +56,13 @@ export class EventDetailComponent implements OnInit{
         this.resService.createReservation(session.sessionId).then(() => {
           this.gn.isLoading = false;
           this.gn.isConfirmModal = true;
+            this.sesService.getSessionById(session.sessionId).then((updatedSession) => {
+            const sessionIndex = this.event?.sessions?.findIndex(s => s.sessionId === session.sessionId);
+            if (sessionIndex !== undefined && sessionIndex !== -1 && this.event?.sessions) {
+              this.event.sessions[sessionIndex] = updatedSession;
+            }
+            });
+          
         }).catch(() => {
           this.gn.isLoading = false;
         });
@@ -85,6 +95,13 @@ export class EventDetailComponent implements OnInit{
         this.resService.createReservation(session.sessionId).then(() => {
           this.gn.isLoading = false;
           this.gn.isConfirmModal = true;
+          this.sesService.getReservationById(session.sessionId).then((updatedSession) => {
+            const sessionIndex = this.event?.sessions?.findIndex(s => s.sessionId === session.sessionId);
+            if (sessionIndex !== undefined && sessionIndex !== -1 && this.event?.sessions) {
+              this.event.sessions[sessionIndex] = updatedSession;
+            }
+          });
+          
         }).catch(() => {
           this.gn.isLoading = false;
         });
@@ -134,11 +151,15 @@ export class EventDetailComponent implements OnInit{
   }
 
   checkSessionReservation(session: gameSessionModel) {
-    return session.reservations.some(reservation => reservation.userId === this.userId);
+    return session.reservations.some(reservation => reservation.userId === this.userId && !reservation.isDeleted);
+  }
+
+  checkQueueReservation(session: gameSessionModel) {
+    return session.reservations.some(reservation => reservation.userId === this.userId && !reservation.isDeleted && !reservation.isConfirmed);
   }
 
   checkConfirmedReservation(session: gameSessionModel) {
-    return session.reservations.some(reservation => reservation.userId === this.userId && reservation.isConfirmed);
+    return session.reservations.some(reservation => reservation.userId === this.userId && reservation.isConfirmed && !reservation.isDeleted);
   }
 
   sessionModal(status: boolean) {

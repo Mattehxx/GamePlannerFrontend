@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
   //#region Models
   //#endregion
-  constructor(public router: Router, protected eventService: EventService,private gn: GeneralService) { }
+  constructor(public router: Router, public eventService: EventService,private gn: GeneralService) { }
 
   ngOnInit(): void {
     this.eventService.getUpcomingEvents();

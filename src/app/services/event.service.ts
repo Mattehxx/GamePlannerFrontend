@@ -7,6 +7,7 @@ import { environment } from '../environments/environment';
 import { ODataResponse } from '../models/odataResponse.model';
 import { EventInputModel } from '../models/input-models/event.input.model';
 import { Operation } from 'rfc6902';
+import { GeneralService } from './general.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class EventService {
   event$ = this.eventSubject.asObservable();
   upcomingEvent$ = this.upcomingEventSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router,private gn: GeneralService) { }
 
   //#region CRUD
   get() {
@@ -201,18 +202,31 @@ export class EventService {
     });
   }
 
-  setRecurrency(eventId: number, date: Date): Promise<any> {
+  setRecurrency(eventId: number, date: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.http.put<any>(`${environment.apiUrl}api/Event/recurrency/${eventId}`, { date }).subscribe({
+      const validDate = date instanceof Date ? date : new Date(date);
+  
+      if (isNaN(validDate.getTime())) {
+        console.error('Invalid date:', date);
+        return reject(new Error('Invalid date provided.'));
+      }
+  
+      const formattedDate = encodeURIComponent(validDate.toISOString());
+  
+      this.http.post<any>(`${environment.apiUrl}api/Event/createRecurrence/${eventId}?newDate=${formattedDate}`, null).subscribe({
         next: (res) => {
           this.eventDetail = res;
           resolve(res);
-        }, error: (msg) => {
-          console.error(msg);
+        },
+        error: (msg) => {
+          console.error('Error setting recurrency:', msg);
           reject(msg);
-        }
+        },
       });
     });
   }
+  
+  
+  
 
 }

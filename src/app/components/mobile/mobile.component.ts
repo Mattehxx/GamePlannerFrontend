@@ -17,5 +17,9 @@ export class MobileComponent implements OnInit {
     this.mobileService.downloadFile();
   }
 
+  getLink() : string {
+    return this.mobileService.linkApk || '';
+  }
+
  
 }

@@ -10,13 +10,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { EventModel } from '../../../models/event.model';
-import { gameSessionModel } from '../../../models/gameSession.model';
-import { reservationModel } from '../../../models/reservation.model';
-import { User } from '../../../models/user.model';
 import { DashboardService } from '../../../services/dashboard.service';
 import { EventService } from '../../../services/event.service';
 import { GeneralService } from '../../../services/general.service';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-events-admin',
@@ -39,7 +35,7 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['Event', 'Admin', 'Sessions', 'Visibility', 'Actions', 'Recurrency'];
+  displayedColumns: string[] = ['Event', 'Admin', 'Sessions', 'Actions', 'Recurrency'];// 'Visibility'
 
   isLoading: boolean = false;
 
@@ -92,9 +88,11 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
   }
 
   openModalRecurrency(event: EventModel){
-    this.isRecurrencyModal = true;
-    this.gn.isOverlayOn$.next(true);
-    this.eventService.eventDetail = event;
+    if(event.sessions!.length > 0){
+      this.isRecurrencyModal = true;
+      this.gn.isOverlayOn$.next(true);
+      this.eventService.eventDetail = event;
+    }
   }
 
   closeModalRecurrency(){
@@ -117,16 +115,18 @@ export class EventsAdminComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async setRecurrency(){
-    
-    await this.eventService.setRecurrency(this.eventService.eventDetail!.eventId, this.newDate).then(async () => {
-      await this.eventService.get().then(() => {
-        this.eventService.event$.subscribe(events => this.dataSource.data = events);
-      }
-    );
-    this.gn.confirmMessage = 'Recurrency set successfully';
-    this.gn.setConfirm();
-    });
-    this.closeModalRecurrency();
+  async setRecurrency() {
+    if (this.eventService.eventDetail) {
+      await this.eventService.setRecurrency(this.eventService.eventDetail.eventId, this.newDate).then(() => {
+        this.eventService.get().then(() => {
+          this.eventService.event$.subscribe(events => this.dataSource.data = events);
+        });
+        this.gn.confirmMessage = 'Recurrency set successfully';
+        this.gn.setConfirm();
+      }).catch((error) => {
+        console.error('Error setting recurrency:', error);
+      });
+      this.closeModalRecurrency();
+    }
   }
 }

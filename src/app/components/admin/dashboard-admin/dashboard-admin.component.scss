@@ -158,7 +158,16 @@ nav {
     justify-content: center;
 }
 
-@media (max-width:480px) {
+.img img{
+    width: 4vh;
+    height: 4vh;
+    border-radius: 50%;
+    margin-left: -1vh;
+}
+
+
+
+@media (max-width:675px) {
     .sidenav {
         width: 6.3vh;
     }

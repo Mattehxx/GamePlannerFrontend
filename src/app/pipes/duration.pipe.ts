@@ -16,7 +16,14 @@ export class DurationPipe implements PipeTransform {
     const durationInMilliseconds = end.getTime() - start.getTime();
     const durationInHours = durationInMilliseconds / (1000 * 60 * 60);
 
-    return `${durationInHours.toFixed(2)} hours`;
+    const hours = Math.floor(durationInHours);
+    const minutes = Math.round((durationInHours - hours) * 60);
+
+    if (minutes === 0) {
+      return `${hours} hours`;
+    } else {
+      return `${hours} hours ${minutes} minutes`;
+    }
   }
   
 }

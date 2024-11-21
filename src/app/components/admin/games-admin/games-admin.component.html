@@ -1,13 +1,12 @@
-<div class="container" [class.dashboarsIsOpen]="this.ds.isOpen" >
-    <div class="table-container">
+<div class="container" [class.dashboarsIsOpen]="this.ds.isOpen">
+    <div class="search-table-container">
         <div class="header-bar">
             <h1 class="page-title">Games Management</h1>
             <div class="search-bar-cont">
 
-                <mat-form-field class="search-bar" appearance="outline">
-                    <mat-label>Search</mat-label>
+                <div class="search-bar" appearance="outline" [class.searchBarUserDetailOpen]="this.ds.userDetailPanel">
                     <input matInput (keyup)="applyFilter($event)" placeholder="Search games" />
-                </mat-form-field>
+                </div>
             </div>
         </div>
 
@@ -16,60 +15,63 @@
         </div>
         <app-modal-create-game *ngIf="this.as.isCreateGameModal"></app-modal-create-game>
 
+        <div class="table-games-container">
 
+            <table mat-table [dataSource]="dataSource" [class.userDetailOpen]="this.ds.userDetailPanel"
+                class="mat-elevation-z8 user-table">
+                <ng-container matColumnDef="imgUrl" class="mat-column-imgUrl">
+                    <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
+                    <mat-cell *matCellDef="let game" class="important">
 
-        <table mat-table [dataSource]="dataSource" [class.userDetailOpen]="this.ds.userDetailPanel"
-            class="mat-elevation-z8 user-table">
-            <ng-container matColumnDef="imgUrl">
-                <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
-                <mat-cell *matCellDef="let game">
+                        <div class="cont-user-cell">
 
-                    <div class="cont-user-cell">
+                            @if(game.imgUrl === undefined){
+                            <div class="profile-image"> <i class="fa-regular fa-user"></i></div>
+                            }
+                            <img alt="Profile" class="profile-image" [src]="game.imgUrl">
+                        </div>
+                    </mat-cell>
+                </ng-container>
 
-                        @if(game.imgUrl === undefined){
-                        <div class="profile-image"> <i class="fa-regular fa-user"></i></div>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                    <mat-cell *matCellDef="let game"> {{game.name}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="isDisabled" class="mat-column-isDisabled">
+                    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                    <mat-cell *matCellDef="let game">
+
+                        @if(game.isDisabled){
+                        <div class="status-disabled"> <span>DISABLED </span></div>
                         }
-                        <img alt="Profile" class="profile-image" [src]="game.imgUrl">
-                    </div>
-                </mat-cell>
-            </ng-container>
+                        @else {
+                        <div class="status-enabled"> <span>ENABLED</span> </div>
+                        }
+                    </mat-cell>
 
-            <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                <mat-cell *matCellDef="let game"> {{game.name}} </mat-cell>
-            </ng-container>
+                </ng-container>
 
-            <ng-container matColumnDef="isDisabled">
-                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-                <mat-cell *matCellDef="let game">
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-                    @if(game.isDisabled){
-                    <div class="status-disabled"> <span>DISABLED </span></div>
-                    }
-                    @else {
-                    <div class="status-enabled"> <span>ENABLED</span> </div>
-                    }
-                </mat-cell>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"
+                    [class.gameDisabled]="row.isDisabled" (click)="$event.stopPropagation(); openGameDetailsModal(row)">
+                </mat-row>
 
-            </ng-container>
+            </table>
+            <mat-paginator [pageSize]="10" showFirstLastButtons #MatPaginator></mat-paginator>
+        </div>
 
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-            <mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"
-                [class.gameDisabled]="row.isDisabled"
-                (click)="$event.stopPropagation(); openGameDetailsModal(row)"
-                >
-            </mat-row>
 
-        </table>
-
-        <div class="modal-cont" [class.details-visible]="this.as.showGameDetail" >
+        <div class="modal-cont" [class.details-visible]="this.as.showGameDetail">
 
 
             <div class="game-details-cont" [class.details-visible]="this.as.showGameDetail" #modalDetail>
 
-                <div class="close-modal" [class.btn-visible]="this.as.showGameDetail" (click)="closeModal()" *ngIf="this.as.showGameDetail">
-                    <div><i class="fa-solid fa-x" [class.btn-visible]="this.as.showGameDetail" ></i></div>
+                <div class="close-modal" [class.btn-visible]="this.as.showGameDetail" (click)="closeModal()"
+                    *ngIf="this.as.showGameDetail">
+                    <div><i class="fa-solid fa-x" [class.btn-visible]="this.as.showGameDetail"></i></div>
                 </div>
 
                 <div class="image-upload-container" *ngIf="this.editStates['imgUrl'].isEditMode">
@@ -95,7 +97,8 @@
                                     class="save-btn img">
                                     <i class="fa-solid fa-check"></i> Save
                                 </button>
-                                <button type="button" (click)="cancelImage()" *ngIf="this.selectedImagePreview" class="cancel-btn img">
+                                <button type="button" (click)="cancelImage()" *ngIf="this.selectedImagePreview"
+                                    class="cancel-btn img">
                                     <i class="fa-solid fa-x"></i> Cancel
                                 </button>
                             </div>
@@ -110,15 +113,18 @@
                     <div class="game-img-cont" *ngIf="!editStates['imgUrl'].isEditMode"
                         (mouseenter)="onMouseEnter('imgUrl') ; this.imgHover=true"
                         (mouseleave)="onMouseLeave('imgUrl') ; this.imgHover=false">
-                      
+
                         @if (this.imgHover) {
-                        <div class="imgHover" [ngStyle]="{ 'background-image': 'url(' + this.gs.gameDetail?.imgUrl + ')', 'opacity':'50%' }"
+                        <div class="imgHover"
+                            [ngStyle]="{ 'background-image': 'url(' + this.gs.gameDetail?.imgUrl + ')', 'opacity':'50%' }"
                             *ngIf="editStates['imgUrl'].editToggle" (click)="enableEdit(this.gs.gameDetail, 'imgUrl')">
                         </div>
-                        <div class="img-icon" (click)="enableEdit(this.gs.gameDetail, 'imgUrl')"><i class="fa-solid fa-image"></i></div> 
+                        <div class="img-icon" (click)="enableEdit(this.gs.gameDetail, 'imgUrl')"><i
+                                class="fa-solid fa-image"></i></div>
                         }
                         @else{
-                        <div class="imgHover" [ngStyle]="{ 'background-image': 'url(' + this.gs.gameDetail?.imgUrl + ')' }">
+                        <div class="imgHover"
+                            [ngStyle]="{ 'background-image': 'url(' + this.gs.gameDetail?.imgUrl + ')' }">
                         </div>
                         }
                     </div>
