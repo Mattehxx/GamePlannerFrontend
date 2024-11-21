@@ -4,11 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { createPatch } from 'rfc6902';
 import { GameModel } from '../../models/game.model';
 import { knowledgeModel } from '../../models/knowledge.model';
-import { preferenceInputModel } from '../../models/preference.model';
+import { preferenceInputModel, preferenceModel } from '../../models/preference.model';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { GameService } from '../../services/game.service';
 import { KnowledgeService } from '../../services/knowledge.service';
+import { PreferenceService } from '../../services/preference.service';
+import { GeneralService } from '../../services/general.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,8 +22,19 @@ import { KnowledgeService } from '../../services/knowledge.service';
 export class UserProfileComponent implements OnInit {
 
   PostPreference() {
-    throw new Error('Method not implemented.');
-    //Post di reference
+    this.prefService.toAddPreference = this.newPreference;
+    this.prefService.post().then(res => {
+       this.modelToEdit.preferences?.push(res as preferenceModel);
+       this.deepCopy?.preferences?.push(res as preferenceModel);
+       this.viewMode = 'default';
+       this.gn.confirmMessage = "preference created successfully";
+       this.gn.setConfirm();
+    })
+      .catch(error => {
+        console.error(error);
+        this.gn.errorMessage = "error";
+        this.gn.setError();
+      });
   }
 
   ImgUrlPut() {
@@ -53,7 +66,7 @@ export class UserProfileComponent implements OnInit {
     gameId: 0,
   };
 
-  constructor(public as: AuthService, public gs: GameService, public ks: KnowledgeService) { }
+  constructor(public as: AuthService, public gs: GameService, public ks: KnowledgeService, protected prefService: PreferenceService,private gn : GeneralService) { }
 
   ngOnInit(): void {
     if (this.as.isLogged) {
@@ -75,6 +88,8 @@ export class UserProfileComponent implements OnInit {
     }
     this.gs.Games$.subscribe({
       next: (games) => {
+        /* const userGames = this.modelToEdit.preferences?.map(pref=> pref.gameId);
+        this.games = games.filter(g=> !userGames?.includes(g.gameId ?? 0)); */
         this.games = games;
       }
     })
@@ -105,6 +120,9 @@ export class UserProfileComponent implements OnInit {
       const data = new FormData();
       data.append('file', this.selectedImageFile);
       this.as.updateProfileImg(data);
+    }
+    if (this.newPreference) {
+      this.PostPreference();
     }
     //this.modelToEdit.birthDate = new Date(this.formattedBirthdate);
     this.modelToEdit.birthDate = new Date(this.formattedBirthdate);
@@ -152,6 +170,10 @@ export class UserProfileComponent implements OnInit {
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;
+  }
+  getUserGames(){
+    const userGames = this.modelToEdit.preferences?.map(pref=> pref.gameId);
+    return this.games.filter(g=> userGames?.includes(g.gameId ?? 0));
   }
   //#endregion
 };
