@@ -1,5 +1,5 @@
 <div class="display">
-  <div class="container"  >
+  <div class="container">
     <div class="title-page">Account Settings</div>
     <!--Img-->
     <div class="player-profile-cont" *ngIf="this.modelToEdit && !this.isLoading">
@@ -115,6 +115,7 @@
       <!--edit view-->
       <div *ngIf="viewMode === 'edit'" class="input-preference-scrollable-div">
         <div class="preference-form" *ngFor="let preference of modelToEdit?.preferences">
+
           <div class="trash" (click)="deletePreference(preference)"><i class="fa-solid fa-trash-can"></i></div>
           <div class="game-name">
             <select name="game" id="{{this.modelToEdit!.id}}GamePreference" [(ngModel)]="preference.gameId">
@@ -122,6 +123,7 @@
               </option>
             </select>
           </div>
+
           <div class="display-radios">
             <div class="radio-input-label">
               <input type="radio" id="masterYes" name="canBeMaster{{preference.preferenceId}}" [value]="true"

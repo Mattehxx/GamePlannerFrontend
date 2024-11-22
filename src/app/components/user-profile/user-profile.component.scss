@@ -301,7 +301,7 @@ label i {
 .game-name select {
   border-radius: 1vh;
   border: 1px solid #c4c4c4;
-  max-width: 18vw;
+  max-width: 14vw;
 }
 
 .knowledge-name select {
@@ -447,7 +447,12 @@ input[type="radio"] {
   scrollbar-width: thin;
   scrollbar-color: var(--purple) #f1f1f1;
 }
-
+.wrap-delete-preference{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2vh;
+}
 @media (max-width: 480px) {
 
   .buttons {
