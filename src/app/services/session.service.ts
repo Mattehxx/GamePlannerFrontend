@@ -84,7 +84,7 @@ export class SessionService {
 
     newConfirm(sessionId: number,userId: string) : Promise<any>{
         return new Promise((resolve, reject) => {
-            this.http.post<any>(`${environment.apiUrl}api/Reservation/confirm?sessionId=${sessionId}&userId=${userId}`, '').subscribe({
+            this.http.post<any>(`${environment.apiUrl}api/Reservation/new-confirm-email?sessionId=${sessionId}&userId=${userId}`, '').subscribe({
                 next: (res) => {
                     this.gn.errorMessage='Error, a new confirmation email has been sent';
                     this.gn.setError();

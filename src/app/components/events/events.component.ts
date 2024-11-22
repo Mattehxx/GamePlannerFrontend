@@ -119,6 +119,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   toggleFilters() {
     this.headerService.filtersVisible = !this.headerService.filtersVisible;
+    this.gn.isOverlayOn$.next(this.headerService.filtersVisible);
   }
 
   @HostListener('document:click', ['$event'])
@@ -126,6 +127,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     const target = event.target as HTMLElement;
     if (this.headerService.filtersVisible && !target.closest('.filters-page') && !target.closest('.filters')) {
       this.headerService.filtersVisible = false;
+      this.gn.isOverlayOn$.next(false);
     }
   }
 
@@ -139,6 +141,7 @@ export class EventsComponent implements OnInit, OnDestroy {
       this.activeFilters.push(this.selectedGame);
     }
     this.headerService.filtersVisible = false;
+    this.gn.isOverlayOn$.next(false);
   }
 
   clearFilter() {
