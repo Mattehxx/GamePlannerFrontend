@@ -13,7 +13,9 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService, private router: Router) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (request.url.includes('refresh')) {
+    const currentUrl = this.router.url;
+
+    if (request.url.includes('refresh') || currentUrl.startsWith('/confirm') || currentUrl.startsWith('/delete')) {
       return next.handle(request);
     }
 

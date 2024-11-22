@@ -47,7 +47,7 @@ export const routes: Routes = [
         {path:'games', component:GamesAdminComponent}
       ]
       },
-      { path: 'confirm', component: ConfirmRegistrationComponent},
+      {path: 'confirm', component: ConfirmRegistrationComponent},
       {path: 'delete', component: RemoveRegistrationComponent}
     ]
     },
