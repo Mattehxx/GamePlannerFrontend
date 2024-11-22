@@ -1,5 +1,5 @@
 <div class="display">
-  <div class="container"  >
+  <div class="container">
     <div class="title-page">Account Settings</div>
     <!--Img-->
     <div class="player-profile-cont" *ngIf="this.modelToEdit && !this.isLoading">
@@ -99,7 +99,7 @@
         <div class="knowledge-name">Knowledge</div>
       </div>
       <!--default view-->
-      <div *ngIf="viewMode === 'default'" class="input-preference ">
+      <div *ngIf="viewMode === 'default'" class="input-preference-scrollable-div">
         <div class="preference-form" *ngFor="let preference of modelToEdit?.preferences">
           <div class="game-name" *ngIf="preference.game">{{preference.game!.name}}</div>
           <div class="display-radios">
@@ -113,8 +113,9 @@
         </div>
       </div>
       <!--edit view-->
-      <div *ngIf="viewMode === 'edit'" class="input-preference ">
+      <div *ngIf="viewMode === 'edit'" class="input-preference-scrollable-div">
         <div class="preference-form" *ngFor="let preference of modelToEdit?.preferences">
+
           <div class="trash" (click)="deletePreference(preference)"><i class="fa-solid fa-trash-can"></i></div>
           <div class="game-name">
             <select name="game" id="{{this.modelToEdit!.id}}GamePreference" [(ngModel)]="preference.gameId">
@@ -122,6 +123,7 @@
               </option>
             </select>
           </div>
+
           <div class="display-radios">
             <div class="radio-input-label">
               <input type="radio" id="masterYes" name="canBeMaster{{preference.preferenceId}}" [value]="true"
@@ -143,7 +145,7 @@
         </div>
       </div>
       <!--add view-->
-      <div *ngIf="viewMode === 'add'" class="input-preference">
+      <div *ngIf="viewMode === 'add'" class="input-preference ">
         <div class="preference-form">
           <div class="game-name">
             <select name="game" id="{{this.modelToEdit!.id}}GamePreference" [(ngModel)]="newPreference.gameId">

@@ -63,8 +63,5 @@ export class AuthLayoutComponent implements OnInit,OnDestroy,AfterContentChecked
   get isOverlayVisible(): boolean {
     return this.gn.isDeleteUserModal || this.gn.isCreateUserModal  || this.isOverlay ;
   }
-
-  
-
  
 }
