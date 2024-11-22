@@ -66,7 +66,6 @@ async onConfirm() {
       this.isLoading=false;
     })
     .catch((error) => {
-      debugger;
       if (error.status === 500 && error.error.includes("Invalid token")) {
         this.sessionService.newConfirm(Number(this.sessionId!),this.userId!).then(() => {
           this.isLoading=false;
