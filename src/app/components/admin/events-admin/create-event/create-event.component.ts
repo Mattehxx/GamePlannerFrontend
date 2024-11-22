@@ -91,12 +91,14 @@ export class CreateEventComponent implements OnInit {
   isLoading: boolean = false;
 
   ngOnInit(): void {
-    this.eventService.getGames().subscribe({
+
+    this.eventService.getGamesFiltered().subscribe({
       next: (res) => {
         this.games = res.value;
         this.filteredGames = res.value;
       }
     });
+
   }
 
   openAddModal() {
@@ -137,7 +139,7 @@ export class CreateEventComponent implements OnInit {
 
     const startDate = new Date(this.newSession.startDate);
     const endDate = new Date(this.newSession.endDate);
-    
+
     if (!this.isSameDay(startDate, endDate)) {
       this.gn.errorMessage = 'Start Date and End Date must be on the same day';
       this.gn.setError();

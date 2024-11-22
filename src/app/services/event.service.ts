@@ -168,6 +168,10 @@ export class EventService {
     return this.http.get<any>(`${environment.apiUrl}odata/Game`);
   }
 
+  getGamesFiltered(){
+    return this.http.get<any>(`${environment.apiUrl}odata/Game?$filter=isDisabled eq false`);
+  }
+
   getGameMasters(gameId: number){
     return this.http.get<any>(`${environment.apiUrl}odata/ApplicationUser?$filter=Preferences/any(p: p/gameId eq ${gameId} and p/CanBeMaster eq true)&$expand=Preferences`);
   }
