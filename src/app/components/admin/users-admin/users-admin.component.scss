@@ -121,7 +121,6 @@ td {
 
 .user-table {
     min-width: 40%;
-    transition: 0.8s ease;
     width: 100%;
     border-radius: 3vh;
     border-radius: 3vh;
@@ -130,8 +129,7 @@ td {
 }
 
 .userDetailOpen {
-    border-radius: 0vh;
-    transition: ease 0.5s;
+    border-top-right-radius: 0vh;
 }
 
 ::ng-deep tbody {
@@ -363,6 +361,7 @@ mat-paginator {
     height: 4.4vh;
     cursor: pointer;
     background: var(--lightPurple);
+    border-top-right-radius: 3vh;
     font-size: 500;
     padding: 2vh 2vh 2.2vh;
     gap: 1vh;

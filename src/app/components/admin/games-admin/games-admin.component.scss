@@ -194,8 +194,8 @@ mat-paginator {
 }
 
 .mat-column-imgUrl .mat-cell {
-    padding-right: 0; 
-  }
+    padding-right: 0;
+}
 
 .profile-image {
     display: flex;
@@ -349,7 +349,7 @@ mat-paginator {
     position: fixed;
     z-index: 100;
     flex-direction: column;
-    width: 91%;
+    width: 80vw;
     bottom: -100%;
     align-items: center;
     transition: 1s ease;
@@ -405,7 +405,7 @@ mat-paginator {
     padding-left: -7vh;
     box-shadow: 0 0px 5px 1px rgba(0, 0, 0, 0.24);
     /* margin-left: -6vh; */
-    width: 86.1%;
+    width: 80vw;
     height: 75vh;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
@@ -419,9 +419,7 @@ mat-paginator {
 
 .details-visible {
     bottom: 0;
-    width: 85%;
-    margin-left: -2vh;
-    /* right: 2vh; */
+    width: 80vw;
     transition: 0.5s ease;
 }
 
@@ -470,7 +468,7 @@ mat-paginator {
     border-radius: 50%;
     background-size: cover;
     align-items: center;
-    justify-content: center;
+    background-position: center;
 
 }
 
@@ -920,14 +918,14 @@ small {
 
 
 @media (max-width: 1250px) {
-    .container{
+    .container {
         padding: 2vh 4vw 2vh 12vw;
     }
 }
 
 
 @media (max-width: 890px) {
-    .container{
+    .container {
         padding: 2vh 4vw 2vh 16vw;
     }
 }
@@ -935,17 +933,17 @@ small {
 
 
 @media (max-width: 700px) {
-    
-    .page-title{
+
+    .page-title {
         font-size: 3vh;
     }
 
-    .btn-visible{
+    .btn-visible {
         top: 0vh;
         right: 5vh;
     }
 
-    .btn-visible div{
+    .btn-visible div {
         width: 5vh;
         height: 6vh;
         font-size: 2.4vh;
@@ -953,25 +951,26 @@ small {
 }
 
 @media (max-width: 590px) {
-    .mat-column-isDisabled{
+    .mat-column-isDisabled {
         display: none;
     }
-    .page-title{
+
+    .page-title {
         font-size: 2.5vh;
     }
 }
 
 @media (max-width: 560px) {
 
-    .game-img-name-cont{
+    .game-img-name-cont {
         gap: 2vw;
     }
 
-    .game-name{
+    .game-name {
         font-size: 2.5vh;
     }
 
-    .game-img-cont{
+    .game-img-cont {
         width: 13vh;
         height: 13vh;
     }
