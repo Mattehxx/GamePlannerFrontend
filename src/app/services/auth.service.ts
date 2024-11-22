@@ -140,6 +140,7 @@ export class AuthService {
           this.isAdmin = res;
           resolve(res);
         },error: (msg) => {
+          this.isAdmin = false;
           reject();
           // // if (msg.status === 401) {
           // //   this.refreshAccessToken().subscribe({
