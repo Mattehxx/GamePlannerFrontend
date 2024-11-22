@@ -133,6 +133,7 @@ export class EventDetailAdminComponent implements OnInit {
 
   addSession() {
 
+    const today = new Date();
     const startDate = new Date(this.newSession.startDate);
     const endDate = new Date(this.newSession.endDate);
     if (this.newSession.startDate == '' || this.newSession.endDate == '' || this.newSession.gameId === 0) {
@@ -147,6 +148,11 @@ export class EventDetailAdminComponent implements OnInit {
     }
     if (!this.isStartDateBeforeEndDate(startDate, endDate)) {
       this.gn.errorMessage = 'Start Date must be before End Date';
+      this.gn.setError();
+      return;
+    }
+    if(startDate < today){
+      this.gn.errorMessage = 'Start Date must be in the future';
       this.gn.setError();
       return;
     }

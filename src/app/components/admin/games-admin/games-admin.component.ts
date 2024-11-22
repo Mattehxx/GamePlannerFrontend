@@ -121,16 +121,29 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
   handleClickOutside(event: MouseEvent) {
     if (this.as.showGameDetail) {
       const clickedInsideModal = this.modalDetail.nativeElement.contains(event.target);
-      const clickedInsideDeleteModal = this.deleteModal.nativeElement.contains(event.target);
-
-      if (this.as.showGameDetail && !clickedInsideModal && !clickedInsideDeleteModal) {
-        this.cancelEdit("imgUrl");
-        this.cancelEdit("name");
-        this.cancelEdit("description");
-        this.as.isDeleteGameModal = false;
-        this.as.showGameDetail = false;
-        this.gn.isOverlayOn$.next(false);
+      if(this.deleteModal){
+        const clickedInsideDeleteModal = this.deleteModal.nativeElement.contains(event.target);
+        if (this.as.showGameDetail && !clickedInsideModal && !clickedInsideDeleteModal) {
+          this.cancelEdit("imgUrl");
+          this.cancelEdit("name");
+          this.cancelEdit("description");
+          this.as.isDeleteGameModal = false;
+          this.as.showGameDetail = false;
+          this.gn.isOverlayOn$.next(false);
+        }
       }
+      else{
+        if (this.as.showGameDetail && !clickedInsideModal) {
+          this.cancelEdit("imgUrl");
+          this.cancelEdit("name");
+          this.cancelEdit("description");
+          this.as.isDeleteGameModal = false;
+          this.as.showGameDetail = false;
+          this.gn.isOverlayOn$.next(false);
+        }
+      }
+
+    
     }
   }
 

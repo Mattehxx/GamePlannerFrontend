@@ -293,6 +293,15 @@ mat-paginator {
     height: 5vh;
     border-radius: 50%;
 }
+.admin-cell div {
+    display: flex;
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+    background-color: rgba(128, 128, 128, 0.2509803922);
+    align-items: center;
+    justify-content: center;
+}
 
 .event-table {
     min-width: 60vh;
