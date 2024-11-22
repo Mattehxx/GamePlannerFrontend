@@ -65,16 +65,14 @@ async onConfirm() {
       this.gn.isLoadingScreen$.next(false);
       this.isLoading=false;
     })
-    .catch((error) => {
+    .catch(async (error) => {
       if (error.status === 500 && error.error.includes("Invalid token")) {
-        this.sessionService.newConfirm(Number(this.sessionId!),this.userId!).then(() => {
+        await this.sessionService.newConfirm(Number(this.sessionId!),this.userId!).then(() => {
           this.isLoading=false;
           this.gn.isLoadingScreen$.next(false);
+          this.router.navigate(['home']);
         });
       }
-      this.isLoading=false;
-      this.gn.isLoadingScreen$.next(false);
-      this.router.navigate(['home']);
     });
 }
 
