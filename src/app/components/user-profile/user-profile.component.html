@@ -99,7 +99,7 @@
         <div class="knowledge-name">Knowledge</div>
       </div>
       <!--default view-->
-      <div *ngIf="viewMode === 'default'" class="input-preference ">
+      <div *ngIf="viewMode === 'default'" class="input-preference-scrollable-div">
         <div class="preference-form" *ngFor="let preference of modelToEdit?.preferences">
           <div class="game-name" *ngIf="preference.game">{{preference.game!.name}}</div>
           <div class="display-radios">
@@ -113,7 +113,7 @@
         </div>
       </div>
       <!--edit view-->
-      <div *ngIf="viewMode === 'edit'" class="input-preference ">
+      <div *ngIf="viewMode === 'edit'" class="input-preference-scrollable-div">
         <div class="preference-form" *ngFor="let preference of modelToEdit?.preferences">
           <div class="trash" (click)="deletePreference(preference)"><i class="fa-solid fa-trash-can"></i></div>
           <div class="game-name">
@@ -143,7 +143,7 @@
         </div>
       </div>
       <!--add view-->
-      <div *ngIf="viewMode === 'add'" class="input-preference">
+      <div *ngIf="viewMode === 'add'" class="input-preference ">
         <div class="preference-form">
           <div class="game-name">
             <select name="game" id="{{this.modelToEdit!.id}}GamePreference" [(ngModel)]="newPreference.gameId">
