@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,7 +33,7 @@ import { createPatch } from 'rfc6902';
   templateUrl: './users-admin.component.html',
   styleUrl: './users-admin.component.scss'
 })
-export class UsersAdminComponent implements OnInit, AfterViewInit {
+export class UsersAdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedUser: User | undefined;
   death$ = new Subject<void>();
@@ -69,6 +69,10 @@ export class UsersAdminComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  ngOnDestroy(): void {
+    this.death$.next();
+    this.death$.complete();
+  }
 
 
   applyFilter(event: KeyboardEvent) {

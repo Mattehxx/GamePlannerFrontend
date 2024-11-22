@@ -88,9 +88,10 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('modalDetail') modalDetail!: ElementRef;
   @ViewChild('container') modalContainer!: ElementRef;
+  @ViewChild('deleteModal') deleteModal!: ElementRef;
 
   ngOnInit(): void {
-    this.as.isCreateGameModal=false;
+    this.as.isCreateGameModal = false;
     this.gs.Games$.pipe(takeUntil(this.death$)).subscribe({
       next: (games) => {
         this.dataSource.data = games;
@@ -118,14 +119,15 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: MouseEvent) {
-    // Verifica se la modale è aperta
     if (this.as.showGameDetail) {
-      // Controlla se il clic è avvenuto all'interno del contenitore
       const clickedInsideModal = this.modalDetail.nativeElement.contains(event.target);
+      const clickedInsideDeleteModal = this.deleteModal.nativeElement.contains(event.target);
 
-      // Se il clic è fuori dal contenitore (modale + overlay), chiudi la modale
-      if (this.as.showGameDetail && !clickedInsideModal) {
-        this.editStates['imgUrl'].isEditMode = false
+      if (this.as.showGameDetail && !clickedInsideModal && !clickedInsideDeleteModal) {
+        this.cancelEdit("imgUrl");
+        this.cancelEdit("name");
+        this.cancelEdit("description");
+        this.as.isDeleteGameModal = false;
         this.as.showGameDetail = false;
         this.gn.isOverlayOn$.next(false);
       }
@@ -144,7 +146,7 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     this.gs.gameDetail = game!;
   }
 
- 
+
   closeModal() {
 
     this.isEditMode = false;
@@ -154,8 +156,11 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     }
     else {
 
+      this.cancelEdit("name");
+      this.cancelEdit("description");
+
       this.as.showGameDetail = false;
-      this.gn.isOverlayOn$.next(true);
+      this.gn.isOverlayOn$.next(false);
     }
   }
 
@@ -200,6 +205,8 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
     if (!this.form.contains(key)) {
       this.form.addControl(key, this.fb.control(element[key]));
     }
+
+
   }
 
   saveProperty(element: any, key: string): void {
@@ -211,17 +218,17 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
 
     let patch = createPatch(this.gs.gameDetail, element);
 
-   if(patch.length>0){
-    this.gs.patch(this.gs.gameDetail!, patch).then((res) => {
-      this.gs.gameDetail = { ...element, [key]: control!.value };
-    })
-      .finally(() => {
-        this.disableEdit(key);
+    if (patch.length > 0) {
+      this.gs.patch(this.gs.gameDetail!, patch).then((res) => {
+        this.gs.gameDetail = { ...element, [key]: control!.value };
       })
-   }
-   else{
-    this.disableEdit(key);
-   }
+        .finally(() => {
+          this.disableEdit(key);
+        })
+    }
+    else {
+      this.disableEdit(key);
+    }
 
   }
 
@@ -233,7 +240,6 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
   cancelEdit(key: string): void {
     this.editStates[key].isEditMode = false;
     this.editStates[key].editToggle = true;
-    this.disableEdit(key);
   }
 
   onFileSelected(event: Event): void {
@@ -289,12 +295,12 @@ export class GamesAdminComponent implements OnInit, OnDestroy {
   }
 
   delete() {
-   this.gs.delete(this.gs.gameDetail!.gameId!).then((res) => {
-    this.toggleDeleteGameModal();
-     this.as.showGameDetail = false;
-     this.gn.isOverlayOn$.next(false);
-     this.gs.getGames();
-   });
+    this.gs.delete(this.gs.gameDetail!.gameId!).then((res) => {
+      this.toggleDeleteGameModal();
+      this.as.showGameDetail = false;
+      this.gn.isOverlayOn$.next(false);
+      this.gs.getGames();
+    });
   }
 
 }

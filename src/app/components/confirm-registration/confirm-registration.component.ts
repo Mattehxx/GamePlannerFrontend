@@ -64,6 +64,7 @@ async onConfirm() {
     await this.sessionService.confirmRegistration(Number(this.sessionId), this.userId, this.token).then(() => {
       this.gn.isLoadingScreen$.next(false);
       this.isLoading=false;
+      this.router.navigate(['home']);
     })
     .catch(async (error) => {
       if (error.status === 500 && error.error.includes("Invalid token")) {
