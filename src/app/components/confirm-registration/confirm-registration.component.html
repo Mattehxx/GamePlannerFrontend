@@ -1,11 +1,14 @@
 <div class="content" *ngIf="!isLoading">
     <div class="modal-container">
         <div class="modal-header">
-            <div class="icon-container">
+            <!-- <div class="icon-container">
                 <i class="fa-solid fa-check-circle"></i>
+            </div> -->
+            <div class="logo-container">
+                <img src="/assets/images/logo.png">
             </div>
-            <div class="title">Registration Confirmed!</div>
-            <div class="subtitle">You're all set for the adventure</div>
+            <div class="title">Confirm Registration</div>
+            <div class="subtitle">Click the button below to confirm your registration.</div>
         </div>
         <div class="divisor"></div>
         <div class="modal-body" *ngIf="sessionDetail">
@@ -25,6 +28,9 @@
                 <i class="fa-solid fa-users"></i> 
                 {{ confirmedReservationsCount }}/{{ sessionDetail.seats }} attendees
             </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn confirm" (click)="onConfirm()">Confirm Registration</button>
         </div>
     </div>
 </div>
