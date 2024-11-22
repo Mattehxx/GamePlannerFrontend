@@ -49,7 +49,6 @@ export class EventDetailComponent implements OnInit{
 
   register(session: gameSessionModel) {
     if (this.auth.isLogged) {
-      // Mostra la modale di caricamento
       if(this.isSessionDetail){
         this.closeSessionDetail();
       }
@@ -57,6 +56,7 @@ export class EventDetailComponent implements OnInit{
         this.resService.createReservation(session.sessionId).then(() => {
           this.gn.isLoading = false;
           this.gn.isConfirmModal = true;
+          this.gn.isOverlayOn$.next(true);
             this.sesService.getSessionById(session.sessionId).then((updatedSession) => {
             const sessionIndex = this.event?.sessions?.findIndex(s => s.sessionId === session.sessionId);
             if (sessionIndex !== undefined && sessionIndex !== -1 && this.event?.sessions) {
@@ -83,6 +83,7 @@ export class EventDetailComponent implements OnInit{
     }
     else{
       this.gn.isSignModal = true;
+      this.gn.isOverlayOn$.next(true);
     }
   }
 
@@ -96,6 +97,7 @@ export class EventDetailComponent implements OnInit{
         this.resService.createReservation(session.sessionId).then(() => {
           this.gn.isLoading = false;
           this.gn.isConfirmModal = true;
+          this.gn.isOverlayOn$.next(true);
           this.sesService.getReservationById(session.sessionId).then((updatedSession) => {
             const sessionIndex = this.event?.sessions?.findIndex(s => s.sessionId === session.sessionId);
             if (sessionIndex !== undefined && sessionIndex !== -1 && this.event?.sessions) {
@@ -122,11 +124,13 @@ export class EventDetailComponent implements OnInit{
     }
     else{
       this.gn.isSignModal = true;
+      this.gn.isOverlayOn$.next(true);
     }
   }
 
   redirect(login: boolean) {
     this.gn.isSignModal = false;
+    this.gn.isOverlayOn$.next(false);
     this.gn.eventRoute = this.router.url;
     if(login){
       this.router.navigate(['login']);
@@ -154,6 +158,16 @@ export class EventDetailComponent implements OnInit{
     this.sessionDetail = undefined;
   }
 
+  closeConfirmModal() {
+    this.gn.isConfirmModal = false;
+    this.gn.isOverlayOn$.next(false);
+  }
+
+  closeSignModal() {
+    this.gn.isSignModal = false;
+    this.gn.isOverlayOn$.next(false);
+  }
+
   checkSessionReservation(session: gameSessionModel) {
     return session.reservations.some(reservation => reservation.userId === this.userId && !reservation.isDeleted);
   }
@@ -178,6 +192,10 @@ export class EventDetailComponent implements OnInit{
       this.gn.isSessionModal = false;
       this.gn.isOverlayOn$.next(false);
     }
+  }
+
+  getSeatsLeft(session: gameSessionModel) {
+    return session.reservations.filter(reservation => !reservation.isDeleted && !reservation.isConfirmed ).length;
   }
 
 }
