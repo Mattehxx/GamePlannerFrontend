@@ -26,6 +26,7 @@ export class AppComponent {
     }
     this.gs.getGames();
     this.ks.getKnowledges();
+    this.as.loginIsAdmin();
   }
 
 }

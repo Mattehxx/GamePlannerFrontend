@@ -45,7 +45,6 @@ export class HeaderComponent implements OnInit,OnDestroy {
         if(response){
           this.user = response;
         }
-        
       }
     })
     this.headerService.headerTitle$.pipe(takeUntil(this.destroy$)).subscribe((bool) => {
