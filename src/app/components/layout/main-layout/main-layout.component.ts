@@ -21,6 +21,15 @@ import { AdminService } from '../../../services/admin.service';
 })
 export class MainLayoutComponent implements OnInit{
 
+  constructor(
+    public headerService: HeaderService, 
+    private ds: DashboardService,
+    public gn: GeneralService,
+    private router: Router,
+    private viewportScroller: ViewportScroller,
+    private as: AdminService
+  ) {}
+
   private lastScrollPosition = 0;
 
   death$ = new Subject<void>();
@@ -31,17 +40,8 @@ export class MainLayoutComponent implements OnInit{
   @Output() scrollEvent = new EventEmitter<boolean>();
 
   get isOverlayVisible(): boolean {
-    return this.headerService.filtersVisible || this.gn.isConfirmModal || this.gn.isSignModal || this.gn.isLoading  || this.isOverlay;
+    return this.gn.isLoading  || this.isOverlay;
   }
-  
-  constructor(
-    public headerService: HeaderService, 
-    private ds: DashboardService,
-    public gn: GeneralService,
-    private router: Router,
-    private viewportScroller: ViewportScroller,
-    private as: AdminService
-  ) {}
 
   ngOnInit() {
     this.router.events.subscribe((event: RouterEvent) => {
@@ -69,7 +69,7 @@ export class MainLayoutComponent implements OnInit{
           this.headerService.isModalOpen = false;
         }
 
-        if (!this.isMobile() && this.router.url === '/events') {
+        if (!this.isMobile()) {
           if (currentScroll > this.lastScrollPosition) {
             this.headerService.updateHeaderVisibility(false);
           } else {
@@ -130,8 +130,7 @@ export class MainLayoutComponent implements OnInit{
     });
    
   }
-
-          
+    
   isMobile(): boolean {
     return window.innerWidth <= 768;
   }
